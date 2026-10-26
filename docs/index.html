@@ -865,7 +865,8 @@ async function exportJson(){
 /* ---------- install & notifications ---------- */
 const APP_VERSION="v8"; // keep in sync with VERSION in sw.js
 let installEvt=null;
-const standalone=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+const isNative=!!window.Capacitor?.isNativePlatform?.(); // running as the Google Play / App Store app
+const standalone=()=>isNative||matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
 const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
 addEventListener("beforeinstallprompt",e=>{e.preventDefault();installEvt=e;if(tab==="settings")render()});
 addEventListener("appinstalled",()=>{installEvt=null;render()});
@@ -991,7 +992,7 @@ $("#vehSel").onchange=e=>{S.active=e.target.value;save();render()};
  S=S?{...defaults(),...S}:defaults();
  render();
  if(!S.vehicles.length)vehicleForm();
- if("serviceWorker" in navigator&&location.protocol.startsWith("http")){
+ if("serviceWorker" in navigator&&location.protocol.startsWith("http")&&!isNative){ // the store app ships its files inside the app, so no service worker there
   const had=!!navigator.serviceWorker.controller;let reloaded=false;
   navigator.serviceWorker.register("sw.js").then(reg=>{
    runNotifications();
