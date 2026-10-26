@@ -135,7 +135,7 @@ refCons:"Spalanie porównywalnego auta spalinowego",refPrice:"Cena paliwa do por
 date:"Data",place:"Miejsce (stacja, miasto)",odometer:"Stan licznika",quantity:"Zatankowano",pricePerUnit:"Cena za",total:"Razem",fullTank:"Do pełna",fullTankHint:"Spalanie liczone jest między dwoma tankowaniami do pełna.",
 energy:"Naładowano (kWh)",pricePerKwh:"Cena za kWh",chargeType:"Rodzaj ładowania",socFrom:"Bateria przed (%)",socTo:"Bateria po (%)",duration:"Czas ładowania (min)",socHint:"Opcjonalne. Pozwala policzyć zużycie energii po każdym ładowaniu.",
 chargeWarn:"Naładowano dużo więcej, niż mieści bateria",socWarn:"Poziom baterii musi być między 0 a 100%",
-receipt:"Zdjęcie paragonu / faktury",note:"Notatka",save:"Zapisz",cancel:"Anuluj",delete:"Usuń",remove:"Usuń zdjęcie",choosePhoto:"📷 Wybierz / zrób zdjęcie",confirmDelete:"Na pewno usunąć?",
+receipt:"Zdjęcie paragonu / faktury",note:"Notatka",save:"Zapisz",cancel:"Anuluj",delete:"Usuń",remove:"Usuń zdjęcie",choosePhoto:"📷 Wybierz / zrób zdjęcie",photoLoading:"Wczytywanie zdjęcia…",photoError:"Nie udało się wczytać tego zdjęcia. Spróbuj innego pliku lub zrób zdjęcie jeszcze raz.",photoHeic:"Ta przeglądarka nie obsługuje zdjęć w formacie HEIC/HEIF. W ustawieniach aparatu zmień format na JPG (np. wyłącz „Zdjęcia o wysokiej wydajności”) i spróbuj ponownie.",confirmDelete:"Na pewno usunąć?",
 avgCons:"Średnie spalanie",lastCons:"Ostatnie spalanie",fuelCost:"Wydatki na paliwo",avgEcons:"Średnie zużycie energii",lastEcons:"Ostatnie zużycie",chargeCost:"Wydatki na ładowanie",homeShare:"Ładowanie w domu",savings:"Oszczędność vs auto spalinowe",ofEnergy:"energii",
 serviceCost:"Serwis i naprawy",otherCost:"Pozostałe koszty",thisMonth:"Ten miesiąc",costPer100:"Koszt na 100",curOdo:"Przebieg",avgPrice:"Średnia cena",
 noVehicle:"Dodaj swój pierwszy samochód, aby zacząć.",noEntries:"Brak wpisów.",noData:"Brak danych w tym okresie.",kind:"Kategoria",desc:"Opis (co zostało zrobione / za co)",where:"Gdzie (warsztat, firma)",cost:"Koszt",until:"Ważne do",untilHint:"Np. koniec polisy OC lub ważności przeglądu. Aplikacja sama doda przypomnienie.",renewal:"odnowienie",validUntil:"ważne do",
@@ -164,7 +164,7 @@ refCons:"Comparable combustion car consumption",refPrice:"Fuel price for compari
 date:"Date",place:"Place (station, city)",odometer:"Odometer",quantity:"Amount filled",pricePerUnit:"Price per",total:"Total",fullTank:"Full tank",fullTankHint:"Consumption is calculated between two full-tank fill-ups.",
 energy:"Energy charged (kWh)",pricePerKwh:"Price per kWh",chargeType:"Charging type",socFrom:"Battery before (%)",socTo:"Battery after (%)",duration:"Charging time (min)",socHint:"Optional. Lets the app calculate energy use after each charge.",
 chargeWarn:"Energy charged is much larger than the battery capacity",socWarn:"Battery level must be between 0 and 100%",
-receipt:"Receipt / invoice photo",note:"Note",save:"Save",cancel:"Cancel",delete:"Delete",remove:"Remove photo",choosePhoto:"📷 Choose / take photo",confirmDelete:"Delete this entry?",
+receipt:"Receipt / invoice photo",note:"Note",save:"Save",cancel:"Cancel",delete:"Delete",remove:"Remove photo",choosePhoto:"📷 Choose / take photo",photoLoading:"Loading photo…",photoError:"Couldn't load this photo. Try another file or take the photo again.",photoHeic:"This browser can't read HEIC/HEIF photos. Switch the camera format to JPG (e.g. turn off “High efficiency pictures”) and try again.",confirmDelete:"Delete this entry?",
 avgCons:"Average consumption",lastCons:"Last consumption",fuelCost:"Fuel spending",avgEcons:"Average energy use",lastEcons:"Last energy use",chargeCost:"Charging spending",homeShare:"Charged at home",savings:"Savings vs combustion car",ofEnergy:"of energy",
 serviceCost:"Service & repairs",otherCost:"Other costs",thisMonth:"This month",costPer100:"Cost per 100",curOdo:"Odometer",avgPrice:"Average price",
 noVehicle:"Add your first car to get started.",noEntries:"No entries yet.",noData:"No data for this period.",kind:"Category",desc:"Description (what was done / what for)",where:"Where (workshop, company)",cost:"Cost",until:"Valid until",untilHint:"E.g. insurance policy end or inspection expiry. A reminder is added automatically.",renewal:"renewal",validUntil:"valid until",
@@ -239,7 +239,19 @@ const grpLabel=g=>t("grp")[g];
 const dur=m=>`${Math.floor(m/60)}:${pad(Math.round(m%60))} h`;
 const parseNum=v=>+String(v).replace(",",".");
 
-function compress(file,max=1600,q=.75){return new Promise((res,rej)=>{const img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{const s=Math.min(1,max/Math.max(img.width,img.height)),c=document.createElement("canvas");c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);c.getContext("2d").drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(url);res(c.toDataURL("image/jpeg",q))};img.onerror=rej;img.src=url})}
+/* Downscale a photo to a JPEG data URL. createImageBitmap handles EXIF rotation and big phone photos better;
+   the <img> path is the fallback for browsers without it. Throws if the browser can't decode the format (e.g. HEIC). */
+function decodeImg(file){return new Promise((res,rej)=>{const img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{URL.revokeObjectURL(url);res(img)};img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error("decode"))};img.src=url})}
+async function compress(file,max=1600,q=.75){
+ let src;
+ try{src=await createImageBitmap(file,{imageOrientation:"from-image"})}catch{src=await decodeImg(file)}
+ const s=Math.min(1,max/Math.max(src.width,src.height)),c=document.createElement("canvas");
+ c.width=Math.max(1,Math.round(src.width*s));c.height=Math.max(1,Math.round(src.height*s));
+ c.getContext("2d").drawImage(src,0,0,c.width,c.height);src.close?.();
+ const out=c.toDataURL("image/jpeg",q);
+ if(out.length<200)throw new Error("canvas");
+ return out;
+}
 
 /* Fuel consumption: full-to-full method. Fuel from partial fill-ups between two full ones is added to the next full one. */
 function consumption(){
@@ -293,7 +305,13 @@ function openForm(title,fields,vals,onSave,onDelete,onOpen){
  flat.filter(f=>f.type==="photo").forEach(f=>{
   photos[f.k]=vals[f.k]||null;
   const inp=$("#f_"+f.k),pv=$("#f_"+f.k+"_pv"),rm=$("#f_"+f.k+"_rm");
-  inp.onchange=async()=>{if(!inp.files[0])return;photos[f.k]=await compress(inp.files[0]);pv.innerHTML=`<img src="${photos[f.k]}">`;rm.hidden=false};
+  inp.onchange=async()=>{
+   const file=inp.files[0];if(!file)return;
+   const sub=$("#frm .primary");sub.disabled=true;pv.innerHTML=`<p class="muted">⏳ ${t("photoLoading")}</p>`;
+   try{photos[f.k]=await compress(file);pv.innerHTML=`<img src="${photos[f.k]}">`;rm.hidden=false}
+   catch(e){console.error(e);pv.innerHTML=photos[f.k]?`<img src="${photos[f.k]}">`:"";alert(t(/hei[cf]/i.test(file.type+file.name)?"photoHeic":"photoError"))}
+   finally{sub.disabled=false;inp.value=""}
+  };
   rm.onclick=()=>{photos[f.k]=null;pv.innerHTML="";rm.hidden=true;inp.value=""};
  });
  $("#fcancel").onclick=()=>d.close();
