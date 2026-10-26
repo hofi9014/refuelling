@@ -135,7 +135,7 @@ refCons:"Spalanie porównywalnego auta spalinowego",refPrice:"Cena paliwa do por
 date:"Data",place:"Miejsce (stacja, miasto)",odometer:"Stan licznika",quantity:"Zatankowano",pricePerUnit:"Cena za",total:"Razem",fullTank:"Do pełna",fullTankHint:"Spalanie liczone jest między dwoma tankowaniami do pełna.",
 energy:"Naładowano (kWh)",pricePerKwh:"Cena za kWh",chargeType:"Rodzaj ładowania",socFrom:"Bateria przed (%)",socTo:"Bateria po (%)",duration:"Czas ładowania (min)",socHint:"Opcjonalne. Pozwala policzyć zużycie energii po każdym ładowaniu.",
 chargeWarn:"Naładowano dużo więcej, niż mieści bateria",socWarn:"Poziom baterii musi być między 0 a 100%",
-receipt:"Zdjęcie paragonu / faktury",note:"Notatka",save:"Zapisz",cancel:"Anuluj",delete:"Usuń",remove:"Usuń zdjęcie",choosePhoto:"📷 Wybierz / zrób zdjęcie",photoLoading:"Wczytywanie zdjęcia…",photoError:"Nie udało się wczytać tego zdjęcia. Spróbuj innego pliku lub zrób zdjęcie jeszcze raz.",photoHeic:"Ta przeglądarka nie obsługuje zdjęć w formacie HEIC/HEIF. W ustawieniach aparatu zmień format na JPG (np. wyłącz „Zdjęcia o wysokiej wydajności”) i spróbuj ponownie.",confirmDelete:"Na pewno usunąć?",
+receipt:"Zdjęcie paragonu / faktury",note:"Notatka",save:"Zapisz",cancel:"Anuluj",delete:"Usuń",remove:"Usuń zdjęcie",choosePhoto:"📷 Wybierz / zrób zdjęcie",photoLoading:"Wczytywanie zdjęcia…",photoOffline:"Do pierwszego wczytania zdjęcia HEIC potrzebny jest internet. Połącz się i spróbuj ponownie.",photoError:"Nie udało się wczytać tego zdjęcia. Spróbuj innego pliku lub zrób zdjęcie jeszcze raz.",photoHeic:"Ta przeglądarka nie obsługuje zdjęć w formacie HEIC/HEIF. W ustawieniach aparatu zmień format na JPG (np. wyłącz „Zdjęcia o wysokiej wydajności”) i spróbuj ponownie.",confirmDelete:"Na pewno usunąć?",
 avgCons:"Średnie spalanie",lastCons:"Ostatnie spalanie",fuelCost:"Wydatki na paliwo",avgEcons:"Średnie zużycie energii",lastEcons:"Ostatnie zużycie",chargeCost:"Wydatki na ładowanie",homeShare:"Ładowanie w domu",savings:"Oszczędność vs auto spalinowe",ofEnergy:"energii",
 serviceCost:"Serwis i naprawy",otherCost:"Pozostałe koszty",thisMonth:"Ten miesiąc",costPer100:"Koszt na 100",curOdo:"Przebieg",avgPrice:"Średnia cena",
 noVehicle:"Dodaj swój pierwszy samochód, aby zacząć.",noEntries:"Brak wpisów.",noData:"Brak danych w tym okresie.",kind:"Kategoria",desc:"Opis (co zostało zrobione / za co)",where:"Gdzie (warsztat, firma)",cost:"Koszt",until:"Ważne do",untilHint:"Np. koniec polisy OC lub ważności przeglądu. Aplikacja sama doda przypomnienie.",renewal:"odnowienie",validUntil:"ważne do",
@@ -164,7 +164,7 @@ refCons:"Comparable combustion car consumption",refPrice:"Fuel price for compari
 date:"Date",place:"Place (station, city)",odometer:"Odometer",quantity:"Amount filled",pricePerUnit:"Price per",total:"Total",fullTank:"Full tank",fullTankHint:"Consumption is calculated between two full-tank fill-ups.",
 energy:"Energy charged (kWh)",pricePerKwh:"Price per kWh",chargeType:"Charging type",socFrom:"Battery before (%)",socTo:"Battery after (%)",duration:"Charging time (min)",socHint:"Optional. Lets the app calculate energy use after each charge.",
 chargeWarn:"Energy charged is much larger than the battery capacity",socWarn:"Battery level must be between 0 and 100%",
-receipt:"Receipt / invoice photo",note:"Note",save:"Save",cancel:"Cancel",delete:"Delete",remove:"Remove photo",choosePhoto:"📷 Choose / take photo",photoLoading:"Loading photo…",photoError:"Couldn't load this photo. Try another file or take the photo again.",photoHeic:"This browser can't read HEIC/HEIF photos. Switch the camera format to JPG (e.g. turn off “High efficiency pictures”) and try again.",confirmDelete:"Delete this entry?",
+receipt:"Receipt / invoice photo",note:"Note",save:"Save",cancel:"Cancel",delete:"Delete",remove:"Remove photo",choosePhoto:"📷 Choose / take photo",photoLoading:"Loading photo…",photoOffline:"Loading a HEIC photo for the first time needs an internet connection. Connect and try again.",photoError:"Couldn't load this photo. Try another file or take the photo again.",photoHeic:"This browser can't read HEIC/HEIF photos. Switch the camera format to JPG (e.g. turn off “High efficiency pictures”) and try again.",confirmDelete:"Delete this entry?",
 avgCons:"Average consumption",lastCons:"Last consumption",fuelCost:"Fuel spending",avgEcons:"Average energy use",lastEcons:"Last energy use",chargeCost:"Charging spending",homeShare:"Charged at home",savings:"Savings vs combustion car",ofEnergy:"of energy",
 serviceCost:"Service & repairs",otherCost:"Other costs",thisMonth:"This month",costPer100:"Cost per 100",curOdo:"Odometer",avgPrice:"Average price",
 noVehicle:"Add your first car to get started.",noEntries:"No entries yet.",noData:"No data for this period.",kind:"Category",desc:"Description (what was done / what for)",where:"Where (workshop, company)",cost:"Cost",until:"Valid until",untilHint:"E.g. insurance policy end or inspection expiry. A reminder is added automatically.",renewal:"renewal",validUntil:"valid until",
@@ -242,9 +242,23 @@ const parseNum=v=>+String(v).replace(",",".");
 /* Downscale a photo to a JPEG data URL. createImageBitmap handles EXIF rotation and big phone photos better;
    the <img> path is the fallback for browsers without it. Throws if the browser can't decode the format (e.g. HEIC). */
 function decodeImg(file){return new Promise((res,rej)=>{const img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{URL.revokeObjectURL(url);res(img)};img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error("decode"))};img.src=url})}
+/* HEIC/HEIF (default on many Samsungs and iPhones) can't be decoded by Chrome, so it is converted to JPEG first.
+   The converter is large (1.3 MB), so it is loaded only when such a photo shows up. */
+async function isHeic(file){
+ if(/hei[cf]/i.test(file.type+file.name))return true;
+ const b=new Uint8Array(await file.slice(4,12).arrayBuffer());
+ return String.fromCharCode(...b).startsWith("ftyp")&&/^(heic|heix|hevc|heim|heis|mif1|msf1)$/.test(String.fromCharCode(...b.slice(4)));
+}
+let heicLib;
+const loadHeic=()=>heicLib||(heicLib=new Promise((res,rej)=>{const s=document.createElement("script");s.src="vendor/heic2any.min.js";s.onload=()=>res(window.heic2any);s.onerror=()=>{heicLib=null;rej(new Error("heic-lib"))};document.head.appendChild(s)}));
+async function decodeAny(file){
+ try{return await createImageBitmap(file,{imageOrientation:"from-image"})}catch{}
+ try{return await decodeImg(file)}catch(e){if(!(await isHeic(file)))throw e}
+ const out=await(await loadHeic())({blob:file,toType:"image/jpeg",quality:.9});
+ return decodeImg(Array.isArray(out)?out[0]:out);
+}
 async function compress(file,max=1600,q=.75){
- let src;
- try{src=await createImageBitmap(file,{imageOrientation:"from-image"})}catch{src=await decodeImg(file)}
+ const src=await decodeAny(file);
  const s=Math.min(1,max/Math.max(src.width,src.height)),c=document.createElement("canvas");
  c.width=Math.max(1,Math.round(src.width*s));c.height=Math.max(1,Math.round(src.height*s));
  c.getContext("2d").drawImage(src,0,0,c.width,c.height);src.close?.();
@@ -309,7 +323,7 @@ function openForm(title,fields,vals,onSave,onDelete,onOpen){
    const file=inp.files[0];if(!file)return;
    const sub=$("#frm .primary");sub.disabled=true;pv.innerHTML=`<p class="muted">⏳ ${t("photoLoading")}</p>`;
    try{photos[f.k]=await compress(file);pv.innerHTML=`<img src="${photos[f.k]}">`;rm.hidden=false}
-   catch(e){console.error(e);pv.innerHTML=photos[f.k]?`<img src="${photos[f.k]}">`:"";alert(`${t(/hei[cf]/i.test(file.type+file.name)?"photoHeic":"photoError")}\n\n[${file.type||"?"}, ${num(file.size/1048576,1)} MB, ${e.message||e}]`)}
+   catch(e){console.error(e);pv.innerHTML=photos[f.k]?`<img src="${photos[f.k]}">`:"";alert(`${t(e.message==="heic-lib"?"photoOffline":/hei[cf]/i.test(file.type+file.name)?"photoHeic":"photoError")}\n\n[${file.type||"?"}, ${num(file.size/1048576,1)} MB, ${e.message||e}]`)}
    finally{sub.disabled=false;inp.value=""}
   };
   rm.onclick=()=>{photos[f.k]=null;pv.innerHTML="";rm.hidden=true;inp.value=""};
@@ -626,7 +640,7 @@ async function exportJson(){
 }
 
 /* ---------- install & notifications ---------- */
-const APP_VERSION="v3"; // keep in sync with VERSION in sw.js
+const APP_VERSION="v4"; // keep in sync with VERSION in sw.js
 let installEvt=null;
 const standalone=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
 const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);

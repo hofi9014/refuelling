@@ -1,8 +1,8 @@
 // Bump VERSION on every release so phones pick up the new files.
-const VERSION = "v3";
+const VERSION = "v4";
 const CACHE = "refuelling-" + VERSION;
 const ASSETS = ["./", "./index.html", "./notify.js", "./manifest.webmanifest",
-  "./icons/icon-192.png", "./icons/icon-512.png", "./icons/maskable-512.png", "./icons/apple-touch-icon.png", "./icons/favicon-32.png"];
+  "./icons/icon-192.png", "./icons/icon-512.png", "./icons/maskable-512.png", "./icons/apple-touch-icon.png", "./icons/favicon-32.png", "./vendor/heic2any.min.js"];
 
 importScripts("notify.js");
 
