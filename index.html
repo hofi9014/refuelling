@@ -19,7 +19,12 @@
 body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:84px}
 header{position:sticky;top:0;z-index:5;background:var(--accent);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:10px}
 @media (prefers-color-scheme:dark){header{background:#0f3d39}}
-header h1{font-size:18px;margin:0;flex:1}
+header h1{font-size:18px;margin:0;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+select{max-width:100%}
+nav button{overflow:hidden}
+nav .lbl{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.zoom-xl nav .lbl{display:none} /* at 175%+ the tab bar shows icons only, so all tabs still fit */
+.zoom-xl nav button{padding:12px 0}
 header select{background:rgba(255,255,255,.15);color:#fff;border:0;border-radius:8px;padding:6px 8px;font:inherit;max-width:55vw;width:auto}
 header select option{color:#000}
 main{max-width:860px;margin:0 auto;padding:16px}
@@ -46,7 +51,10 @@ button.small{padding:4px 10px;font-size:13px}
 .stat .v.good{color:var(--accent)}
 .stat .l{font-size:12px;color:var(--muted)}
 .car{display:flex;gap:14px;align-items:center}
-.car img,.car .ph{width:120px;height:80px;object-fit:cover;border-radius:10px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;font-size:34px;flex-shrink:0}
+.car{flex-wrap:wrap}
+.car .main{flex:1 1 130px!important;min-width:0;overflow-wrap:break-word}
+.car>button{flex-shrink:0}
+.car img,.car .ph{width:30%;max-width:120px;height:auto;aspect-ratio:3/2;object-fit:cover;border-radius:10px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;font-size:34px;flex-shrink:0}
 .car .n{font-size:18px;font-weight:700}
 .muted{color:var(--muted)}
 .list .item{display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--line);align-items:flex-start}
@@ -76,13 +84,16 @@ textarea{min-height:70px;resize:vertical}
 .live{font-weight:600;color:var(--accent)}
 .warnbox{background:var(--warn-soft);color:var(--warn);padding:8px 10px;border-radius:10px;font-size:13px}
 #lightbox{background:transparent;width:auto;max-width:96vw}
-#lightbox img{max-width:96vw;max-height:88vh;display:block;border-radius:10px}
+#lightbox img{max-width:96vw;max-height:88vh;display:block;border-radius:10px;cursor:zoom-in}
+#lightbox.big{width:100vw;max-width:100vw;height:100vh;max-height:100vh;margin:0;overflow:auto;background:#000;border-radius:0}
+#lightbox.big img{max-width:none;max-height:none;width:250%;border-radius:0;cursor:zoom-out}
+#zoomBtn{background:rgba(255,255,255,.15);color:#fff;border:0;padding:6px 10px;font-size:14px;font-weight:600;white-space:nowrap}
 svg text{fill:var(--muted);font-size:11px}
 .card svg{max-height:240px;display:block}
 .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:8px}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
-.hbr{display:grid;grid-template-columns:minmax(100px,32%) 1fr auto;gap:10px;align-items:center;margin:7px 0;font-size:14px}
-.hbt{background:var(--bg);border-radius:6px;height:12px;overflow:hidden}
+.hbr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;align-items:center;margin:9px 0;font-size:14px}
+.hbt{background:var(--bg);border-radius:6px;height:12px;overflow:hidden;grid-column:1/-1;order:3}
 .hbt div{height:100%;border-radius:6px}
 .hbv{font-variant-numeric:tabular-nums;white-space:nowrap}
 .tbl{width:100%;border-collapse:collapse;font-size:14px}
@@ -99,7 +110,7 @@ dialog.sheet{margin:auto auto 0;width:min(560px,100vw);max-width:100vw;border-ra
 .sheet-list button:hover{background:var(--bg)}
 .sheet-list .ic{font-size:22px;width:28px;text-align:center}
 .carbig{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
-.kpi{display:flex;align-items:center;gap:10px;padding:6px 0}
+.kpi{display:flex;flex-wrap:wrap;align-items:center;gap:2px 10px;padding:6px 0}
 .kpi .v{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
 .kpi .u,.slide .u{font-size:12px;color:var(--muted);font-weight:400}
 .kpi .l{margin-left:auto;color:var(--muted);font-size:13px;text-align:right}
@@ -157,7 +168,7 @@ dialog.sheet{margin:auto auto 0;width:min(560px,100vw);max-width:100vw;border-ra
 </style>
 </head>
 <body>
-<header><h1>⛽ Refuelling</h1><select id="vehSel" aria-label="vehicle"></select></header>
+<header><h1>⛽ Refuelling</h1><select id="vehSel" aria-label="vehicle"></select><button id="zoomBtn" data-act="zoom"></button></header>
 <main id="app"></main>
 <nav id="tabs"></nav>
 <button id="fab" data-act="fab" aria-label="+" hidden>＋</button>
@@ -188,6 +199,7 @@ period:"Okres",p12m:"Ostatnie 12 miesięcy",pAll:"Cały okres",monthly:"Koszty m
 totalCost:"Łączny koszt",perMonth:"Średnio na miesiąc",perKm:"Koszt na 1",distance:"Przejechano",visits:"Tankowań",station:"Stacja",cheapest:"najtaniej",share:"Udział",
 saleReport:"Raport do sprzedaży auta (PDF)",saleReportHint:"Historia serwisowa auta gotowa do pokazania kupującemu. W oknie drukowania wybierz „Zapisz jako PDF”.",incCosts:"Pokaż koszty serwisów",incStats:"Dołącz statystyki spalania i zużycia",incPhotos:"Dołącz zdjęcia faktur",
 vehicleHistory:"Historia pojazdu",generated:"Wygenerowano",trackedSince:"Dane prowadzone od",serviceHistory:"Historia serwisowa",summary:"Podsumowanie",attachments:"Faktury i paragony",entries:"Liczba wpisów serwisowych",trackedDist:"Udokumentowany przebieg",
+textSize:"Powiększenie (lupa)",normal:"normalny",textSizeHint:"Powiększa całą aplikację: tekst, przyciski i wykresy. Przycisk 🔍 na górze ekranu szybko przełącza powiększenie. Zdjęcie paragonu powiększysz, stukając w nie.",
 sinceFill:"Od poprzedniego tankowania",sinceCharge:"Od poprzedniego ładowania",timeline:"Oś czasu",fillUp:"Tankowanie",charging:"Ładowanie",time:"Godzina",grade:"Rodzaj paliwa",lastValue:"Ostatnia wartość",calcHint:"Wpisz dowolne dwie z trzech wartości (ilość, cena, koszt) — trzecia wyliczy się sama.",
 nearby:"📍 Stacje w pobliżu",locating:"Ustalam lokalizację…",noStations:"Nie znaleziono stacji w promieniu 3 km.",gpsError:"Nie udało się ustalić lokalizacji. Zezwól aplikacji na dostęp do lokalizacji i włącz GPS.",stationsError:"Nie udało się pobrać listy stacji. Sprawdź połączenie z internetem.",
 fuelCard:"Paliwo",lastPrice:"Ostatnia cena",today:"dziś",daysAgo:"dni temu",prevMonth:"W poprzednim miesiącu",energyCosts:"Paliwo / prąd",trends:"Trendy",recent:"Ostatnie wpisy",
@@ -223,6 +235,7 @@ period:"Period",p12m:"Last 12 months",pAll:"All time",monthly:"Monthly costs",by
 totalCost:"Total cost",perMonth:"Average per month",perKm:"Cost per 1",distance:"Distance driven",visits:"Fill-ups",station:"Station",cheapest:"cheapest",share:"Share",
 saleReport:"Vehicle history report (PDF)",saleReportHint:"Service history ready to show a buyer. In the print window choose “Save as PDF”.",incCosts:"Show service costs",incStats:"Include consumption statistics",incPhotos:"Attach invoice photos",
 vehicleHistory:"Vehicle history",generated:"Generated",trackedSince:"Records kept since",serviceHistory:"Service history",summary:"Summary",attachments:"Invoices and receipts",entries:"Service entries",trackedDist:"Documented distance",
+textSize:"Magnifier (text size)",normal:"normal",textSizeHint:"Enlarges the whole app: text, buttons and charts. The 🔍 button at the top switches the size quickly. Tap a receipt photo to magnify it.",
 sinceFill:"Since previous fill-up",sinceCharge:"Since previous charge",timeline:"Timeline",fillUp:"Fill-up",charging:"Charging",time:"Time",grade:"Fuel grade",lastValue:"Last value",calcHint:"Enter any two of amount, price and cost — the third is calculated.",
 nearby:"📍 Nearby stations",locating:"Finding your location…",noStations:"No stations found within 3 km.",gpsError:"Couldn't get your location. Allow location access for the app and turn on GPS.",stationsError:"Couldn't load the station list. Check your internet connection.",
 fuelCard:"Fuel",lastPrice:"Last price",today:"today",daysAgo:"days ago",prevMonth:"Last month",energyCosts:"Fuel / power",trends:"Trends",recent:"Recent entries",
@@ -244,6 +257,7 @@ const UNITS={
  us:{label:"mi · gal (US) · mpg",d:"mi",v:"gal",cons:(q,d)=>d/q,cu:"mpg",econs:(e,d)=>d/e,ecu:"mi/kWh",used:(c,d)=>d/c},
  uk:{label:"mi · gal (UK) · mpg",d:"mi",v:"gal",cons:(q,d)=>d/q,cu:"mpg",econs:(e,d)=>d/e,ecu:"mi/kWh",used:(c,d)=>d/c}
 };
+const ZOOMS=[1,1.15,1.3,1.5,1.75,2];
 const CURRENCIES=["PLN","EUR","USD","GBP","CHF","CZK","SEK","NOK","DKK","HUF","RON","UAH","CAD","AUD","JPY","INR","BRL","MXN","TRY","ZAR"];
 const GROUP={service:"svc",repair:"svc",tyres:"svc",inspection:"svc",insurance:"fix",tax:"fix",leasing:"fix",parking:"oth",tolls:"oth",wash:"oth",fines:"oth",accessories:"oth",other:"oth"};
 const KIND_IC={service:"🔧",repair:"🛠️",tyres:"🛞",inspection:"📋",insurance:"🛡️",tax:"🏛️",leasing:"💳",parking:"🅿️",tolls:"🛣️",wash:"🧽",fines:"🚓",accessories:"🧰",other:"📦"};
@@ -746,7 +760,7 @@ function viewReports(){
  const dist=odos.length>1?Math.max(...odos)-Math.min(...odos):0;
  const sel=`<select id="periodSel" style="width:auto"><option value="12m" ${period==="12m"?"selected":""}>${t("p12m")}</option>${years.map(y=>`<option ${period===y?"selected":""}>${y}</option>`).join("")}<option value="all" ${period==="all"?"selected":""}>${t("pAll")}</option></select>`;
  const head=`<div class="row" style="margin-bottom:12px"><h2 style="margin:0">${t("reports")}</h2><span class="sp"></span>${sel}</div>
- <div class="card row"><div style="flex:1;min-width:200px"><b>📄 ${t("saleReport")}</b><div class="muted" style="font-size:13px">${t("saleReportHint")}</div></div><button data-act="report">📄 PDF</button></div>`;
+ <div class="card row"><div style="flex:1;min-width:min(200px,100%)"><b>📄 ${t("saleReport")}</b><div class="muted" style="font-size:13px">${t("saleReportHint")}</div></div><button data-act="report">📄 PDF</button></div>`;
  if(!costs.length)return head+`<div class="card empty">${t("noData")}</div>`;
  const byMonth=months.map(m=>{const parts={};costs.filter(x=>x.date.startsWith(m)).forEach(x=>parts[x.group]=(parts[x.group]||0)+x.amount);return{m,parts}});
  const byKind={};costs.forEach(x=>byKind[x.kind]=(byKind[x.kind]||0)+x.amount);
@@ -772,7 +786,8 @@ function viewSettings(){
  <div class="card"><div class="grid2">
   <label class="field"><span>${t("language")}</span><select data-set="lang"><option value="pl" ${s.lang==="pl"?"selected":""}>Polski</option><option value="en" ${s.lang==="en"?"selected":""}>English</option></select></label>
   <label class="field"><span>${t("currency")}</span><select data-set="currency">${CURRENCIES.map(c=>`<option ${c===s.currency?"selected":""}>${c}</option>`).join("")}</select></label>
- </div><label class="field" style="margin-top:12px"><span>${t("units")}</span><select data-set="units">${Object.entries(UNITS).map(([k,v])=>`<option value="${k}" ${k===s.units?"selected":""}>${v.label} · ${v.ecu}</option>`).join("")}</select></label></div>
+ </div><label class="field" style="margin-top:12px"><span>🔍 ${t("textSize")}</span><select data-set="zoom">${ZOOMS.map(z=>`<option value="${z}" ${z==(s.zoom||1)?"selected":""}>${Math.round(z*100)}%${z==1?` (${t("normal")})`:""}</option>`).join("")}</select><small>${t("textSizeHint")}</small></label>
+ <label class="field" style="margin-top:12px"><span>${t("units")}</span><select data-set="units">${Object.entries(UNITS).map(([k,v])=>`<option value="${k}" ${k===s.units?"selected":""}>${v.label} · ${v.ecu}</option>`).join("")}</select></label></div>
  <h3>${t("vehicles")}</h3><div class="card list">${S.vehicles.map(v=>`<div class="item">${v.photo?`<img class="thumb" src="${v.photo}" alt="">`:`<div class="kic">${v.fuelType==="ev"?"⚡":"🚗"}</div>`}<div class="main"><div class="t">${esc(v.name)} ${v.id===S.active?`<span class="badge">✓</span>`:""}</div><div class="s">${[v.plate,t("fuelTypes")[v.fuelType]].filter(Boolean).map(esc).join(" · ")}</div></div><button class="small ghost" data-act="vehEditId" data-id="${v.id}">✎ ${t("edit")}</button></div>`).join("")}
   <div class="item"><button data-act="vehAdd">＋ ${t("addVehicle")}</button></div></div>
  <h3>${t("app")} <span style="text-transform:none;font-weight:400">· ${APP_VERSION}</span></h3><div class="card">
@@ -812,10 +827,13 @@ function printReport(o){
 /* ---------- render ---------- */
 function render(){
  document.documentElement.lang=S.settings.lang;
+ // magnifier: CSS zoom scales the whole layout (text, buttons, charts) and reflows it, so nothing gets cut off
+ const zm=+S.settings.zoom||1;document.documentElement.style.zoom=zm;document.documentElement.classList.toggle("zoom-xl",zm>=1.75);
+ $("#zoomBtn").textContent=`🔍 ${Math.round(zm*100)}%`;$("#zoomBtn").title=$("#zoomBtn").ariaLabel=t("textSize");
  const V=veh(),sel=$("#vehSel");sel.hidden=S.vehicles.length<2;sel.innerHTML=S.vehicles.map(v=>`<option value="${v.id}" ${v.id===S.active?"selected":""}>${esc(v.name)}</option>`).join("");
  const due=mine(S.reminders).filter(r=>remStatus(r)?.cls==="danger").length;
  const tabs=[["dashboard","🏠",t("dashboard")],["fuel","🕒",t("timeline")],["costs","🧾",t("costs")],["reminders","🔔",t("reminders")],["reports","📊",t("reports")],["settings","⚙️",t("settings")]];
- $("#tabs").innerHTML=tabs.map(([k,ic,l])=>`<button class="${k===tab?"on":""}" data-act="tab" data-id="${k}"><span class="ic">${ic}</span>${l}${k==="reminders"&&due?` <span class="badge danger">${due}</span>`:""}</button>`).join("");
+ $("#tabs").innerHTML=tabs.map(([k,ic,l])=>`<button class="${k===tab?"on":""}" data-act="tab" data-id="${k}"><span class="ic">${ic}${k==="reminders"&&due?` <span class="badge danger">${due}</span>`:""}</span><span class="lbl">${l}</span></button>`).join("");
  $("#app").innerHTML={dashboard:viewDashboard,fuel:viewFuel,costs:viewCosts,reminders:viewReminders,reports:viewReports,settings:viewSettings}[tab]();
  const imp=$("#importFile");if(imp)imp.onchange=importData;
  const fio=$("#fuelioFile");if(fio)fio.onchange=importFuelio;
@@ -845,7 +863,7 @@ async function exportJson(){
 }
 
 /* ---------- install & notifications ---------- */
-const APP_VERSION="v7"; // keep in sync with VERSION in sw.js
+const APP_VERSION="v8"; // keep in sync with VERSION in sw.js
 let installEvt=null;
 const standalone=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
 const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
@@ -939,7 +957,8 @@ function exportCsv(){
  download(`refuelling-${(veh()?.name||"car").replace(/\W+/g,"_")}-${today()}.csv`,"﻿"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(";")).join("\n"),"text/csv");
 }
 document.addEventListener("click",e=>{
- const z=e.target.closest("[data-zoom]");if(z){const lb=$("#lightbox");lb.querySelector("img").src=z.src;lb.showModal();return}
+ const z=e.target.closest("[data-zoom]");if(z){const lb=$("#lightbox");lb.classList.remove("big");lb.querySelector("img").src=z.src;lb.showModal();return}
+ if(e.target.matches("#lightbox img"))return e.target.parentElement.classList.toggle("big"); // tap the photo to magnify it (e.g. to read a receipt)
  if(e.target.id==="lightbox"||e.target.classList.contains("sheet"))return e.target.close();
  const b=e.target.closest("[data-act]");if(!b)return;const id=b.dataset.id;
  const A={
@@ -951,6 +970,7 @@ document.addEventListener("click",e=>{
   remAdd:()=>reminderForm(),remEdit:()=>reminderForm(S.reminders.find(x=>x.id===id)),
   remToggle:()=>{const r=S.reminders.find(x=>x.id===id);r.done=!r.done;r.doneDate=r.done?today():null;save();render()},
   tlFilter:()=>{tlFilter=id;render()},costFilter:()=>{costFilter=id;render()},fab:quickAdd,
+  zoom:()=>{const i=ZOOMS.indexOf(+S.settings.zoom||1);S.settings.zoom=ZOOMS[(i+1)%ZOOMS.length];save();render()},
   report:()=>reportForm(),
   export:exportJson,
   install:async()=>{installEvt.prompt();await installEvt.userChoice;installEvt=null;render()},
