@@ -309,7 +309,7 @@ function openForm(title,fields,vals,onSave,onDelete,onOpen){
    const file=inp.files[0];if(!file)return;
    const sub=$("#frm .primary");sub.disabled=true;pv.innerHTML=`<p class="muted">⏳ ${t("photoLoading")}</p>`;
    try{photos[f.k]=await compress(file);pv.innerHTML=`<img src="${photos[f.k]}">`;rm.hidden=false}
-   catch(e){console.error(e);pv.innerHTML=photos[f.k]?`<img src="${photos[f.k]}">`:"";alert(t(/hei[cf]/i.test(file.type+file.name)?"photoHeic":"photoError"))}
+   catch(e){console.error(e);pv.innerHTML=photos[f.k]?`<img src="${photos[f.k]}">`:"";alert(`${t(/hei[cf]/i.test(file.type+file.name)?"photoHeic":"photoError")}\n\n[${file.type||"?"}, ${num(file.size/1048576,1)} MB, ${e.message||e}]`)}
    finally{sub.disabled=false;inp.value=""}
   };
   rm.onclick=()=>{photos[f.k]=null;pv.innerHTML="";rm.hidden=true;inp.value=""};
@@ -567,7 +567,7 @@ function viewSettings(){
  </div><label class="field" style="margin-top:12px"><span>${t("units")}</span><select data-set="units">${Object.entries(UNITS).map(([k,v])=>`<option value="${k}" ${k===s.units?"selected":""}>${v.label} · ${v.ecu}</option>`).join("")}</select></label></div>
  <h3>${t("vehicles")}</h3><div class="card list">${S.vehicles.map(v=>`<div class="item">${v.photo?`<img class="thumb" src="${v.photo}" alt="">`:`<div class="kic">${v.fuelType==="ev"?"⚡":"🚗"}</div>`}<div class="main"><div class="t">${esc(v.name)} ${v.id===S.active?`<span class="badge">✓</span>`:""}</div><div class="s">${[v.plate,t("fuelTypes")[v.fuelType]].filter(Boolean).map(esc).join(" · ")}</div></div><button class="small ghost" data-act="vehEditId" data-id="${v.id}">✎ ${t("edit")}</button></div>`).join("")}
   <div class="item"><button data-act="vehAdd">＋ ${t("addVehicle")}</button></div></div>
- <h3>${t("app")}</h3><div class="card">
+ <h3>${t("app")} <span style="text-transform:none;font-weight:400">· ${APP_VERSION}</span></h3><div class="card">
   ${standalone()?`<p style="margin-top:0">✅ ${t("installed")}</p>`:installEvt?`<p style="margin-top:0"><button class="primary" data-act="install">${t("install")}</button></p>`:isIOS?`<p class="muted" style="margin-top:0">${t("installIos")}</p>`:""}
   <b>${t("notifications")}</b><p class="muted" style="font-size:13px;margin:4px 0 10px">${t("notifHint")}</p>
   ${!("Notification" in window)?`<p class="muted">${t("notifUnsupported")}</p>`:s.notify&&Notification.permission==="granted"?`<div class="row"><span>✅ ${t("notifEnabled")}</span><button class="small" data-act="notifOff">${t("notifOff")}</button></div>`:Notification.permission==="denied"?`<p class="warnbox">${t("notifDenied")}</p>`:`<button data-act="notifOn">${t("notifOn")}</button>`}
@@ -626,6 +626,7 @@ async function exportJson(){
 }
 
 /* ---------- install & notifications ---------- */
+const APP_VERSION="v3"; // keep in sync with VERSION in sw.js
 let installEvt=null;
 const standalone=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
 const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);

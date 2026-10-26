@@ -1,5 +1,5 @@
 // Bump VERSION on every release so phones pick up the new files.
-const VERSION = "v2";
+const VERSION = "v3";
 const CACHE = "refuelling-" + VERSION;
 const ASSETS = ["./", "./index.html", "./notify.js", "./manifest.webmanifest",
   "./icons/icon-192.png", "./icons/icon-512.png", "./icons/maskable-512.png", "./icons/apple-touch-icon.png", "./icons/favicon-32.png"];
@@ -21,7 +21,8 @@ self.addEventListener("fetch", e => {
   const req = e.request;
   if (req.method !== "GET" || new URL(req.url).origin !== location.origin) return;
   if (req.mode === "navigate") {
-    e.respondWith(fetch(req).then(res => {
+    // no-cache: skip the browser's HTTP cache (GitHub Pages keeps pages for 10 min) so updates arrive on the next launch
+    e.respondWith(fetch(req, { cache: "no-cache" }).then(res => {
       const copy = res.clone();
       caches.open(CACHE).then(c => c.put("./index.html", copy));
       return res;
