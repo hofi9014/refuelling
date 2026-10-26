@@ -1,3 +1,6 @@
 ﻿.claude/
 __pycache__/
 _test*
+
+node_modules/
+

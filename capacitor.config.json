@@ -1,0 +1,8 @@
+{
+  "appId": "com.refuelling.app",
+  "appName": "Refuelling",
+  "webDir": "docs",
+  "android": {
+    "backgroundColor": "#0f766e"
+  }
+}
