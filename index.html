@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>Refuelling</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Refuelling">
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--text:#14202b;--muted:#5d6b78;--line:#dfe4ea;--accent:#0f766e;--accent-soft:#d5f0ec;--on-accent:#fff;--warn:#b45309;--warn-soft:#fdf0dc;--danger:#b91c1c;--danger-soft:#fde2e2;--radius:14px;
+ --c-fuel:#0f766e;--c-charge:#2563eb;--c-svc:#d97706;--c-fix:#7c3aed;--c-oth:#64748b}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1419;--card:#16212a;--text:#e6edf3;--muted:#93a1ae;--line:#26343f;--accent:#2dd4bf;--accent-soft:#123a36;--on-accent:#04201d;--warn:#f59e0b;--warn-soft:#3a2a10;--danger:#f87171;--danger-soft:#3b1717;
+ --c-fuel:#2dd4bf;--c-charge:#60a5fa;--c-svc:#fbbf24;--c-fix:#a78bfa;--c-oth:#94a3b8}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:84px}
+header{position:sticky;top:0;z-index:5;background:var(--accent);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:10px}
+@media (prefers-color-scheme:dark){header{background:#0f3d39}}
+header h1{font-size:18px;margin:0;flex:1}
+header select{background:rgba(255,255,255,.15);color:#fff;border:0;border-radius:8px;padding:6px 8px;font:inherit;max-width:55vw;width:auto}
+header select option{color:#000}
+main{max-width:860px;margin:0 auto;padding:16px}
+nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom);z-index:5}
+nav button{flex:1;max-width:150px;background:none;border:0;border-radius:0;color:var(--muted);padding:9px 2px 8px;font:inherit;font-size:11px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0}
+nav button .ic{font-size:20px;line-height:1}
+nav button.on{color:var(--accent);font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-bottom:12px}
+h2{font-size:17px;margin:4px 0 12px}
+h3{font-size:14px;margin:18px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.sp{flex:1}
+button,.btn{font:inherit;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--text);padding:8px 14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+button.danger{color:var(--danger);border-color:var(--danger)}
+button.small{padding:4px 10px;font-size:13px}
+.ghost{background:transparent}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chips button{border-radius:99px;padding:5px 12px;font-size:13px}
+.chips button.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:12px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:12px}
+.stat .v{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
+.stat .v.good{color:var(--accent)}
+.stat .l{font-size:12px;color:var(--muted)}
+.car{display:flex;gap:14px;align-items:center}
+.car img,.car .ph{width:120px;height:80px;object-fit:cover;border-radius:10px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;font-size:34px;flex-shrink:0}
+.car .n{font-size:18px;font-weight:700}
+.muted{color:var(--muted)}
+.list .item{display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--line);align-items:flex-start}
+.list .item:first-child{border-top:0}
+.item .main{flex:1;min-width:0}
+.item .t{font-weight:600}
+.item .s{font-size:13px;color:var(--muted)}
+.item .r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.thumb{width:46px;height:46px;border-radius:8px;object-fit:cover;cursor:zoom-in;border:1px solid var(--line);flex-shrink:0}
+.kic{width:46px;height:46px;border-radius:8px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:99px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+.badge.warn{background:var(--warn-soft);color:var(--warn)}
+.badge.danger{background:var(--danger-soft);color:var(--danger)}
+.empty{text-align:center;color:var(--muted);padding:26px 10px}
+dialog{border:0;border-radius:var(--radius);padding:0;width:min(520px,calc(100vw - 24px));background:var(--card);color:var(--text);max-height:90vh}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+dialog form{padding:18px;display:flex;flex-direction:column;gap:12px}
+.field{display:flex;flex-direction:column;gap:4px}
+.field>span{font-size:13px;color:var(--muted)}
+.field small,.chk+small{font-size:12px;color:var(--muted)}
+input,select,textarea{font:inherit;padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text);width:100%}
+textarea{min-height:70px;resize:vertical}
+.chk{display:flex;gap:8px;align-items:center}
+.chk input{width:auto}
+.photo img{max-width:100%;max-height:200px;border-radius:10px;display:block}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.live{font-weight:600;color:var(--accent)}
+.warnbox{background:var(--warn-soft);color:var(--warn);padding:8px 10px;border-radius:10px;font-size:13px}
+#lightbox{background:transparent;width:auto;max-width:96vw}
+#lightbox img{max-width:96vw;max-height:88vh;display:block;border-radius:10px}
+svg text{fill:var(--muted);font-size:11px}
+.card svg{max-height:240px;display:block}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.hbr{display:grid;grid-template-columns:minmax(100px,32%) 1fr auto;gap:10px;align-items:center;margin:7px 0;font-size:14px}
+.hbt{background:var(--bg);border-radius:6px;height:12px;overflow:hidden}
+.hbt div{height:100%;border-radius:6px}
+.hbv{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{text-align:left;font-weight:600;color:var(--muted);font-size:12px;padding:6px 6px;border-bottom:1px solid var(--line)}
+.tbl td{padding:7px 6px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.tbl tr:last-child td{border-bottom:0}
+.tbl .n{text-align:right}
+.scroll{overflow-x:auto}
+[hidden]{display:none!important}
+#printArea{display:none}
+.rep{color:#000;background:#fff;font:12px/1.45 system-ui,"Segoe UI",sans-serif}
+.rep h1{font-size:22px;margin:0}
+.rep h2{font-size:16px;margin:2px 0 10px;color:#333}
+.rep h3{color:#0f766e;border-bottom:2px solid #0f766e;padding-bottom:3px;margin:20px 0 8px;text-transform:none;font-size:14px;letter-spacing:0}
+.rep-h{display:flex;gap:18px;align-items:flex-start}
+.rep-h img{width:220px;height:145px;object-fit:cover;border-radius:8px}
+.rep table{width:100%;border-collapse:collapse}
+.rep td,.rep th{text-align:left;padding:5px 6px;border-bottom:1px solid #ddd;vertical-align:top}
+.rep th{background:#eef5f4}
+.rep .kv td:first-child{color:#555;width:42%}
+.rep .n{text-align:right;white-space:nowrap}
+.rep .att{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rep figure{margin:0;break-inside:avoid}
+.rep figure img{width:100%;max-height:330px;object-fit:contain;border:1px solid #ddd}
+.rep figcaption{font-size:11px;color:#555}
+.rep .foot{margin-top:24px;color:#777;font-size:10px}
+@media print{
+ @page{margin:14mm}
+ body{background:#fff!important;padding:0}
+ body>*:not(#printArea){display:none!important}
+ #printArea{display:block!important}
+ tr{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<header><h1>⛽ Refuelling</h1><select id="vehSel" aria-label="vehicle"></select></header>
+<main id="app"></main>
+<nav id="tabs"></nav>
+<dialog id="dlg"></dialog>
+<dialog id="lightbox"><img alt=""></dialog>
+<div id="printArea"></div>
+<script src="notify.js"></script>
+<script>
+const I18N={
+pl:{dashboard:"Pulpit",fuelTab:"Tankowania",chargeTab:"Ładowania",energyTab:"Paliwo i prąd",costs:"Koszty",reminders:"Przypomnienia",reports:"Raporty",settings:"Ustawienia",
+addFuel:"Dodaj tankowanie",editFuel:"Edytuj tankowanie",addCharge:"Dodaj ładowanie",editCharge:"Edytuj ładowanie",addCost:"Dodaj koszt",editCost:"Edytuj koszt",addReminder:"Zaplanuj serwis",editReminder:"Edytuj planowany serwis",addVehicle:"Dodaj samochód",editVehicle:"Edytuj samochód",
+vehicles:"Samochody",name:"Nazwa (np. Skoda Octavia)",plate:"Nr rejestracyjny",year:"Rok produkcji",vin:"VIN",tankCap:"Pojemność baku",battery:"Pojemność baterii (kWh)",batteryShort:"Bateria",carPhoto:"Zdjęcie samochodu",fuelType:"Napęd",
+refCons:"Spalanie porównywalnego auta spalinowego",refPrice:"Cena paliwa do porównania",refHint:"Na tej podstawie aplikacja policzy, ile oszczędzasz, jeżdżąc na prądzie.",
+date:"Data",place:"Miejsce (stacja, miasto)",odometer:"Stan licznika",quantity:"Zatankowano",pricePerUnit:"Cena za",total:"Razem",fullTank:"Do pełna",fullTankHint:"Spalanie liczone jest między dwoma tankowaniami do pełna.",
+energy:"Naładowano (kWh)",pricePerKwh:"Cena za kWh",chargeType:"Rodzaj ładowania",socFrom:"Bateria przed (%)",socTo:"Bateria po (%)",duration:"Czas ładowania (min)",socHint:"Opcjonalne. Pozwala policzyć zużycie energii po każdym ładowaniu.",
+chargeWarn:"Naładowano dużo więcej, niż mieści bateria",socWarn:"Poziom baterii musi być między 0 a 100%",
+receipt:"Zdjęcie paragonu / faktury",note:"Notatka",save:"Zapisz",cancel:"Anuluj",delete:"Usuń",remove:"Usuń zdjęcie",choosePhoto:"📷 Wybierz / zrób zdjęcie",confirmDelete:"Na pewno usunąć?",
+avgCons:"Średnie spalanie",lastCons:"Ostatnie spalanie",fuelCost:"Wydatki na paliwo",avgEcons:"Średnie zużycie energii",lastEcons:"Ostatnie zużycie",chargeCost:"Wydatki na ładowanie",homeShare:"Ładowanie w domu",savings:"Oszczędność vs auto spalinowe",ofEnergy:"energii",
+serviceCost:"Serwis i naprawy",otherCost:"Pozostałe koszty",thisMonth:"Ten miesiąc",costPer100:"Koszt na 100",curOdo:"Przebieg",avgPrice:"Średnia cena",
+noVehicle:"Dodaj swój pierwszy samochód, aby zacząć.",noEntries:"Brak wpisów.",noData:"Brak danych w tym okresie.",kind:"Kategoria",desc:"Opis (co zostało zrobione / za co)",where:"Gdzie (warsztat, firma)",cost:"Koszt",until:"Ważne do",untilHint:"Np. koniec polisy OC lub ważności przeglądu. Aplikacja sama doda przypomnienie.",renewal:"odnowienie",validUntil:"ważne do",
+remTitle:"Co trzeba zrobić (np. wymiana oleju)",dueDate:"Termin (data)",dueOdo:"Termin (przy przebiegu)",
+overdue:"Po terminie",soon:"Wkrótce",upcoming:"Zaplanowane",completed:"Wykonane",markDone:"✓ Zrobione",undo:"Przywróć",all:"Wszystkie",
+language:"Język",currency:"Waluta",units:"Jednostki",backup:"Kopia zapasowa",export:"Eksportuj dane (JSON)",exportCsv:"Eksportuj wszystko (CSV)",import:"Importuj dane",importOk:"Dane zaimportowane.",importErr:"Nieprawidłowy plik.",
+consChart:"Spalanie w czasie",econsChart:"Zużycie energii w czasie",needTwoFull:"Potrzebne są co najmniej dwa tankowania do pełna, aby obliczyć spalanie.",needTwoCharges:"Podaj poziom baterii przed i po ładowaniu, aby zobaczyć zużycie po każdym ładowaniu.",
+tankWarn:"Zatankowana ilość jest większa niż pojemność baku",odoWarn:"Stan licznika jest niższy niż w poprzednim wpisie",
+storageInfo:"Dane są zapisywane tylko na tym urządzeniu (w przeglądarce). Rób regularnie kopię zapasową.",edit:"Edytuj",remaining:"pozostało",ago:"temu",days:"dni",nextDue:"Najbliższe terminy",seeAll:"Zobacz wszystkie",partial:"częściowe",
+period:"Okres",p12m:"Ostatnie 12 miesięcy",pAll:"Cały okres",monthly:"Koszty miesięcznie",byCategory:"Koszty wg kategorii",stations:"Ceny paliwa na stacjach",chargingByType:"Ładowanie wg rodzaju",
+totalCost:"Łączny koszt",perMonth:"Średnio na miesiąc",perKm:"Koszt na 1",distance:"Przejechano",visits:"Tankowań",station:"Stacja",cheapest:"najtaniej",share:"Udział",
+saleReport:"Raport do sprzedaży auta (PDF)",saleReportHint:"Historia serwisowa auta gotowa do pokazania kupującemu. W oknie drukowania wybierz „Zapisz jako PDF”.",incCosts:"Pokaż koszty serwisów",incStats:"Dołącz statystyki spalania i zużycia",incPhotos:"Dołącz zdjęcia faktur",
+vehicleHistory:"Historia pojazdu",generated:"Wygenerowano",trackedSince:"Dane prowadzone od",serviceHistory:"Historia serwisowa",summary:"Podsumowanie",attachments:"Faktury i paragony",entries:"Liczba wpisów serwisowych",trackedDist:"Udokumentowany przebieg",
+app:"Aplikacja",install:"📲 Zainstaluj aplikację",installIos:"Na iPhonie: w Safari stuknij Udostępnij, a potem „Do ekranu początkowego”.",installed:"Aplikacja jest zainstalowana.",
+notifications:"Powiadomienia o terminach",notifOn:"🔔 Włącz powiadomienia",notifOff:"Wyłącz",notifEnabled:"Powiadomienia są włączone.",notifDenied:"Powiadomienia są zablokowane. Zezwól na nie w ustawieniach przeglądarki lub telefonu.",notifUnsupported:"Ta przeglądarka nie obsługuje powiadomień.",
+notifHint:"Przypomnienie przyjdzie 7 dni lub 500 km przed terminem i gdy termin minie. Gdy aplikacja jest zamknięta, działa to tylko w zainstalowanej aplikacji na Androidzie.",
+lastBackup:"Ostatnia kopia",never:"nigdy",backupNag:"Nie robiłeś kopii zapasowej od ponad 30 dni. Dane są tylko na tym urządzeniu.",backupNow:"Zrób kopię",
+fuelTypes:{petrol:"Benzyna",diesel:"Diesel",lpg:"LPG",hybrid:"Hybryda (HEV)",phev:"Hybryda plug-in (PHEV)",ev:"Elektryczny (EV)",other:"Inne"},
+ct:{home:"Dom",work:"Praca",ac:"Publiczna AC",dc:"Szybka DC"},
+kinds:{service:"Serwis",repair:"Naprawa",tyres:"Opony",inspection:"Przegląd techniczny",insurance:"Ubezpieczenie",tax:"Podatki i opłaty",leasing:"Leasing / rata",parking:"Parking",tolls:"Autostrady",wash:"Myjnia",fines:"Mandaty",accessories:"Akcesoria",other:"Inne"},
+grp:{fuel:"Paliwo",charge:"Ładowanie",svc:"Serwis i naprawy",fix:"Ubezpieczenie, opłaty, leasing",oth:"Inne"}},
+en:{dashboard:"Dashboard",fuelTab:"Fill-ups",chargeTab:"Charging",energyTab:"Fuel & power",costs:"Costs",reminders:"Reminders",reports:"Reports",settings:"Settings",
+addFuel:"Add fill-up",editFuel:"Edit fill-up",addCharge:"Add charge",editCharge:"Edit charge",addCost:"Add cost",editCost:"Edit cost",addReminder:"Schedule service",editReminder:"Edit scheduled service",addVehicle:"Add car",editVehicle:"Edit car",
+vehicles:"Cars",name:"Name (e.g. Toyota Corolla)",plate:"Licence plate",year:"Year",vin:"VIN",tankCap:"Tank capacity",battery:"Battery capacity (kWh)",batteryShort:"Battery",carPhoto:"Car photo",fuelType:"Powertrain",
+refCons:"Comparable combustion car consumption",refPrice:"Fuel price for comparison",refHint:"Used to calculate how much you save by driving electric.",
+date:"Date",place:"Place (station, city)",odometer:"Odometer",quantity:"Amount filled",pricePerUnit:"Price per",total:"Total",fullTank:"Full tank",fullTankHint:"Consumption is calculated between two full-tank fill-ups.",
+energy:"Energy charged (kWh)",pricePerKwh:"Price per kWh",chargeType:"Charging type",socFrom:"Battery before (%)",socTo:"Battery after (%)",duration:"Charging time (min)",socHint:"Optional. Lets the app calculate energy use after each charge.",
+chargeWarn:"Energy charged is much larger than the battery capacity",socWarn:"Battery level must be between 0 and 100%",
+receipt:"Receipt / invoice photo",note:"Note",save:"Save",cancel:"Cancel",delete:"Delete",remove:"Remove photo",choosePhoto:"📷 Choose / take photo",confirmDelete:"Delete this entry?",
+avgCons:"Average consumption",lastCons:"Last consumption",fuelCost:"Fuel spending",avgEcons:"Average energy use",lastEcons:"Last energy use",chargeCost:"Charging spending",homeShare:"Charged at home",savings:"Savings vs combustion car",ofEnergy:"of energy",
+serviceCost:"Service & repairs",otherCost:"Other costs",thisMonth:"This month",costPer100:"Cost per 100",curOdo:"Odometer",avgPrice:"Average price",
+noVehicle:"Add your first car to get started.",noEntries:"No entries yet.",noData:"No data for this period.",kind:"Category",desc:"Description (what was done / what for)",where:"Where (workshop, company)",cost:"Cost",until:"Valid until",untilHint:"E.g. insurance policy end or inspection expiry. A reminder is added automatically.",renewal:"renewal",validUntil:"valid until",
+remTitle:"What needs doing (e.g. oil change)",dueDate:"Due date",dueOdo:"Due at odometer",
+overdue:"Overdue",soon:"Soon",upcoming:"Scheduled",completed:"Completed",markDone:"✓ Done",undo:"Restore",all:"All",
+language:"Language",currency:"Currency",units:"Units",backup:"Backup",export:"Export data (JSON)",exportCsv:"Export everything (CSV)",import:"Import data",importOk:"Data imported.",importErr:"Invalid file.",
+consChart:"Consumption over time",econsChart:"Energy use over time",needTwoFull:"At least two full-tank fill-ups are needed to calculate consumption.",needTwoCharges:"Enter battery level before and after charging to see energy use per charge.",
+tankWarn:"Amount filled is larger than the tank capacity",odoWarn:"Odometer is lower than in the previous entry",
+storageInfo:"Data is stored only on this device (in the browser). Back it up regularly.",edit:"Edit",remaining:"left",ago:"ago",days:"days",nextDue:"Coming up",seeAll:"See all",partial:"partial",
+period:"Period",p12m:"Last 12 months",pAll:"All time",monthly:"Monthly costs",byCategory:"Costs by category",stations:"Fuel prices by station",chargingByType:"Charging by type",
+totalCost:"Total cost",perMonth:"Average per month",perKm:"Cost per 1",distance:"Distance driven",visits:"Fill-ups",station:"Station",cheapest:"cheapest",share:"Share",
+saleReport:"Vehicle history report (PDF)",saleReportHint:"Service history ready to show a buyer. In the print window choose “Save as PDF”.",incCosts:"Show service costs",incStats:"Include consumption statistics",incPhotos:"Attach invoice photos",
+vehicleHistory:"Vehicle history",generated:"Generated",trackedSince:"Records kept since",serviceHistory:"Service history",summary:"Summary",attachments:"Invoices and receipts",entries:"Service entries",trackedDist:"Documented distance",
+app:"App",install:"📲 Install app",installIos:"On iPhone: in Safari tap Share, then “Add to Home Screen”.",installed:"The app is installed.",
+notifications:"Due date notifications",notifOn:"🔔 Turn on notifications",notifOff:"Turn off",notifEnabled:"Notifications are on.",notifDenied:"Notifications are blocked. Allow them in your browser or phone settings.",notifUnsupported:"This browser does not support notifications.",
+notifHint:"You get a reminder 7 days or 500 km before the due date and again when it is overdue. While the app is closed this works only in the installed app on Android.",
+lastBackup:"Last backup",never:"never",backupNag:"You haven't made a backup in over 30 days. Your data lives only on this device.",backupNow:"Back up now",
+fuelTypes:{petrol:"Petrol",diesel:"Diesel",lpg:"LPG",hybrid:"Hybrid (HEV)",phev:"Plug-in hybrid (PHEV)",ev:"Electric (EV)",other:"Other"},
+ct:{home:"Home",work:"Workplace",ac:"Public AC",dc:"DC fast"},
+kinds:{service:"Service",repair:"Repair",tyres:"Tyres",inspection:"Roadworthiness test",insurance:"Insurance",tax:"Tax & fees",leasing:"Lease / loan",parking:"Parking",tolls:"Tolls",wash:"Car wash",fines:"Fines",accessories:"Accessories",other:"Other"},
+grp:{fuel:"Fuel",charge:"Charging",svc:"Service & repairs",fix:"Insurance, fees, lease",oth:"Other"}}
+};
+const UNITS={
+ metric:{label:"km · L · L/100 km",d:"km",v:"L",cons:(q,d)=>q/d*100,cu:"L/100 km",econs:(e,d)=>e/d*100,ecu:"kWh/100 km",used:(c,d)=>c*d/100},
+ kml:{label:"km · L · km/L",d:"km",v:"L",cons:(q,d)=>d/q,cu:"km/L",econs:(e,d)=>d/e,ecu:"km/kWh",used:(c,d)=>d/c},
+ us:{label:"mi · gal (US) · mpg",d:"mi",v:"gal",cons:(q,d)=>d/q,cu:"mpg",econs:(e,d)=>d/e,ecu:"mi/kWh",used:(c,d)=>d/c},
+ uk:{label:"mi · gal (UK) · mpg",d:"mi",v:"gal",cons:(q,d)=>d/q,cu:"mpg",econs:(e,d)=>d/e,ecu:"mi/kWh",used:(c,d)=>d/c}
+};
+const CURRENCIES=["PLN","EUR","USD","GBP","CHF","CZK","SEK","NOK","DKK","HUF","RON","UAH","CAD","AUD","JPY","INR","BRL","MXN","TRY","ZAR"];
+const GROUP={service:"svc",repair:"svc",tyres:"svc",inspection:"svc",insurance:"fix",tax:"fix",leasing:"fix",parking:"oth",tolls:"oth",wash:"oth",fines:"oth",accessories:"oth",other:"oth"};
+const KIND_IC={service:"🔧",repair:"🛠️",tyres:"🛞",inspection:"📋",insurance:"🛡️",tax:"🏛️",leasing:"💳",parking:"🅿️",tolls:"🛣️",wash:"🧽",fines:"🚓",accessories:"🧰",other:"📦"};
+const HIST=["service","repair","tyres","inspection"];
+const CT=["home","work","ac","dc"];
+const GROUPS=["fuel","charge","svc","fix","oth"];
+
+/* ---------- storage (IndexedDB) ---------- */
+const idb={
+ db:null,
+ open(){return this.db?Promise.resolve(this.db):new Promise((res,rej)=>{const r=indexedDB.open("refuelling",1);r.onupgradeneeded=()=>r.result.createObjectStore("kv");r.onsuccess=()=>res(this.db=r.result);r.onerror=()=>rej(r.error)})},
+ async get(k){const db=await this.open();return new Promise((res,rej)=>{const q=db.transaction("kv").objectStore("kv").get(k);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)})},
+ async set(k,v){const db=await this.open();return new Promise((res,rej)=>{const tx=db.transaction("kv","readwrite");tx.objectStore("kv").put(v,k);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})}
+};
+let S,tab="dashboard",energyView="fuel",costFilter="all",period="12m";
+const save=()=>idb.set("state",S).catch(e=>alert(e));
+const defaults=()=>{const pl=(navigator.language||"").toLowerCase().startsWith("pl");return{settings:{lang:pl?"pl":"en",currency:pl?"PLN":"EUR",units:"metric"},vehicles:[],active:null,fuel:[],charges:[],services:[],reminders:[]}};
+
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const t=k=>I18N[S.settings.lang][k]??I18N.en[k]??k;
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const U=()=>UNITS[S.settings.units];
+const cur=()=>S.settings.currency;
+const loc=()=>S.settings.lang==="pl"?"pl-PL":/^en/i.test(navigator.language)?navigator.language:"en-GB";
+const num=(v,d=1)=>v==null||!isFinite(v)?"—":new Intl.NumberFormat(loc(),{maximumFractionDigits:d,minimumFractionDigits:d}).format(v);
+const money=v=>v==null||!isFinite(v)?"—":new Intl.NumberFormat(loc(),{style:"currency",currency:cur()}).format(v);
+const moneyShort=v=>new Intl.NumberFormat(loc(),{style:"currency",currency:cur(),notation:"compact",maximumFractionDigits:1}).format(v);
+const fdate=s=>s?new Intl.DateTimeFormat(loc(),{day:"numeric",month:"short",year:"numeric"}).format(new Date(s+"T12:00")):"";
+const pad=n=>String(n).padStart(2,"0");
+const today=()=>{const d=new Date();return`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`};
+const veh=()=>S.vehicles.find(v=>v.id===S.active);
+const hasFuel=V=>!!V&&V.fuelType!=="ev";
+const hasCharge=V=>!!V&&(V.fuelType==="ev"||V.fuelType==="phev");
+const mine=arr=>arr.filter(x=>x.vid===S.active);
+const byOdo=(a,b)=>a.odo-b.odo||a.date.localeCompare(b.date);
+const curOdo=()=>Math.max(0,...[...mine(S.fuel),...mine(S.charges),...mine(S.services)].map(f=>+f.odo||0));
+const fuelTotal=f=>(+f.qty||0)*(+f.price||0);
+const chargeTotal=c=>(+c.kwh||0)*(+c.price||0);
+const sum=(a,f)=>a.reduce((s,x)=>s+f(x),0);
+const kindLabel=k=>t("kinds")[k]||k;
+const grpLabel=g=>t("grp")[g];
+const dur=m=>`${Math.floor(m/60)}:${pad(Math.round(m%60))} h`;
+const parseNum=v=>+String(v).replace(",",".");
+
+function compress(file,max=1600,q=.75){return new Promise((res,rej)=>{const img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{const s=Math.min(1,max/Math.max(img.width,img.height)),c=document.createElement("canvas");c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);c.getContext("2d").drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(url);res(c.toDataURL("image/jpeg",q))};img.onerror=rej;img.src=url})}
+
+/* Fuel consumption: full-to-full method. Fuel from partial fill-ups between two full ones is added to the next full one. */
+function consumption(){
+ const list=mine(S.fuel).slice().sort(byOdo);
+ const map={};let last=null,acc=0,totQ=0,totD=0;
+ for(const f of list){
+  if(last)acc+=+f.qty;
+  if(f.full){
+   if(last){const d=f.odo-last.odo;if(d>0){map[f.id]=U().cons(acc,d);totQ+=acc;totD+=d}}
+   last=f;acc=0;
+  }
+ }
+ const first=list[0],dist=list.length>1?list[list.length-1].odo-first.odo:0,cost=sum(list,fuelTotal),qty=sum(list,f=>+f.qty||0);
+ // the first fill-up's fuel was burned before the tracked distance, so it is left out of cost per distance
+ return{map,list,avg:totD?U().cons(totQ,totD):null,series:list.filter(f=>map[f.id]!=null).map(f=>map[f.id]),cost,qty,avgPrice:qty?cost/qty:null,dist,costPer100:dist?(cost-fuelTotal(first))/dist*100:null};
+}
+/* EV energy use. Average: energy charged after the first charge over the distance driven (grid energy, incl. charging losses),
+   corrected for the difference in battery level between the first and the last charge. Per charge: battery % used since the previous charge. */
+function evStats(){
+ const V=veh(),u=U(),bat=+V.battery||0,list=mine(S.charges).slice().sort(byOdo),map={};
+ let totE=0;
+ list.forEach((c,i)=>{const p=list[i-1];if(!p)return;totE+=+c.kwh||0;const d=c.odo-p.odo;
+  if(d>0&&bat&&p.socTo!=null&&c.socFrom!=null&&p.socTo>c.socFrom)map[c.id]=u.econs((p.socTo-c.socFrom)/100*bat,d)});
+ const first=list[0],last=list[list.length-1],dist=list.length>1?last.odo-first.odo:0;
+ if(bat&&dist&&first.socTo!=null&&last.socTo!=null)totE+=(first.socTo-last.socTo)/100*bat;
+ const cost=sum(list,chargeTotal),kwh=sum(list,c=>+c.kwh||0),home=sum(list.filter(c=>c.ct==="home"),c=>+c.kwh||0),tracked=cost-(first?chargeTotal(first):0);
+ const savings=V.fuelType==="ev"&&V.refCons&&V.refPrice&&dist>0?u.used(+V.refCons,dist)*V.refPrice-tracked:null;
+ return{map,list,avg:dist>0&&totE>0?u.econs(totE,dist):null,series:list.filter(c=>map[c.id]!=null).map(c=>map[c.id]),cost,kwh,avgPrice:kwh?cost/kwh:null,homeShare:kwh?home/kwh:null,dist,costPer100:dist?tracked/dist*100:null,savings};
+}
+const allCosts=()=>[
+ ...mine(S.fuel).map(f=>({date:f.date,amount:fuelTotal(f),kind:"fuel",group:"fuel"})),
+ ...mine(S.charges).map(c=>({date:c.date,amount:chargeTotal(c),kind:"charge",group:"charge"})),
+ ...mine(S.services).map(s=>({date:s.date,amount:+s.cost||0,kind:s.kind,group:GROUP[s.kind]||"oth"}))];
+
+/* ---------- generic form ---------- */
+function fieldHtml(f,v){
+ const id="f_"+f.k;
+ if(f.type==="checkbox")return`<div class="field"><label class="chk"><input type="checkbox" id="${id}" ${v?"checked":""}> ${esc(f.label)}</label>${f.hint?`<small>${esc(f.hint)}</small>`:""}</div>`;
+ if(f.type==="photo")return`<div class="field"><span>${esc(f.label)}</span><div class="photo" id="${id}_pv">${v?`<img src="${v}">`:""}</div><div class="row"><label class="btn">${t("choosePhoto")}<input type="file" accept="image/*" id="${id}" hidden></label><button type="button" class="ghost" id="${id}_rm" ${v?"":"hidden"}>${t("remove")}</button></div></div>`;
+ if(f.type==="select")return`<label class="field"><span>${esc(f.label)}</span><select id="${id}">${f.options.map(([val,lab])=>`<option value="${esc(val)}" ${val==v?"selected":""}>${esc(lab)}</option>`).join("")}</select></label>`;
+ if(f.type==="textarea")return`<label class="field"><span>${esc(f.label)}</span><textarea id="${id}">${esc(v)}</textarea></label>`;
+ if(f.type==="html")return f.html;
+ const n=f.type==="number";
+ return`<label class="field"><span>${esc(f.label)}${f.req?" *":""}</span><input id="${id}" type="${f.type||"text"}" ${n?`step="any" min="0" inputmode="decimal"`:""} ${f.req?"required":""} value="${v==null?"":esc(v)}" ${f.ph?`placeholder="${esc(f.ph)}"`:""}>${f.hint?`<small>${esc(f.hint)}</small>`:""}</label>`;
+}
+function openForm(title,fields,vals,onSave,onDelete,onOpen){
+ const d=$("#dlg");
+ const body=fields.map(f=>Array.isArray(f)?`<div class="grid2">${f.map(x=>fieldHtml(x,vals[x.k])).join("")}</div>`:fieldHtml(f,vals[f.k])).join("");
+ d.innerHTML=`<form id="frm"><h2>${esc(title)}</h2>${body}<div class="row">${onDelete?`<button type="button" class="danger" id="fdel">${t("delete")}</button>`:""}<span class="sp"></span><button type="button" id="fcancel">${t("cancel")}</button><button class="primary">${t("save")}</button></div></form>`;
+ const flat=fields.flat(),photos={};
+ flat.filter(f=>f.type==="photo").forEach(f=>{
+  photos[f.k]=vals[f.k]||null;
+  const inp=$("#f_"+f.k),pv=$("#f_"+f.k+"_pv"),rm=$("#f_"+f.k+"_rm");
+  inp.onchange=async()=>{if(!inp.files[0])return;photos[f.k]=await compress(inp.files[0]);pv.innerHTML=`<img src="${photos[f.k]}">`;rm.hidden=false};
+  rm.onclick=()=>{photos[f.k]=null;pv.innerHTML="";rm.hidden=true;inp.value=""};
+ });
+ $("#fcancel").onclick=()=>d.close();
+ if(onDelete)$("#fdel").onclick=()=>{if(confirm(t("confirmDelete"))){onDelete();d.close();save();render()}};
+ $("#frm").onsubmit=e=>{
+  e.preventDefault();const o={};
+  for(const f of flat){if(!f.k||f.type==="html")continue;const el=$("#f_"+f.k);
+   o[f.k]=f.type==="photo"?photos[f.k]:f.type==="checkbox"?el.checked:f.type==="number"?(el.value===""?null:parseNum(el.value)):el.value.trim()}
+  onSave(o);d.close();save();render();
+ };
+ d.showModal();onOpen&&onOpen();
+}
+const showField=(k,on)=>{const el=$("#f_"+k);if(el)el.closest(".field").hidden=!on};
+function odoWarning(list,self,date,odo){
+ const before=list.filter(x=>x!==self&&x.date<=date).sort((a,b)=>b.odo-a.odo)[0];
+ return odo&&before&&odo<before.odo?`${t("odoWarn")} (${num(before.odo,0)} ${U().d}).`:null;
+}
+
+/* ---------- forms ---------- */
+function vehicleForm(v){
+ const u=U();
+ openForm(t(v?"editVehicle":"addVehicle"),[
+  {k:"name",label:t("name"),req:true},
+  [{k:"plate",label:t("plate")},{k:"year",label:t("year"),type:"number"}],
+  {k:"vin",label:t("vin")},
+  {k:"fuelType",label:t("fuelType"),type:"select",options:Object.entries(t("fuelTypes"))},
+  [{k:"tank",label:`${t("tankCap")} (${u.v})`,type:"number"},{k:"battery",label:t("battery"),type:"number"}],
+  [{k:"refCons",label:`${t("refCons")} (${u.cu})`,type:"number"},{k:"refPrice",label:`${t("refPrice")} (${cur()}/${u.v})`,type:"number"}],
+  {type:"html",html:`<small class="muted" id="refHint">${t("refHint")}</small>`},
+  {k:"photo",label:t("carPhoto"),type:"photo"}
+ ],v||{fuelType:"petrol"},o=>{if(v)Object.assign(v,o);else{const n={id:uid(),...o};S.vehicles.push(n);S.active=n.id}},
+ v&&(()=>{S.vehicles=S.vehicles.filter(x=>x!==v);["fuel","charges","services","reminders"].forEach(k=>S[k]=S[k].filter(x=>x.vid!==v.id));S.active=S.vehicles[0]?.id||null}),
+ ()=>{const sel=$("#f_fuelType"),upd=()=>{const ft=sel.value;showField("tank",ft!=="ev");showField("battery",ft==="ev"||ft==="phev");showField("refCons",ft==="ev");showField("refPrice",ft==="ev");$("#refHint").hidden=ft!=="ev"};sel.onchange=upd;upd()});
+}
+function fuelForm(f){
+ const V=veh(),u=U(),prev=f?null:mine(S.fuel).sort((a,b)=>b.odo-a.odo)[0];
+ openForm(t(f?"editFuel":"addFuel"),[
+  [{k:"date",label:t("date"),type:"date",req:true},{k:"odo",label:`${t("odometer")} (${u.d})`,type:"number",req:true,ph:prev?String(prev.odo):""}],
+  {k:"place",label:t("place")},
+  [{k:"qty",label:`${t("quantity")} (${u.v})`,type:"number",req:true,hint:V.tank?`${t("tankCap")}: ${num(+V.tank,0)} ${u.v}`:""},{k:"price",label:`${t("pricePerUnit")} ${u.v} (${cur()})`,type:"number",req:true,ph:prev?String(prev.price):""}],
+  {type:"html",html:`<div>${t("total")}: <span class="live" id="liveTotal">—</span></div><div class="warnbox" id="fwarn" hidden></div>`},
+  {k:"full",label:t("fullTank"),type:"checkbox",hint:t("fullTankHint")},
+  {k:"photo",label:t("receipt"),type:"photo"},
+  {k:"note",label:t("note"),type:"textarea"}
+ ],f||{date:today(),full:true,place:prev?.place||""},o=>{if(f)Object.assign(f,o);else S.fuel.push({id:uid(),vid:S.active,...o})},
+ f&&(()=>{S.fuel=S.fuel.filter(x=>x!==f)}),
+ ()=>{const upd=()=>{const q=parseNum($("#f_qty").value),p=parseNum($("#f_price").value);
+   $("#liveTotal").textContent=q&&p?money(q*p):"—";
+   const w=[];if(V.tank&&q>+V.tank*1.02)w.push(`${t("tankWarn")} (${num(+V.tank,0)} ${u.v}).`);
+   const ow=odoWarning(mine(S.fuel),f,$("#f_date").value,+$("#f_odo").value);if(ow)w.push(ow);
+   $("#fwarn").hidden=!w.length;$("#fwarn").innerHTML=w.map(esc).join("<br>")};
+  ["qty","price","odo","date"].forEach(k=>$("#f_"+k).addEventListener("input",upd));upd()});
+}
+function chargeForm(c){
+ const V=veh(),u=U(),all=mine(S.charges),prev=c?null:all.slice().sort((a,b)=>b.odo-a.odo)[0];
+ const lastOfType=ct=>all.filter(x=>x.ct===ct).sort((a,b)=>b.date.localeCompare(a.date))[0];
+ openForm(t(c?"editCharge":"addCharge"),[
+  [{k:"date",label:t("date"),type:"date",req:true},{k:"odo",label:`${t("odometer")} (${u.d})`,type:"number",req:true,ph:prev?String(prev.odo):""}],
+  [{k:"ct",label:t("chargeType"),type:"select",options:CT.map(k=>[k,t("ct")[k]])},{k:"place",label:t("place")}],
+  [{k:"kwh",label:t("energy"),type:"number",req:true,hint:V.battery?`${t("batteryShort")}: ${num(+V.battery,1)} kWh`:""},{k:"price",label:`${t("pricePerKwh")} (${cur()})`,type:"number",req:true}],
+  [{k:"socFrom",label:t("socFrom"),type:"number"},{k:"socTo",label:t("socTo"),type:"number"}],
+  {type:"html",html:`<small class="muted" style="margin-top:-6px">${t("socHint")}</small>`},
+  {k:"min",label:t("duration"),type:"number"},
+  {type:"html",html:`<div>${t("total")}: <span class="live" id="liveTotal">—</span> <span class="muted" id="livePow"></span></div><div class="warnbox" id="fwarn" hidden></div>`},
+  {k:"photo",label:t("receipt"),type:"photo"},
+  {k:"note",label:t("note"),type:"textarea"}
+ ],c||{date:today(),ct:prev?.ct||"home",place:prev?.place||"",price:prev?.price??null},o=>{if(c)Object.assign(c,o);else S.charges.push({id:uid(),vid:S.active,...o})},
+ c&&(()=>{S.charges=S.charges.filter(x=>x!==c)}),
+ ()=>{const upd=()=>{const k=parseNum($("#f_kwh").value),p=parseNum($("#f_price").value),m=parseNum($("#f_min").value);
+   $("#liveTotal").textContent=k&&p>=0&&$("#f_price").value!==""?money(k*p):"—";
+   $("#livePow").textContent=k&&m?`· ${num(k/(m/60),1)} kW`:"";
+   const w=[],sf=$("#f_socFrom").value,st=$("#f_socTo").value;
+   if(V.battery&&k>+V.battery*1.25)w.push(`${t("chargeWarn")} (${num(+V.battery,1)} kWh).`);
+   if([sf,st].some(x=>x!==""&&(parseNum(x)<0||parseNum(x)>100)))w.push(t("socWarn")+".");
+   const ow=odoWarning(all,c,$("#f_date").value,+$("#f_odo").value);if(ow)w.push(ow);
+   $("#fwarn").hidden=!w.length;$("#fwarn").innerHTML=w.map(esc).join("<br>")};
+  ["kwh","price","min","socFrom","socTo","odo","date"].forEach(k=>$("#f_"+k).addEventListener("input",upd));
+  $("#f_ct").onchange=()=>{const l=lastOfType($("#f_ct").value);if(l){$("#f_price").value=l.price;if(l.place)$("#f_place").value=l.place}upd()};
+  upd()});
+}
+function syncAutoReminder(s){
+ const r=S.reminders.find(x=>x.src===s.id),title=`${kindLabel(s.kind)} — ${t("renewal")}`;
+ if(s.until){if(!r)S.reminders.push({id:uid(),vid:s.vid,src:s.id,title,date:s.until,done:false});else if(r.date!==s.until)Object.assign(r,{date:s.until,title,done:false})}
+ else if(r&&!r.done)S.reminders=S.reminders.filter(x=>x!==r);
+}
+function costForm(s,kind){
+ const u=U();
+ openForm(t(s?"editCost":"addCost"),[
+  {k:"kind",label:t("kind"),type:"select",options:Object.keys(GROUP).map(k=>[k,KIND_IC[k]+" "+kindLabel(k)])},
+  {k:"title",label:t("desc")},
+  [{k:"date",label:t("date"),type:"date",req:true},{k:"odo",label:`${t("odometer")} (${u.d})`,type:"number"}],
+  [{k:"cost",label:`${t("cost")} (${cur()})`,type:"number"},{k:"place",label:t("where")}],
+  {k:"until",label:t("until"),type:"date",hint:t("untilHint")},
+  {k:"photo",label:t("receipt"),type:"photo"},
+  {k:"note",label:t("note"),type:"textarea"}
+ ],s||{kind:kind||"service",date:today(),odo:curOdo()||null},o=>{let x=s;if(s)Object.assign(s,o);else{x={id:uid(),vid:S.active,...o};S.services.push(x)}syncAutoReminder(x)},
+ s&&(()=>{S.services=S.services.filter(x=>x!==s);S.reminders=S.reminders.filter(r=>!(r.src===s.id&&!r.done))}));
+}
+function reminderForm(r){
+ const u=U();
+ openForm(t(r?"editReminder":"addReminder"),[
+  {k:"title",label:t("remTitle"),req:true},
+  [{k:"date",label:t("dueDate"),type:"date"},{k:"odo",label:`${t("dueOdo")} (${u.d})`,type:"number"}],
+  {k:"note",label:t("note"),type:"textarea"}
+ ],r||{},o=>{if(r)Object.assign(r,o);else S.reminders.push({id:uid(),vid:S.active,done:false,...o})},
+ r&&(()=>{S.reminders=S.reminders.filter(x=>x!==r)}));
+}
+function reportForm(){
+ openForm(t("saleReport"),[
+  {type:"html",html:`<p class="muted" style="margin:0">${t("saleReportHint")}</p>`},
+  {k:"stats",label:t("incStats"),type:"checkbox"},
+  {k:"costs",label:t("incCosts"),type:"checkbox"},
+  {k:"photos",label:t("incPhotos"),type:"checkbox"}
+ ],{stats:true,costs:false,photos:true},o=>setTimeout(()=>printReport(o),150));
+ $("#frm .primary").textContent="📄 PDF";
+}
+
+/* ---------- reminders status ---------- */
+function remStatus(r){
+ if(r.done)return null;
+ const odo=curOdo(),dd=r.date?Math.round((new Date(r.date+"T12:00")-new Date(today()+"T12:00"))/864e5):null,dk=r.odo?r.odo-odo:null;
+ const over=(dd!=null&&dd<0)||(dk!=null&&dk<=0),soon=(dd!=null&&dd<=30)||(dk!=null&&dk<=1000);
+ const parts=[];if(dd!=null)parts.push(dd>=0?`${dd} ${t("days")}`:`${-dd} ${t("days")} ${t("ago")}`);if(dk!=null)parts.push(`${num(Math.abs(dk),0)} ${U().d}${dk>=0?" "+t("remaining"):""}`);
+ return{cls:over?"danger":soon?"warn":"",label:over?t("overdue"):soon?t("soon"):"",txt:parts.join(" · ")};
+}
+const sortRem=a=>a.slice().sort((x,y)=>(x.date||"9999").localeCompare(y.date||"9999")||(x.odo||1e12)-(y.odo||1e12));
+
+/* ---------- charts ---------- */
+function lineChart(vals){
+ if(vals.length<2)return"";
+ const W=600,H=170,P=28,mn=Math.min(...vals),mx=Math.max(...vals),rg=mx-mn||1,x=i=>P+i*(W-2*P)/(vals.length-1),y=v=>H-P-(v-mn)/rg*(H-2*P);
+ const avg=vals.reduce((a,b)=>a+b)/vals.length;
+ return`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img"><line x1="${P}" x2="${W-P}" y1="${y(avg)}" y2="${y(avg)}" stroke="var(--line)" stroke-dasharray="4 4"/><polyline fill="none" stroke="var(--accent)" stroke-width="2.5" points="${vals.map((v,i)=>x(i)+","+y(v)).join(" ")}"/>${vals.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="3.5" fill="var(--accent)"><title>${num(v,2)}</title></circle>`).join("")}<text x="2" y="${y(mx)+4}">${num(mx,1)}</text><text x="2" y="${y(mn)+4}">${num(mn,1)}</text></svg>`;
+}
+function stackedBars(rows){
+ const W=640,H=220,L=58,B=24,T=10,tot=r=>GROUPS.reduce((a,g)=>a+(r.parts[g]||0),0),max=Math.max(1,...rows.map(tot)),bw=(W-L-4)/rows.length,y=v=>T+(H-T-B)*(1-v/max);
+ const step=Math.ceil(rows.length/12),present=GROUPS.filter(g=>rows.some(r=>r.parts[g]));
+ let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img">`;
+ [0,.5,1].forEach(f=>{const v=max*f;s+=`<line x1="${L}" x2="${W}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end">${moneyShort(v)}</text>`});
+ rows.forEach((r,i)=>{let acc=0;const x=L+i*bw+bw*.15,w=Math.max(2,bw*.7);
+  GROUPS.forEach(g=>{const v=r.parts[g]||0;if(!v)return;s+=`<rect x="${x}" y="${y(acc+v)}" width="${w}" height="${Math.max(1,y(acc)-y(acc+v))}" fill="var(--c-${g})"><title>${grpLabel(g)}: ${money(v)}</title></rect>`;acc+=v});
+  if(i%step===0){const d=new Date(r.m+"-15T12:00"),lab=new Intl.DateTimeFormat(loc(),{month:"short"}).format(d)+(r.m.endsWith("-01")||i===0?" "+r.m.slice(2,4):"");s+=`<text x="${x+w/2}" y="${H-6}" text-anchor="middle">${lab}</text>`}
+  if(acc)s+=`<rect x="${L+i*bw}" y="${T}" width="${bw}" height="${H-T-B}" fill="transparent"><title>${r.m}: ${money(acc)}</title></rect>`});
+ return s+`</svg><div class="legend">${present.map(g=>`<span><i style="background:var(--c-${g})"></i>${grpLabel(g)}</span>`).join("")}</div>`;
+}
+function hbars(rows){
+ const max=Math.max(...rows.map(r=>r.val)),total=sum(rows,r=>r.val);
+ return rows.map(r=>`<div class="hbr"><div>${esc(r.label)}</div><div class="hbt"><div style="width:${r.val/max*100}%;background:var(--c-${r.g})"></div></div><div class="hbv">${money(r.val)} <span class="muted">${Math.round(r.val/total*100)}%</span></div></div>`).join("");
+}
+
+/* ---------- views ---------- */
+const thumb=p=>p?`<img class="thumb" src="${p}" data-zoom alt="">`:"";
+const stat=(l,v,s,cls="")=>`<div class="stat"><div class="l">${l}</div><div class="v ${cls}">${v}</div>${s?`<div class="l">${s}</div>`:""}</div>`;
+const energyLabel=V=>!V?t("fuelTab"):V.fuelType==="ev"?t("chargeTab"):V.fuelType==="phev"?t("energyTab"):t("fuelTab");
+function remItem(r){const st=remStatus(r);return`<div class="item"><div class="main"><div class="t">${esc(r.title)} ${st?.label?`<span class="badge ${st.cls}">${st.label}</span>`:""}</div><div class="s">${[r.date&&fdate(r.date),r.odo&&num(r.odo,0)+" "+U().d].filter(Boolean).join(" · ")}${st?.txt?` — ${esc(st.txt)}`:""}</div>${r.note?`<div class="s">${esc(r.note)}</div>`:""}</div><div class="row"><button class="small" data-act="remToggle" data-id="${r.id}">${r.done?t("undo"):t("markDone")}</button><button class="small ghost" data-act="remEdit" data-id="${r.id}">✎</button></div></div>`}
+function costItem(s){return`<div class="item">${s.photo?thumb(s.photo):`<div class="kic">${KIND_IC[s.kind]||"📦"}</div>`}<div class="main"><div class="t">${esc(s.title||kindLabel(s.kind))} <span class="badge ${s.kind==="repair"?"warn":""}">${kindLabel(s.kind)}</span></div><div class="s">${fdate(s.date)}${s.odo?` · ${num(s.odo,0)} ${U().d}`:""}${s.place?` · ${esc(s.place)}`:""}${s.until?` · ${t("validUntil")} ${fdate(s.until)}`:""}</div>${s.note?`<div class="s">${esc(s.note)}</div>`:""}</div><div class="r"><div class="t">${s.cost!=null?money(s.cost):""}</div><button class="small ghost" data-act="costEdit" data-id="${s.id}">✎</button></div></div>`}
+function fuelItem(f,cv){const u=U();return`<div class="item">${thumb(f.photo)}<div class="main"><div class="t">${fdate(f.date)} ${f.full?"":`<span class="badge warn">${t("partial")}</span>`}</div><div class="s">${num(f.odo,0)} ${u.d}${f.place?` · ${esc(f.place)}`:""}</div><div class="s">${num(f.qty,2)} ${u.v} × ${money(f.price)}</div>${f.note?`<div class="s">${esc(f.note)}</div>`:""}</div><div class="r"><div class="t">${money(fuelTotal(f))}</div><div class="s">${cv!=null?`${num(cv,2)} ${u.cu}`:""}</div><button class="small ghost" data-act="fuelEdit" data-id="${f.id}">✎</button></div></div>`}
+function chargeItem(c,cv){const u=U();return`<div class="item">${thumb(c.photo)}<div class="main"><div class="t">${fdate(c.date)} <span class="badge ${c.ct==="dc"?"warn":""}">⚡ ${t("ct")[c.ct]||""}</span></div><div class="s">${num(c.odo,0)} ${u.d}${c.place?` · ${esc(c.place)}`:""}</div><div class="s">${num(c.kwh,1)} kWh × ${money(c.price)}${c.socFrom!=null&&c.socTo!=null?` · 🔋 ${c.socFrom}% → ${c.socTo}%`:""}${c.min?` · ${dur(c.min)} · ${num(c.kwh/(c.min/60),1)} kW`:""}</div>${c.note?`<div class="s">${esc(c.note)}</div>`:""}</div><div class="r"><div class="t">${money(chargeTotal(c))}</div><div class="s">${cv!=null?`${num(cv,1)} ${u.ecu}`:""}</div><button class="small ghost" data-act="chargeEdit" data-id="${c.id}">✎</button></div></div>`}
+
+function viewDashboard(){
+ const V=veh();if(!V)return`<div class="card empty"><p>${t("noVehicle")}</p><button class="primary" data-act="vehAdd">＋ ${t("addVehicle")}</button></div>`;
+ const u=U(),f=hasFuel(V)?consumption():null,e=hasCharge(V)?evStats():null,costs=mine(S.services),month=today().slice(0,7);
+ const monthTotal=sum(allCosts().filter(x=>x.date.startsWith(month)),x=>x.amount);
+ const svc=costs.filter(c=>GROUP[c.kind]==="svc"),oth=costs.filter(c=>GROUP[c.kind]!=="svc");
+ const rem=sortRem(mine(S.reminders).filter(r=>!r.done)).slice(0,3);
+ const lastF=f?.series[f.series.length-1],lastE=e?.series[e.series.length-1];
+ const entries=S.fuel.length+S.charges.length+S.services.length,nag=entries>=5&&(!S.lastBackup||(new Date(today())-new Date(S.lastBackup))/864e5>30);
+ return`${nag?`<div class="card warnbox row" style="border:0"><span style="flex:1">💾 ${t("backupNag")}</span><button class="small" data-act="export">${t("backupNow")}</button></div>`:""}<div class="card car">${V.photo?`<img src="${V.photo}" data-zoom alt="">`:`<div class="ph">${V.fuelType==="ev"?"⚡":"🚗"}</div>`}<div class="main" style="flex:1"><div class="n">${esc(V.name)}</div><div class="muted">${[V.plate,V.year,t("fuelTypes")[V.fuelType],hasFuel(V)&&V.tank&&`${t("tankCap")}: ${num(+V.tank,0)} ${u.v}`,hasCharge(V)&&V.battery&&`${t("batteryShort")}: ${num(+V.battery,1)} kWh`].filter(Boolean).map(esc).join(" · ")}</div></div><button class="small ghost" data-act="vehEdit">✎</button></div>
+ <div class="row" style="margin-bottom:12px">${f?`<button class="primary" data-act="fuelAdd">⛽ ${t("addFuel")}</button>`:""}${e?`<button class="primary" data-act="chargeAdd">⚡ ${t("addCharge")}</button>`:""}<button data-act="costAdd">🧾 ${t("addCost")}</button></div>
+ <div class="stats">
+  ${f?stat("⛽ "+t("avgCons"),num(f.avg,2),u.cu)+stat("⛽ "+t("lastCons"),num(lastF,2),u.cu)+stat("⛽ "+t("fuelCost"),money(f.cost),`${num(f.qty,1)} ${u.v} · ${f.list.length} ×`)+stat(`⛽ ${t("costPer100")} ${u.d}`,money(f.costPer100),`${t("avgPrice")}: ${money(f.avgPrice)}/${u.v}`):""}
+  ${e?stat("⚡ "+t("avgEcons"),num(e.avg,1),u.ecu)+stat("⚡ "+t("lastEcons"),num(lastE,1),u.ecu)+stat("⚡ "+t("chargeCost"),money(e.cost),`${num(e.kwh,0)} kWh · ${e.list.length} ×`)+stat(`⚡ ${t("costPer100")} ${u.d}`,money(e.costPer100),`${t("avgPrice")}: ${money(e.avgPrice)}/kWh`)+stat("🏠 "+t("homeShare"),e.homeShare==null?"—":Math.round(e.homeShare*100)+"%",t("ofEnergy"))+(e.savings!=null?stat("💚 "+t("savings"),money(e.savings),`${num(e.dist,0)} ${u.d}`,"good"):""):""}
+  ${stat(t("curOdo"),num(curOdo(),0),u.d)}
+  ${stat(t("thisMonth"),money(monthTotal),"")}
+  ${stat(t("serviceCost"),money(sum(svc,c=>+c.cost||0)),`${svc.length} ×`)}
+  ${stat(t("otherCost"),money(sum(oth,c=>+c.cost||0)),`${oth.length} ×`)}
+ </div>
+ ${f?`<div class="card"><h2>⛽ ${t("consChart")} (${u.cu})</h2>${f.series.length>1?lineChart(f.series.slice(-30)):`<p class="muted">${t("needTwoFull")}</p>`}</div>`:""}
+ ${e?`<div class="card"><h2>⚡ ${t("econsChart")} (${u.ecu})</h2>${e.series.length>1?lineChart(e.series.slice(-30)):`<p class="muted">${t("needTwoCharges")}</p>`}</div>`:""}
+ <div class="card"><div class="row"><h2 style="margin:0">${t("nextDue")}</h2><span class="sp"></span><button class="small ghost" data-act="tab" data-id="reminders">${t("seeAll")} →</button></div><div class="list">${rem.length?rem.map(remItem).join(""):`<p class="muted">${t("noEntries")}</p>`}</div></div>`;
+}
+function viewFuel(){
+ const V=veh();if(!V)return viewDashboard();
+ const view=V.fuelType==="ev"?"charge":V.fuelType==="phev"?energyView:"fuel";
+ const seg=V.fuelType==="phev"?`<div class="chips"><button class="${view==="fuel"?"on":""}" data-act="energyView" data-id="fuel">⛽ ${t("fuelTab")}</button><button class="${view==="charge"?"on":""}" data-act="energyView" data-id="charge">⚡ ${t("chargeTab")}</button></div>`:"";
+ let list,btn;
+ if(view==="fuel"){const c=consumption();list=c.list.slice().reverse().map(f=>fuelItem(f,c.map[f.id]));btn=`<button class="primary" data-act="fuelAdd">＋ ${t("addFuel")}</button>`}
+ else{const e=evStats();list=e.list.slice().reverse().map(c=>chargeItem(c,e.map[c.id]));btn=`<button class="primary" data-act="chargeAdd">＋ ${t("addCharge")}</button>`}
+ return`<div class="row" style="margin-bottom:12px"><h2 style="margin:0">${energyLabel(V)}</h2><span class="sp"></span>${btn}</div>${seg}
+ <div class="card list">${list.length?list.join(""):`<div class="empty">${t("noEntries")}</div>`}</div>`;
+}
+function viewCosts(){
+ if(!veh())return viewDashboard();
+ const list=mine(S.services).filter(s=>costFilter==="all"||GROUP[s.kind]===costFilter).sort((a,b)=>b.date.localeCompare(a.date));
+ return`<div class="row" style="margin-bottom:12px"><h2 style="margin:0">${t("costs")}</h2><span class="sp"></span><button class="primary" data-act="costAdd">＋ ${t("addCost")}</button></div>
+ <div class="chips">${["all","svc","fix","oth"].map(g=>`<button class="${costFilter===g?"on":""}" data-act="costFilter" data-id="${g}">${g==="all"?t("all"):grpLabel(g)}</button>`).join("")}</div>
+ <div class="card list">${list.length?list.map(costItem).join(""):`<div class="empty">${t("noEntries")}</div>`}</div>
+ ${list.length?`<p class="muted" style="text-align:right">${t("total")}: <b>${money(sum(list,s=>+s.cost||0))}</b></p>`:""}`;
+}
+function viewReminders(){
+ if(!veh())return viewDashboard();
+ const all=mine(S.reminders),open=sortRem(all.filter(r=>!r.done)),done=all.filter(r=>r.done);
+ return`<div class="row" style="margin-bottom:12px"><h2 style="margin:0">${t("reminders")}</h2><span class="sp"></span><button class="primary" data-act="remAdd">＋ ${t("addReminder")}</button></div>
+ <h3>${t("upcoming")}</h3><div class="card list">${open.length?open.map(remItem).join(""):`<div class="empty">${t("noEntries")}</div>`}</div>
+ ${done.length?`<h3>${t("completed")}</h3><div class="card list">${done.map(remItem).join("")}</div>`:""}`;
+}
+function periodRange(){
+ if(period==="all")return[null,null];
+ if(period==="12m"){const n=new Date();let y=n.getFullYear(),m=n.getMonth()-11;if(m<0){m+=12;y--}return[`${y}-${pad(m+1)}-01`,null]}
+ return[period+"-01-01",period+"-12-31"];
+}
+function monthList(a,b,costs){
+ const end=(b||today()).slice(0,7),start=(a||costs.map(x=>x.date).sort()[0]||today()).slice(0,7),out=[];
+ let[y,m]=start.split("-").map(Number);
+ for(;;){const k=`${y}-${pad(m)}`;out.push(k);if(k>=end)break;if(++m>12){m=1;y++}}
+ return out.slice(-36);
+}
+function viewReports(){
+ const V=veh();if(!V)return viewDashboard();
+ const u=U(),[a,b]=periodRange(),inR=d=>(!a||d>=a)&&(!b||d<=b);
+ const years=[...new Set(allCosts().map(x=>x.date.slice(0,4)))].sort().reverse();
+ const costs=allCosts().filter(x=>inR(x.date)),total=sum(costs,x=>x.amount),months=monthList(a,b,costs);
+ const odos=[...mine(S.fuel),...mine(S.charges),...mine(S.services)].filter(x=>inR(x.date)&&x.odo).map(x=>+x.odo);
+ const dist=odos.length>1?Math.max(...odos)-Math.min(...odos):0;
+ const sel=`<select id="periodSel" style="width:auto"><option value="12m" ${period==="12m"?"selected":""}>${t("p12m")}</option>${years.map(y=>`<option ${period===y?"selected":""}>${y}</option>`).join("")}<option value="all" ${period==="all"?"selected":""}>${t("pAll")}</option></select>`;
+ const head=`<div class="row" style="margin-bottom:12px"><h2 style="margin:0">${t("reports")}</h2><span class="sp"></span>${sel}</div>
+ <div class="card row"><div style="flex:1;min-width:200px"><b>📄 ${t("saleReport")}</b><div class="muted" style="font-size:13px">${t("saleReportHint")}</div></div><button data-act="report">📄 PDF</button></div>`;
+ if(!costs.length)return head+`<div class="card empty">${t("noData")}</div>`;
+ const byMonth=months.map(m=>{const parts={};costs.filter(x=>x.date.startsWith(m)).forEach(x=>parts[x.group]=(parts[x.group]||0)+x.amount);return{m,parts}});
+ const byKind={};costs.forEach(x=>byKind[x.kind]=(byKind[x.kind]||0)+x.amount);
+ const kindRows=Object.entries(byKind).filter(([,v])=>v>0).sort((x,y)=>y[1]-x[1]).map(([k,v])=>({label:k==="fuel"?"⛽ "+grpLabel("fuel"):k==="charge"?"⚡ "+grpLabel("charge"):KIND_IC[k]+" "+kindLabel(k),val:v,g:k==="fuel"||k==="charge"?k:GROUP[k]}));
+ // fuel prices per station
+ const st={};mine(S.fuel).filter(f=>inR(f.date)&&f.place).forEach(f=>{const k=f.place.trim().toLowerCase();(st[k]||(st[k]={name:f.place.trim(),n:0,q:0,c:0})).n++;st[k].q+=+f.qty||0;st[k].c+=fuelTotal(f)});
+ const stations=Object.values(st).filter(s=>s.q).sort((x,y)=>x.c/x.q-y.c/y.q).slice(0,10);
+ // charging per type
+ const ch=mine(S.charges).filter(c=>inR(c.date)),chK=sum(ch,c=>+c.kwh||0);
+ const ctRows=CT.map(k=>{const l=ch.filter(c=>c.ct===k),kwh=sum(l,c=>+c.kwh||0),cost=sum(l,chargeTotal);return{k,n:l.length,kwh,cost}}).filter(r=>r.n);
+ return head+`<div class="stats">
+  ${stat(t("totalCost"),money(total),"")}${stat(t("perMonth"),money(total/months.length),`${months.length} m.`)}
+  ${stat(t("distance"),num(dist,0),u.d)}${stat(`${t("perKm")} ${u.d}`,dist?money(total/dist):"—","")}
+ </div>
+ <div class="card"><h2>${t("monthly")}</h2>${stackedBars(byMonth)}</div>
+ <div class="card"><h2>${t("byCategory")}</h2>${hbars(kindRows)}</div>
+ ${stations.length?`<div class="card scroll"><h2>⛽ ${t("stations")}</h2><table class="tbl"><tr><th>${t("station")}</th><th class="n">${t("visits")}</th><th class="n">${u.v}</th><th class="n">${t("avgPrice")}/${u.v}</th></tr>${stations.map((s,i)=>`<tr><td>${esc(s.name)} ${i===0&&stations.length>1?`<span class="badge">${t("cheapest")}</span>`:""}</td><td class="n">${s.n}</td><td class="n">${num(s.q,1)}</td><td class="n"><b>${money(s.c/s.q)}</b></td></tr>`).join("")}</table></div>`:""}
+ ${ctRows.length?`<div class="card scroll"><h2>⚡ ${t("chargingByType")}</h2><table class="tbl"><tr><th>${t("chargeType")}</th><th class="n">kWh</th><th class="n">${t("share")}</th><th class="n">${t("avgPrice")}/kWh</th><th class="n">${t("cost")}</th></tr>${ctRows.map(r=>`<tr><td>${t("ct")[r.k]} <span class="muted">(${r.n}×)</span></td><td class="n">${num(r.kwh,0)}</td><td class="n">${chK?Math.round(r.kwh/chK*100):0}%</td><td class="n"><b>${r.kwh?money(r.cost/r.kwh):"—"}</b></td><td class="n">${money(r.cost)}</td></tr>`).join("")}</table></div>`:""}`;
+}
+function viewSettings(){
+ const s=S.settings;
+ return`<h2>${t("settings")}</h2>
+ <div class="card"><div class="grid2">
+  <label class="field"><span>${t("language")}</span><select data-set="lang"><option value="pl" ${s.lang==="pl"?"selected":""}>Polski</option><option value="en" ${s.lang==="en"?"selected":""}>English</option></select></label>
+  <label class="field"><span>${t("currency")}</span><select data-set="currency">${CURRENCIES.map(c=>`<option ${c===s.currency?"selected":""}>${c}</option>`).join("")}</select></label>
+ </div><label class="field" style="margin-top:12px"><span>${t("units")}</span><select data-set="units">${Object.entries(UNITS).map(([k,v])=>`<option value="${k}" ${k===s.units?"selected":""}>${v.label} · ${v.ecu}</option>`).join("")}</select></label></div>
+ <h3>${t("vehicles")}</h3><div class="card list">${S.vehicles.map(v=>`<div class="item">${v.photo?`<img class="thumb" src="${v.photo}" alt="">`:`<div class="kic">${v.fuelType==="ev"?"⚡":"🚗"}</div>`}<div class="main"><div class="t">${esc(v.name)} ${v.id===S.active?`<span class="badge">✓</span>`:""}</div><div class="s">${[v.plate,t("fuelTypes")[v.fuelType]].filter(Boolean).map(esc).join(" · ")}</div></div><button class="small ghost" data-act="vehEditId" data-id="${v.id}">✎ ${t("edit")}</button></div>`).join("")}
+  <div class="item"><button data-act="vehAdd">＋ ${t("addVehicle")}</button></div></div>
+ <h3>${t("app")}</h3><div class="card">
+  ${standalone()?`<p style="margin-top:0">✅ ${t("installed")}</p>`:installEvt?`<p style="margin-top:0"><button class="primary" data-act="install">${t("install")}</button></p>`:isIOS?`<p class="muted" style="margin-top:0">${t("installIos")}</p>`:""}
+  <b>${t("notifications")}</b><p class="muted" style="font-size:13px;margin:4px 0 10px">${t("notifHint")}</p>
+  ${!("Notification" in window)?`<p class="muted">${t("notifUnsupported")}</p>`:s.notify&&Notification.permission==="granted"?`<div class="row"><span>✅ ${t("notifEnabled")}</span><button class="small" data-act="notifOff">${t("notifOff")}</button></div>`:Notification.permission==="denied"?`<p class="warnbox">${t("notifDenied")}</p>`:`<button data-act="notifOn">${t("notifOn")}</button>`}
+ </div>
+ <h3>${t("backup")}</h3><div class="card"><p class="muted" style="margin-top:0">${t("storageInfo")}<br>${t("lastBackup")}: <b>${S.lastBackup?fdate(S.lastBackup):t("never")}</b></p><div class="row"><button data-act="export">⬇ ${t("export")}</button><button data-act="csv">⬇ ${t("exportCsv")}</button><label class="btn">⬆ ${t("import")}<input type="file" accept="application/json,.json" id="importFile" hidden></label></div></div>`;
+}
+
+/* ---------- vehicle history report (printed to PDF by the browser) ---------- */
+function printReport(o){
+ const V=veh(),u=U(),hist=mine(S.services).filter(s=>HIST.includes(s.kind)).sort((a,b)=>a.date.localeCompare(b.date));
+ const f=hasFuel(V)?consumption():null,e=hasCharge(V)?evStats():null;
+ const all=[...mine(S.fuel),...mine(S.charges),...mine(S.services)],first=all.map(x=>x.date).sort()[0];
+ const odos=all.filter(x=>x.odo).map(x=>+x.odo),dist=odos.length>1?Math.max(...odos)-Math.min(...odos):0;
+ const kv=rows=>`<table class="kv">${rows.filter(r=>r[1]!=null&&r[1]!=="").map(([k,v])=>`<tr><td>${esc(k)}</td><td><b>${esc(v)}</b></td></tr>`).join("")}</table>`;
+ const photos=o.photos?hist.filter(s=>s.photo):[];
+ $("#printArea").innerHTML=`<div class="rep">
+ <div class="rep-h">${V.photo?`<img src="${V.photo}" alt="">`:""}<div style="flex:1"><h1>${t("vehicleHistory")}</h1><h2>${esc(V.name)}</h2>
+ ${kv([[t("plate"),V.plate],[t("vin"),V.vin],[t("year"),V.year],[t("fuelType"),t("fuelTypes")[V.fuelType]],[t("curOdo"),`${num(curOdo(),0)} ${u.d}`],[t("trackedSince"),fdate(first)],[t("generated"),fdate(today())]])}</div></div>
+ <h3>${t("summary")}</h3>
+ ${kv([[t("entries"),String(hist.length)],[t("trackedDist"),dist?`${num(dist,0)} ${u.d}`:null],
+   ...(o.stats&&f?[[t("avgCons"),f.avg!=null?`${num(f.avg,2)} ${u.cu}`:null]]:[]),
+   ...(o.stats&&e?[[t("avgEcons"),e.avg!=null?`${num(e.avg,1)} ${u.ecu}`:null]]:[]),
+   ...(o.costs?[[t("serviceCost"),money(sum(hist,s=>+s.cost||0))]]:[])])}
+ <h3>${t("serviceHistory")}</h3>
+ ${hist.length?`<table><tr><th>${t("date")}</th><th class="n">${t("odometer")}</th><th>${t("kind")}</th><th>${t("desc").split(" (")[0]}</th><th>${t("where").split(" (")[0]}</th>${o.costs?`<th class="n">${t("cost")}</th>`:""}</tr>
+ ${hist.map(s=>`<tr><td>${fdate(s.date)}</td><td class="n">${s.odo?num(s.odo,0)+" "+u.d:""}</td><td>${kindLabel(s.kind)}</td><td>${esc(s.title)}${s.note?`<br><span style="color:#666">${esc(s.note)}</span>`:""}</td><td>${esc(s.place)}</td>${o.costs?`<td class="n">${s.cost!=null?money(s.cost):""}</td>`:""}</tr>`).join("")}</table>`:`<p>${t("noEntries")}</p>`}
+ ${photos.length?`<h3>${t("attachments")}</h3><div class="att">${photos.map(s=>`<figure><img src="${s.photo}" alt=""><figcaption>${fdate(s.date)} · ${esc(s.title||kindLabel(s.kind))}</figcaption></figure>`).join("")}</div>`:""}
+ <p class="foot">Refuelling · ${fdate(today())}</p></div>`;
+ const prev=document.title;document.title=`${t("vehicleHistory")} - ${V.name}`;
+ setTimeout(()=>{print();document.title=prev},300);
+}
+
+/* ---------- render ---------- */
+function render(){
+ document.documentElement.lang=S.settings.lang;
+ const V=veh(),sel=$("#vehSel");sel.hidden=S.vehicles.length<2;sel.innerHTML=S.vehicles.map(v=>`<option value="${v.id}" ${v.id===S.active?"selected":""}>${esc(v.name)}</option>`).join("");
+ const due=mine(S.reminders).filter(r=>remStatus(r)?.cls==="danger").length;
+ const tabs=[["dashboard","🏠",t("dashboard")],["fuel",V?.fuelType==="ev"?"⚡":"⛽",energyLabel(V)],["costs","🧾",t("costs")],["reminders","🔔",t("reminders")],["reports","📊",t("reports")],["settings","⚙️",t("settings")]];
+ $("#tabs").innerHTML=tabs.map(([k,ic,l])=>`<button class="${k===tab?"on":""}" data-act="tab" data-id="${k}"><span class="ic">${ic}</span>${l}${k==="reminders"&&due?` <span class="badge danger">${due}</span>`:""}</button>`).join("");
+ $("#app").innerHTML={dashboard:viewDashboard,fuel:viewFuel,costs:viewCosts,reminders:viewReminders,reports:viewReports,settings:viewSettings}[tab]();
+ const imp=$("#importFile");if(imp)imp.onchange=importData;
+}
+function download(name,data,type){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([data],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+async function importData(e){
+ try{const d=JSON.parse(await e.target.files[0].text());if(!d.settings||!Array.isArray(d.vehicles))throw 0;S={...defaults(),...d};await save();alert(t("importOk"));render()}catch{alert(t("importErr"))}
+}
+/* On phones the backup goes to the share sheet (Google Drive, e-mail…), elsewhere it is downloaded. */
+async function exportJson(){
+ const name=`refuelling-${today()}.json`,data=JSON.stringify(S),file=new File([data],name,{type:"application/json"});
+ let shared=false;
+ if(matchMedia("(pointer:coarse)").matches&&navigator.canShare?.({files:[file]})){
+  try{await navigator.share({files:[file],title:name});shared=true}catch(e){if(e.name==="AbortError")return}
+ }
+ if(!shared)download(name,data,"application/json");
+ S.lastBackup=today();save();render();
+}
+
+/* ---------- install & notifications ---------- */
+let installEvt=null;
+const standalone=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+addEventListener("beforeinstallprompt",e=>{e.preventDefault();installEvt=e;if(tab==="settings")render()});
+addEventListener("appinstalled",()=>{installEvt=null;render()});
+async function enableNotifications(){
+ if((await Notification.requestPermission())!=="granted"){render();return}
+ S.settings.notify=true;await save();
+ try{const reg=await navigator.serviceWorker?.ready;if(reg?.periodicSync&&(await navigator.permissions.query({name:"periodic-background-sync"})).state==="granted")await reg.periodicSync.register("reminders",{minInterval:12*3600e3})}catch(e){console.warn(e)}
+ render();runNotifications();
+}
+async function runNotifications(){
+ if(!S.settings.notify||!("Notification" in window)||Notification.permission!=="granted")return;
+ const reg=await navigator.serviceWorker?.ready;if(!reg)return;
+ const n=(await idb.get("notified"))||{};
+ for(const x of dueNotifications(S,n,today())){await reg.showNotification(x.title,{body:x.body,tag:x.tag,icon:"icons/icon-192.png",badge:"icons/favicon-32.png"});n[x.key]=today()}
+ await idb.set("notified",n);
+}
+
+function exportCsv(){
+ const u=U(),rows=[];
+ mine(S.fuel).forEach(f=>rows.push(["fuel",f.date,f.odo,f.full?"full":"partial","",f.place,f.qty,u.v,f.price,fuelTotal(f).toFixed(2),f.note]));
+ mine(S.charges).forEach(c=>rows.push(["charge",c.date,c.odo,c.ct,"",c.place,c.kwh,"kWh",c.price,chargeTotal(c).toFixed(2),c.note]));
+ mine(S.services).forEach(s=>rows.push(["cost",s.date,s.odo,s.kind,s.title,s.place,"","","",s.cost!=null?(+s.cost).toFixed(2):"",s.note]));
+ rows.sort((a,b)=>a[1].localeCompare(b[1]));
+ rows.unshift(["type","date","odometer_"+u.d,"category","description","place","quantity","unit","unit_price","total_"+cur(),"note"]);
+ download(`refuelling-${(veh()?.name||"car").replace(/\W+/g,"_")}-${today()}.csv`,"﻿"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(";")).join("\n"),"text/csv");
+}
+document.addEventListener("click",e=>{
+ const z=e.target.closest("[data-zoom]");if(z){const lb=$("#lightbox");lb.querySelector("img").src=z.src;lb.showModal();return}
+ if(e.target.id==="lightbox")return e.target.close();
+ const b=e.target.closest("[data-act]");if(!b)return;const id=b.dataset.id;
+ const A={
+  tab:()=>{tab=id;render();scrollTo(0,0)},
+  vehAdd:()=>vehicleForm(),vehEdit:()=>vehicleForm(veh()),vehEditId:()=>vehicleForm(S.vehicles.find(v=>v.id===id)),
+  fuelAdd:()=>fuelForm(),fuelEdit:()=>fuelForm(S.fuel.find(x=>x.id===id)),
+  chargeAdd:()=>chargeForm(),chargeEdit:()=>chargeForm(S.charges.find(x=>x.id===id)),
+  costAdd:()=>costForm(null,costFilter==="fix"?"insurance":costFilter==="oth"?"parking":"service"),costEdit:()=>costForm(S.services.find(x=>x.id===id)),
+  remAdd:()=>reminderForm(),remEdit:()=>reminderForm(S.reminders.find(x=>x.id===id)),
+  remToggle:()=>{const r=S.reminders.find(x=>x.id===id);r.done=!r.done;r.doneDate=r.done?today():null;save();render()},
+  energyView:()=>{energyView=id;render()},costFilter:()=>{costFilter=id;render()},
+  report:()=>reportForm(),
+  export:exportJson,
+  install:async()=>{installEvt.prompt();await installEvt.userChoice;installEvt=null;render()},
+  notifOn:enableNotifications,
+  notifOff:async()=>{S.settings.notify=false;save();try{const r=await navigator.serviceWorker?.ready;await r?.periodicSync?.unregister("reminders")}catch{}render()},
+  csv:exportCsv
+ };
+ A[b.dataset.act]?.();
+});
+document.addEventListener("change",e=>{
+ const k=e.target.dataset?.set;if(k){S.settings[k]=e.target.value;save();render()}
+ if(e.target.id==="periodSel"){period=e.target.value;render()}
+});
+$("#vehSel").onchange=e=>{S.active=e.target.value;save();render()};
+
+(async()=>{
+ try{S=await idb.get("state")}catch(e){console.error(e)}
+ S=S?{...defaults(),...S}:defaults();
+ render();
+ if(!S.vehicles.length)vehicleForm();
+ if("serviceWorker" in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("sw.js").then(runNotifications).catch(console.error);
+ navigator.storage?.persist?.(); // ask the browser not to evict the data when space runs low
+})();
+</script>
+</body>
+</html>
