@@ -1,18 +1,21 @@
 // Bump VERSION on every release so phones pick up the new files.
-const VERSION = "v4";
+const VERSION = "v5";
 const CACHE = "refuelling-" + VERSION;
+// Big libraries in vendor/ are cached on first use, in a cache kept across versions (rename it when a library changes).
+const VENDOR_CACHE = "refuelling-vendor-1";
 const ASSETS = ["./", "./index.html", "./notify.js", "./manifest.webmanifest",
-  "./icons/icon-192.png", "./icons/icon-512.png", "./icons/maskable-512.png", "./icons/apple-touch-icon.png", "./icons/favicon-32.png", "./vendor/heic2any.min.js"];
+  "./icons/icon-192.png", "./icons/icon-512.png", "./icons/maskable-512.png", "./icons/apple-touch-icon.png", "./icons/favicon-32.png"];
 
 importScripts("notify.js");
 
 self.addEventListener("install", e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
+  // cache: "reload" so a new version never stores stale copies from the browser's HTTP cache
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS.map(u => new Request(u, { cache: "reload" })))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener("activate", e => {
   e.waitUntil(caches.keys()
-    .then(keys => Promise.all(keys.filter(k => k.startsWith("refuelling-") && k !== CACHE).map(k => caches.delete(k))))
+    .then(keys => Promise.all(keys.filter(k => k.startsWith("refuelling-") && k !== CACHE && k !== VENDOR_CACHE).map(k => caches.delete(k))))
     .then(() => self.clients.claim()));
 });
 
@@ -27,6 +30,13 @@ self.addEventListener("fetch", e => {
       caches.open(CACHE).then(c => c.put("./index.html", copy));
       return res;
     }).catch(() => caches.match("./index.html")));
+    return;
+  }
+  if (new URL(req.url).pathname.includes("/vendor/")) {
+    e.respondWith(caches.open(VENDOR_CACHE).then(c => c.match(req).then(hit => hit || fetch(req).then(res => {
+      if (res.ok) c.put(req, res.clone());
+      return res;
+    }))));
     return;
   }
   e.respondWith(caches.match(req).then(hit => hit || fetch(req)));

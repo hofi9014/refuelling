@@ -242,20 +242,39 @@ const parseNum=v=>+String(v).replace(",",".");
 /* Downscale a photo to a JPEG data URL. createImageBitmap handles EXIF rotation and big phone photos better;
    the <img> path is the fallback for browsers without it. Throws if the browser can't decode the format (e.g. HEIC). */
 function decodeImg(file){return new Promise((res,rej)=>{const img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{URL.revokeObjectURL(url);res(img)};img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error("decode"))};img.src=url})}
-/* HEIC/HEIF (default on many Samsungs and iPhones) can't be decoded by Chrome, so it is converted to JPEG first.
-   The converter is large (1.3 MB), so it is loaded only when such a photo shows up. */
+/* HEIC/HEIF (default on many Samsungs and iPhones) can't be decoded by Chrome, so it is decoded with libheif (WebAssembly),
+   with the older heic2any as a second try. Both are large (2 MB / 1.3 MB), so they load only when such a photo shows up. */
 async function isHeic(file){
  if(/hei[cf]/i.test(file.type+file.name))return true;
  const b=new Uint8Array(await file.slice(4,12).arrayBuffer());
  return String.fromCharCode(...b).startsWith("ftyp")&&/^(heic|heix|hevc|heim|heis|mif1|msf1)$/.test(String.fromCharCode(...b.slice(4)));
 }
-let heicLib;
-const loadHeic=()=>heicLib||(heicLib=new Promise((res,rej)=>{const s=document.createElement("script");s.src="vendor/heic2any.min.js";s.onload=()=>res(window.heic2any);s.onerror=()=>{heicLib=null;rej(new Error("heic-lib"))};document.head.appendChild(s)}));
+const libs={};
+const loadScript=(src,name)=>libs[src]||(libs[src]=new Promise((res,rej)=>{const s=document.createElement("script");s.src=src;s.onload=()=>res(window[name]);s.onerror=()=>{delete libs[src];s.remove();rej(new Error("heic-lib"))};document.head.appendChild(s)}));
+async function heicLibheif(file){
+ const lib=await(await loadScript("vendor/libheif-bundle.js","libheif"))();
+ const imgs=new lib.HeifDecoder().decode(new Uint8Array(await file.arrayBuffer()));
+ if(!imgs?.length)throw new Error("libheif: no image");
+ const im=imgs[0],w=im.get_width(),h=im.get_height(),c=document.createElement("canvas");c.width=w;c.height=h;
+ const ctx=c.getContext("2d"),data=ctx.createImageData(w,h);
+ await new Promise((res,rej)=>im.display(data,d=>d?res():rej(new Error("libheif: display"))));
+ ctx.putImageData(data,0,0);imgs.forEach(i=>i.free?.());
+ return c;
+}
+async function heicHeic2any(file){
+ const out=await(await loadScript("vendor/heic2any.min.js","heic2any"))({blob:file,toType:"image/jpeg",quality:.9});
+ return decodeImg(Array.isArray(out)?out[0]:out);
+}
 async function decodeAny(file){
  try{return await createImageBitmap(file,{imageOrientation:"from-image"})}catch{}
  try{return await decodeImg(file)}catch(e){if(!(await isHeic(file)))throw e}
- const out=await(await loadHeic())({blob:file,toType:"image/jpeg",quality:.9});
- return decodeImg(Array.isArray(out)?out[0]:out);
+ try{return await heicLibheif(file)}catch(e1){
+  console.warn(e1);
+  try{return await heicHeic2any(file)}catch(e2){
+   if(e1.message==="heic-lib"&&e2.message==="heic-lib")throw e1;
+   throw new Error(`${e1.message||e1}; ${e2.message||e2.code||e2}`);
+  }
+ }
 }
 async function compress(file,max=1600,q=.75){
  const src=await decodeAny(file);
@@ -640,7 +659,7 @@ async function exportJson(){
 }
 
 /* ---------- install & notifications ---------- */
-const APP_VERSION="v4"; // keep in sync with VERSION in sw.js
+const APP_VERSION="v5"; // keep in sync with VERSION in sw.js
 let installEvt=null;
 const standalone=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
 const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
@@ -702,7 +721,16 @@ $("#vehSel").onchange=e=>{S.active=e.target.value;save();render()};
  S=S?{...defaults(),...S}:defaults();
  render();
  if(!S.vehicles.length)vehicleForm();
- if("serviceWorker" in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("sw.js").then(runNotifications).catch(console.error);
+ if("serviceWorker" in navigator&&location.protocol.startsWith("http")){
+  const had=!!navigator.serviceWorker.controller;let reloaded=false;
+  navigator.serviceWorker.register("sw.js").then(reg=>{
+   runNotifications();
+   // an installed app stays alive in the background, so look for a new version whenever it comes back to the front
+   document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")reg.update().catch(()=>{})});
+  }).catch(console.error);
+  // a new version took over: reload to run it, unless a form is open (it would lose what was typed)
+  navigator.serviceWorker.addEventListener("controllerchange",()=>{if(had&&!reloaded&&!$("#dlg").open){reloaded=true;location.reload()}});
+ }
  navigator.storage?.persist?.(); // ask the browser not to evict the data when space runs low
 })();
 </script>
