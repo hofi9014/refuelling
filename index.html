@@ -126,6 +126,7 @@ dialog.sheet{margin:auto auto 0;width:min(560px,100vw);max-width:100vw;border-ra
 .tl-i .t{font-weight:600}
 .tl-i .s{font-size:13px;color:var(--muted)}
 .tl-i .r{text-align:right;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+.leg{color:var(--accent);font-weight:600}
 .near{display:flex;flex-direction:column;gap:6px;margin-top:8px}
 .near button{justify-content:space-between;text-align:left}
 [hidden]{display:none!important}
@@ -187,7 +188,7 @@ period:"Okres",p12m:"Ostatnie 12 miesięcy",pAll:"Cały okres",monthly:"Koszty m
 totalCost:"Łączny koszt",perMonth:"Średnio na miesiąc",perKm:"Koszt na 1",distance:"Przejechano",visits:"Tankowań",station:"Stacja",cheapest:"najtaniej",share:"Udział",
 saleReport:"Raport do sprzedaży auta (PDF)",saleReportHint:"Historia serwisowa auta gotowa do pokazania kupującemu. W oknie drukowania wybierz „Zapisz jako PDF”.",incCosts:"Pokaż koszty serwisów",incStats:"Dołącz statystyki spalania i zużycia",incPhotos:"Dołącz zdjęcia faktur",
 vehicleHistory:"Historia pojazdu",generated:"Wygenerowano",trackedSince:"Dane prowadzone od",serviceHistory:"Historia serwisowa",summary:"Podsumowanie",attachments:"Faktury i paragony",entries:"Liczba wpisów serwisowych",trackedDist:"Udokumentowany przebieg",
-timeline:"Oś czasu",fillUp:"Tankowanie",charging:"Ładowanie",time:"Godzina",grade:"Rodzaj paliwa",lastValue:"Ostatnia wartość",calcHint:"Wpisz dowolne dwie z trzech wartości (ilość, cena, koszt) — trzecia wyliczy się sama.",
+sinceFill:"Od poprzedniego tankowania",sinceCharge:"Od poprzedniego ładowania",timeline:"Oś czasu",fillUp:"Tankowanie",charging:"Ładowanie",time:"Godzina",grade:"Rodzaj paliwa",lastValue:"Ostatnia wartość",calcHint:"Wpisz dowolne dwie z trzech wartości (ilość, cena, koszt) — trzecia wyliczy się sama.",
 nearby:"📍 Stacje w pobliżu",locating:"Ustalam lokalizację…",noStations:"Nie znaleziono stacji w promieniu 3 km.",gpsError:"Nie udało się ustalić lokalizacji. Zezwól aplikacji na dostęp do lokalizacji i włącz GPS.",stationsError:"Nie udało się pobrać listy stacji. Sprawdź połączenie z internetem.",
 fuelCard:"Paliwo",lastPrice:"Ostatnia cena",today:"dziś",daysAgo:"dni temu",prevMonth:"W poprzednim miesiącu",energyCosts:"Paliwo / prąd",trends:"Trendy",recent:"Ostatnie wpisy",
 fuelUse:"Zużycie paliwa",energyUse:"Zużycie energii",fuelPrices:"Ceny paliwa",chargePrices:"Ceny ładowania",monthlyFuel:"Miesięczne wydatki (paliwo)",costsWithFuel:"Koszty z paliwem",last:"Ostatnie",avg:"Śr.",change:"Zmiana",
@@ -222,7 +223,7 @@ period:"Period",p12m:"Last 12 months",pAll:"All time",monthly:"Monthly costs",by
 totalCost:"Total cost",perMonth:"Average per month",perKm:"Cost per 1",distance:"Distance driven",visits:"Fill-ups",station:"Station",cheapest:"cheapest",share:"Share",
 saleReport:"Vehicle history report (PDF)",saleReportHint:"Service history ready to show a buyer. In the print window choose “Save as PDF”.",incCosts:"Show service costs",incStats:"Include consumption statistics",incPhotos:"Attach invoice photos",
 vehicleHistory:"Vehicle history",generated:"Generated",trackedSince:"Records kept since",serviceHistory:"Service history",summary:"Summary",attachments:"Invoices and receipts",entries:"Service entries",trackedDist:"Documented distance",
-timeline:"Timeline",fillUp:"Fill-up",charging:"Charging",time:"Time",grade:"Fuel grade",lastValue:"Last value",calcHint:"Enter any two of amount, price and cost — the third is calculated.",
+sinceFill:"Since previous fill-up",sinceCharge:"Since previous charge",timeline:"Timeline",fillUp:"Fill-up",charging:"Charging",time:"Time",grade:"Fuel grade",lastValue:"Last value",calcHint:"Enter any two of amount, price and cost — the third is calculated.",
 nearby:"📍 Nearby stations",locating:"Finding your location…",noStations:"No stations found within 3 km.",gpsError:"Couldn't get your location. Allow location access for the app and turn on GPS.",stationsError:"Couldn't load the station list. Check your internet connection.",
 fuelCard:"Fuel",lastPrice:"Last price",today:"today",daysAgo:"days ago",prevMonth:"Last month",energyCosts:"Fuel / power",trends:"Trends",recent:"Recent entries",
 fuelUse:"Fuel consumption",energyUse:"Energy use",fuelPrices:"Fuel prices",chargePrices:"Charging prices",monthlyFuel:"Monthly fuel spending",costsWithFuel:"Costs incl. fuel",last:"Last",avg:"Avg",change:"Change",
@@ -460,6 +461,13 @@ function bindNearby(kind){
   box.querySelectorAll("button").forEach(b=>b.onclick=()=>{$("#f_place").value=st[b.dataset.i].label;box.innerHTML=""});
  };
 }
+/* Distance driven since the previous entry of the same kind (fill-up → fill-up, charge → charge). */
+function legs(list){const m={};list.slice().sort(byOdo).forEach((x,i,a)=>{if(i&&x.odo>a[i-1].odo)m[x.id]=x.odo-a[i-1].odo});return m}
+function legHint(list,self){ // live "last value: … → +… km" under the odometer field
+ const el=$("#f_odo"),sm=el.closest(".field").querySelector("small"),o=parseNum(el.value),u=U();if(!sm)return;
+ const p=list.filter(x=>x!==self&&(!o||x.odo<o)).sort((a,b)=>b.odo-a.odo)[0];
+ sm.innerHTML=p?`${t("lastValue")}: ${num(p.odo,0)} ${u.d}${o>p.odo?` → <b class="leg">+${num(o-p.odo,0)} ${u.d}</b>`:""}`:"";
+}
 function fuelForm(f){
  const V=veh(),u=U(),prev=mine(S.fuel).filter(x=>x!==f).sort((a,b)=>b.odo-a.odo)[0];
  openForm(t(f?"editFuel":"addFuel"),[
@@ -480,7 +488,7 @@ function fuelForm(f){
   const upd=()=>{const q=parseNum($("#f_qty").value);
    const w=[];if(V.tank&&q>+V.tank*1.02)w.push(`${t("tankWarn")} (${num(+V.tank,0)} ${u.v}).`);
    const ow=odoWarning(mine(S.fuel),f,$("#f_date").value,+$("#f_odo").value);if(ow)w.push(ow);
-   $("#fwarn").hidden=!w.length;$("#fwarn").innerHTML=w.map(esc).join("<br>")};
+   $("#fwarn").hidden=!w.length;$("#fwarn").innerHTML=w.map(esc).join("<br>");legHint(mine(S.fuel),f)};
   // any two of amount / price / cost give the third; the field typed longest ago is the one recalculated
   const keys=["qty","price","cost"],dec={qty:2,price:3,cost:2},val=k=>$("#f_"+k).value===""?null:parseNum($("#f_"+k).value);
   let order=f?["qty","price"]:[];
@@ -516,7 +524,7 @@ function chargeForm(c){
    if(V.battery&&k>+V.battery*1.25)w.push(`${t("chargeWarn")} (${num(+V.battery,1)} kWh).`);
    if([sf,st].some(x=>x!==""&&(parseNum(x)<0||parseNum(x)>100)))w.push(t("socWarn")+".");
    const ow=odoWarning(all,c,$("#f_date").value,+$("#f_odo").value);if(ow)w.push(ow);
-   $("#fwarn").hidden=!w.length;$("#fwarn").innerHTML=w.map(esc).join("<br>")};
+   $("#fwarn").hidden=!w.length;$("#fwarn").innerHTML=w.map(esc).join("<br>");legHint(all,c)};
   ["kwh","price","min","socFrom","socTo","odo","date"].forEach(k=>$("#f_"+k).addEventListener("input",upd));
   $("#f_ct").onchange=()=>{const l=lastOfType($("#f_ct").value);if(l){$("#f_price").value=l.price;if(l.place)$("#f_place").value=l.place}upd()};
   upd();bindNearby("charge")});
@@ -629,6 +637,7 @@ function viewDashboard(){
   ${kpi(trendArrow(s.at(-1),s.at(-2),lb),num(s.at(-1),2),cu,t(ic==="⚡"?"lastEcons":"lastCons"))}
   ${lp?kpi(trendArrow(+lp.price,pp?+pp.price:null,true),money(lp.price),"/"+unit,`${t("lastPrice")}<br><small>${fdate(lp.date)} · ${ago(lp.date)}</small>`):""}
   ${kpi("💰",money(st.costPer100),"",`${t("costPer100")} ${u.d}`)}
+  ${(()=>{const L=legs(st.list),l=st.list.map(x=>L[x.id]).filter(Boolean);return l.length?kpi("📏",num(l.at(-1),0),u.d,`${t(ic==="⚡"?"sinceCharge":"sinceFill")}<br><small>${t("avg")} ${num(l.reduce((a,b)=>a+b)/l.length,0)} ${u.d}</small>`):""})()}
   ${ic==="⚡"&&st.homeShare!=null?kpi("🏠",Math.round(st.homeShare*100)+"%","",t("homeShare")):""}
   ${ic==="⚡"&&st.savings!=null?kpi("💚",money(st.savings),"",t("savings")):""}</div>`;
  };
@@ -676,10 +685,10 @@ function trendSlides(V,f,e,costs){
  return out;
 }
 function allEntries(){
- const V=veh(),c=hasFuel(V)?consumption():null,e=hasCharge(V)?evStats():null,u=U();
+ const V=veh(),c=hasFuel(V)?consumption():null,e=hasCharge(V)?evStats():null,u=U(),lf=legs(mine(S.fuel)),lc=legs(mine(S.charges));
  return[
-  ...mine(S.fuel).map(x=>({type:"fuel",x,ic:"⛽",color:"var(--c-fuel)",title:t("fillUp"),amount:fuelTotal(x),act:"fuelEdit",sub:`${num(x.qty,2)} ${u.v}${x.grade?" · "+gradeLabel(x.grade):""}`,extra:c?.map[x.id]!=null?`${num(c.map[x.id],2)} ${u.cu}`:""})),
-  ...mine(S.charges).map(x=>({type:"charge",x,ic:"⚡",color:"var(--c-charge)",title:t("charging"),amount:chargeTotal(x),act:"chargeEdit",sub:`${num(x.kwh,1)} kWh · ${t("ct")[x.ct]||""}`,extra:e?.map[x.id]!=null?`${num(e.map[x.id],1)} ${u.ecu}`:""})),
+  ...mine(S.fuel).map(x=>({type:"fuel",x,leg:lf[x.id],ic:"⛽",color:"var(--c-fuel)",title:t("fillUp"),amount:fuelTotal(x),act:"fuelEdit",sub:`${num(x.qty,2)} ${u.v}${x.grade?" · "+gradeLabel(x.grade):""}`,extra:c?.map[x.id]!=null?`${num(c.map[x.id],2)} ${u.cu}`:""})),
+  ...mine(S.charges).map(x=>({type:"charge",x,leg:lc[x.id],ic:"⚡",color:"var(--c-charge)",title:t("charging"),amount:chargeTotal(x),act:"chargeEdit",sub:`${num(x.kwh,1)} kWh · ${t("ct")[x.ct]||""}`,extra:e?.map[x.id]!=null?`${num(e.map[x.id],1)} ${u.ecu}`:""})),
   ...mine(S.services).map(x=>({type:"cost",x,ic:KIND_IC[x.kind]||"📦",color:`var(--c-${GROUP[x.kind]||"oth"})`,title:x.title||kindLabel(x.kind),amount:+x.cost||0,act:"costEdit",sub:kindLabel(x.kind),extra:""}))
  ].sort((a,b)=>(b.x.date+(b.x.time||"")).localeCompare(a.x.date+(a.x.time||""))||(b.x.odo||0)-(a.x.odo||0));
 }
@@ -689,7 +698,7 @@ function tlItem(en){
  return`<div class="tl-i" data-act="${en.act}" data-id="${x.id}"><div class="tl-ic" style="background:${en.color}">${en.ic}</div><div class="main">
   <div class="t">${esc(en.title)}${x.photo?" 🧾":""}${en.type==="fuel"&&!x.full?` <span class="badge warn">${t("partial")}</span>`:""}</div>
   <div class="s">${day}${x.time?" · "+x.time:""} · ${esc(en.sub)}</div>
-  ${x.odo?`<div class="s">🧭 ${num(x.odo,0)} ${U().d}</div>`:""}${x.place?`<div class="s">📍 ${esc(x.place)}</div>`:""}</div>
+  ${x.odo?`<div class="s">🧭 ${num(x.odo,0)} ${U().d}${en.leg?` · <b class="leg" title="${t(en.type==="charge"?"sinceCharge":"sinceFill")}">+${num(en.leg,0)} ${U().d}</b>`:""}</div>`:""}${x.place?`<div class="s">📍 ${esc(x.place)}</div>`:""}</div>
   <div class="r">${money(en.amount)}${en.extra?`<div class="s" style="font-weight:400">${en.extra}</div>`:""}</div></div>`;
 }
 function viewFuel(){
@@ -836,7 +845,7 @@ async function exportJson(){
 }
 
 /* ---------- install & notifications ---------- */
-const APP_VERSION="v6"; // keep in sync with VERSION in sw.js
+const APP_VERSION="v7"; // keep in sync with VERSION in sw.js
 let installEvt=null;
 const standalone=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
 const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
