@@ -205,7 +205,6 @@ nearby:"📍 Stacje w pobliżu",locating:"Ustalam lokalizację…",noStations:"N
 fuelCard:"Paliwo",lastPrice:"Ostatnia cena",today:"dziś",daysAgo:"dni temu",prevMonth:"W poprzednim miesiącu",energyCosts:"Paliwo / prąd",trends:"Trendy",recent:"Ostatnie wpisy",
 fuelUse:"Zużycie paliwa",energyUse:"Zużycie energii",fuelPrices:"Ceny paliwa",chargePrices:"Ceny ładowania",monthlyFuel:"Miesięczne wydatki (paliwo)",costsWithFuel:"Koszty z paliwem",last:"Ostatnie",avg:"Śr.",change:"Zmiana",
 grades:{pb95:"Pb95",pb98:"Pb98",on:"ON",onp:"ON Premium",lpg:"LPG",cng:"CNG",e85:"E85",other:"Inne"},
-importFuelio:"Importuj z Fuelio (CSV)",fuelioHint:"W Fuelio: menu ☰ → Kopia zapasowa i synchronizacja → Eksport do CSV. Dane trafią do wybranego samochodu, powtórzone wpisy są pomijane.",fuelioOk:"Import z Fuelio zakończony. Tankowania: {n}, koszty: {c}.",fuelioErr:"Nie rozpoznano pliku z Fuelio. Upewnij się, że to eksport CSV z Fuelio.",
 app:"Aplikacja",install:"📲 Zainstaluj aplikację",installIos:"Na iPhonie: w Safari stuknij Udostępnij, a potem „Do ekranu początkowego”.",installed:"Aplikacja jest zainstalowana.",
 notifications:"Powiadomienia o terminach",notifOn:"🔔 Włącz powiadomienia",notifOff:"Wyłącz",notifEnabled:"Powiadomienia są włączone.",notifDenied:"Powiadomienia są zablokowane. Zezwól na nie w ustawieniach przeglądarki lub telefonu.",notifUnsupported:"Ta przeglądarka nie obsługuje powiadomień.",
 notifHint:"Przypomnienie przyjdzie 7 dni lub 500 km przed terminem i gdy termin minie. Gdy aplikacja jest zamknięta, działa to tylko w zainstalowanej aplikacji na Androidzie.",
@@ -241,7 +240,6 @@ nearby:"📍 Nearby stations",locating:"Finding your location…",noStations:"No
 fuelCard:"Fuel",lastPrice:"Last price",today:"today",daysAgo:"days ago",prevMonth:"Last month",energyCosts:"Fuel / power",trends:"Trends",recent:"Recent entries",
 fuelUse:"Fuel consumption",energyUse:"Energy use",fuelPrices:"Fuel prices",chargePrices:"Charging prices",monthlyFuel:"Monthly fuel spending",costsWithFuel:"Costs incl. fuel",last:"Last",avg:"Avg",change:"Change",
 grades:{pb95:"Petrol 95",pb98:"Petrol 98",on:"Diesel",onp:"Premium diesel",lpg:"LPG",cng:"CNG",e85:"E85",other:"Other"},
-importFuelio:"Import from Fuelio (CSV)",fuelioHint:"In Fuelio: menu ☰ → Backup & sync → Export to CSV. Data goes to the selected car; duplicates are skipped.",fuelioOk:"Imported from Fuelio: {n} fill-ups and {c} costs.",fuelioErr:"This doesn't look like a Fuelio file. Make sure it is a CSV export from Fuelio.",
 app:"App",install:"📲 Install app",installIos:"On iPhone: in Safari tap Share, then “Add to Home Screen”.",installed:"The app is installed.",
 notifications:"Due date notifications",notifOn:"🔔 Turn on notifications",notifOff:"Turn off",notifEnabled:"Notifications are on.",notifDenied:"Notifications are blocked. Allow them in your browser or phone settings.",notifUnsupported:"This browser does not support notifications.",
 notifHint:"You get a reminder 7 days or 500 km before the due date and again when it is overdue. While the app is closed this works only in the installed app on Android.",
@@ -273,7 +271,10 @@ const idb={
  async set(k,v){const db=await this.open();return new Promise((res,rej)=>{const tx=db.transaction("kv","readwrite");tx.objectStore("kv").put(v,k);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})}
 };
 let S,tab="dashboard",tlFilter="all",costFilter="all",period="12m";
-const save=()=>idb.set("state",S).catch(e=>alert(e));
+const save=()=>{
+ if(window.Capacitor?.isNativePlatform?.()){clearTimeout(save.t);save.t=setTimeout(()=>scheduleNative().catch(console.warn),1500)} // keep Android reminders in step
+ return idb.set("state",S).catch(e=>alert(e));
+};
 const defaults=()=>{const pl=(navigator.language||"").toLowerCase().startsWith("pl");return{settings:{lang:pl?"pl":"en",currency:pl?"PLN":"EUR",units:"metric"},vehicles:[],active:null,fuel:[],charges:[],services:[],reminders:[]}};
 
 /* ---------- helpers ---------- */
@@ -459,7 +460,8 @@ function bindNearby(kind){
  $("#nearBtn").onclick=async()=>{
   const box=$("#nearList");box.innerHTML=`<span class="muted">${t("locating")}</span>`;
   let pos;
-  try{pos=await new Promise((res,rej)=>navigator.geolocation.getCurrentPosition(res,rej,{enableHighAccuracy:true,timeout:15000,maximumAge:60000}))}
+  const opt={enableHighAccuracy:true,timeout:15000,maximumAge:60000};
+  try{pos=isNative?await Cap("Geolocation").getCurrentPosition(opt):await new Promise((res,rej)=>navigator.geolocation.getCurrentPosition(res,rej,opt))}
   catch{box.innerHTML=`<div class="warnbox">${t("gpsError")}</div>`;return}
   const{latitude:la,longitude:lo}=pos.coords,am=kind==="charge"?"charging_station":"fuel";
   let els;
@@ -793,10 +795,9 @@ function viewSettings(){
  <h3>${t("app")} <span style="text-transform:none;font-weight:400">· ${APP_VERSION}</span></h3><div class="card">
   ${standalone()?`<p style="margin-top:0">✅ ${t("installed")}</p>`:installEvt?`<p style="margin-top:0"><button class="primary" data-act="install">${t("install")}</button></p>`:isIOS?`<p class="muted" style="margin-top:0">${t("installIos")}</p>`:""}
   <b>${t("notifications")}</b><p class="muted" style="font-size:13px;margin:4px 0 10px">${t("notifHint")}</p>
-  ${!("Notification" in window)?`<p class="muted">${t("notifUnsupported")}</p>`:s.notify&&Notification.permission==="granted"?`<div class="row"><span>✅ ${t("notifEnabled")}</span><button class="small" data-act="notifOff">${t("notifOff")}</button></div>`:Notification.permission==="denied"?`<p class="warnbox">${t("notifDenied")}</p>`:`<button data-act="notifOn">${t("notifOn")}</button>`}
+  ${!isNative&&!("Notification" in window)?`<p class="muted">${t("notifUnsupported")}</p>`:s.notify&&(isNative||Notification.permission==="granted")?`<div class="row"><span>✅ ${t("notifEnabled")}</span><button class="small" data-act="notifOff">${t("notifOff")}</button></div>`:!isNative&&Notification.permission==="denied"?`<p class="warnbox">${t("notifDenied")}</p>`:`<button data-act="notifOn">${t("notifOn")}</button>`}
  </div>
- <h3>${t("backup")}</h3><div class="card"><p class="muted" style="margin-top:0">${t("storageInfo")}<br>${t("lastBackup")}: <b>${S.lastBackup?fdate(S.lastBackup):t("never")}</b></p><div class="row"><button data-act="export">⬇ ${t("export")}</button><button data-act="csv">⬇ ${t("exportCsv")}</button><label class="btn">⬆ ${t("import")}<input type="file" accept="application/json,.json" id="importFile" hidden></label></div>
-  <hr style="border:0;border-top:1px solid var(--line);margin:14px 0"><label class="btn">⛽ ${t("importFuelio")}<input type="file" accept=".csv,text/csv,text/comma-separated-values,text/plain" id="fuelioFile" hidden></label><p class="muted" style="font-size:13px;margin:6px 0 0">${t("fuelioHint")}</p></div>`;
+ <h3>${t("backup")}</h3><div class="card"><p class="muted" style="margin-top:0">${t("storageInfo")}<br>${t("lastBackup")}: <b>${S.lastBackup?fdate(S.lastBackup):t("never")}</b></p><div class="row"><button data-act="export">⬇ ${t("export")}</button><button data-act="csv">⬇ ${t("exportCsv")}</button><label class="btn">⬆ ${t("import")}<input type="file" accept="application/json,.json" id="importFile" hidden></label></div></div>`;
 }
 
 /* ---------- vehicle history report (printed to PDF by the browser) ---------- */
@@ -821,7 +822,10 @@ function printReport(o){
  ${photos.length?`<h3>${t("attachments")}</h3><div class="att">${photos.map(s=>`<figure><img src="${s.photo}" alt=""><figcaption>${fdate(s.date)} · ${esc(s.title||kindLabel(s.kind))}</figcaption></figure>`).join("")}</div>`:""}
  <p class="foot">Refuelling · ${fdate(today())}</p></div>`;
  const prev=document.title;document.title=`${t("vehicleHistory")} - ${V.name}`;
- setTimeout(()=>{print();document.title=prev},300);
+ setTimeout(()=>{
+  if(isNative)Cap("Printer").print({name:document.title}).catch(e=>alert(e?.message||e)).finally(()=>document.title=prev);
+  else{print();document.title=prev}
+ },300);
 }
 
 /* ---------- render ---------- */
@@ -836,7 +840,6 @@ function render(){
  $("#tabs").innerHTML=tabs.map(([k,ic,l])=>`<button class="${k===tab?"on":""}" data-act="tab" data-id="${k}"><span class="ic">${ic}${k==="reminders"&&due?` <span class="badge danger">${due}</span>`:""}</span><span class="lbl">${l}</span></button>`).join("");
  $("#app").innerHTML={dashboard:viewDashboard,fuel:viewFuel,costs:viewCosts,reminders:viewReminders,reports:viewReports,settings:viewSettings}[tab]();
  const imp=$("#importFile");if(imp)imp.onchange=importData;
- const fio=$("#fuelioFile");if(fio)fio.onchange=importFuelio;
  $("#fab").hidden=!V||tab==="settings";
  const car=$("#carousel");
  if(car)car.onscroll=()=>{const i=Math.round(car.scrollLeft/(car.firstElementChild.offsetWidth+12));document.querySelectorAll("#dots i").forEach((d,j)=>d.classList.toggle("on",i===j))};
@@ -847,7 +850,14 @@ function quickAdd(){
  d.className="sheet";d.innerHTML=`<div class="sheet-list">${items.map(([a,ic,l])=>`<button data-act="${a}"><span class="ic">${ic}</span>${l}</button>`).join("")}</div>`;
  d.showModal();
 }
-function download(name,data,type){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([data],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+const Cap=name=>window.Capacitor?.Plugins?.[name]; // native plugins of the store app
+async function shareFile(name,data){ // store app: write the file, then open Android's share sheet (Drive, Gmail, Files…)
+ const{uri}=await Cap("Filesystem").writeFile({path:name,data,directory:"CACHE",encoding:"utf8"});
+ await Cap("Share").share({title:name,files:[uri]});
+}
+function download(name,data,type){
+ if(isNative)return shareFile(name,data).catch(e=>{if(!/cancel/i.test(e?.message||""))alert(e?.message||e)});
+ const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([data],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 async function importData(e){
  try{const d=JSON.parse(await e.target.files[0].text());if(!d.settings||!Array.isArray(d.vehicles))throw 0;S={...defaults(),...d};await save();alert(t("importOk"));render()}catch{alert(t("importErr"))}
 }
@@ -863,7 +873,7 @@ async function exportJson(){
 }
 
 /* ---------- install & notifications ---------- */
-const APP_VERSION="v8"; // keep in sync with VERSION in sw.js
+const APP_VERSION="v9"; // keep in sync with VERSION in sw.js
 let installEvt=null;
 const isNative=!!window.Capacitor?.isNativePlatform?.(); // running as the Google Play / App Store app
 const standalone=()=>isNative||matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
@@ -871,81 +881,46 @@ const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
 addEventListener("beforeinstallprompt",e=>{e.preventDefault();installEvt=e;if(tab==="settings")render()});
 addEventListener("appinstalled",()=>{installEvt=null;render()});
 async function enableNotifications(){
+ if(isNative){
+  if((await Cap("LocalNotifications").requestPermissions()).display!=="granted"){alert(t("notifDenied"));return}
+  S.settings.notify=true;await save();render();runNotifications();return;
+ }
  if((await Notification.requestPermission())!=="granted"){render();return}
  S.settings.notify=true;await save();
  try{const reg=await navigator.serviceWorker?.ready;if(reg?.periodicSync&&(await navigator.permissions.query({name:"periodic-background-sync"})).state==="granted")await reg.periodicSync.register("reminders",{minInterval:12*3600e3})}catch(e){console.warn(e)}
  render();runNotifications();
 }
+/* Store app: Android itself shows reminders at 9:00 seven days before and on the due date, even when the app is closed.
+   The schedule is rebuilt after every change. Odometer-based reminders can only be checked when the app is opened. */
+const nid=s=>[...String(s)].reduce((h,c)=>(h*31+c.charCodeAt(0))|0,7)&0x3fffffff;
+async function scheduleNative(){
+ const LN=Cap("LocalNotifications");if(!LN)return;
+ const pending=(await LN.getPending()).notifications;
+ if(pending.length)await LN.cancel({notifications:pending.map(p=>({id:p.id}))});
+ if(!S.settings.notify)return;
+ const pl=S.settings.lang==="pl",list=[];
+ for(const r of S.reminders){
+  const V=S.vehicles.find(v=>v.id===r.vid);if(r.done||!r.date||!V)continue;
+  for(const days of [7,0]){
+   const at=new Date(r.date+"T09:00");at.setDate(at.getDate()-days);if(at.getTime()<=Date.now())continue;
+   list.push({id:nid(r.id+":"+days),title:days?(pl?"Zbliża się termin":"Coming up"):(pl?"Dziś mija termin":"Due today"),body:`${V.name}: ${r.title}`,schedule:{at,allowWhileIdle:true}});
+  }
+ }
+ if(list.length)await LN.schedule({notifications:list.slice(0,60)});
+}
 async function runNotifications(){
+ if(isNative){
+  if(!S.settings.notify)return;
+  await scheduleNative();
+  const n=(await idb.get("notified"))||{},due=dueNotifications(S,n,today());
+  if(due.length)await Cap("LocalNotifications").schedule({notifications:due.map(x=>({id:nid(x.key),title:x.title,body:x.body,schedule:{at:new Date(Date.now()+1500)}}))});
+  due.forEach(x=>n[x.key]=today());await idb.set("notified",n);return;
+ }
  if(!S.settings.notify||!("Notification" in window)||Notification.permission!=="granted")return;
  const reg=await navigator.serviceWorker?.ready;if(!reg)return;
  const n=(await idb.get("notified"))||{};
  for(const x of dueNotifications(S,n,today())){await reg.showNotification(x.title,{body:x.body,tag:x.tag,icon:"icons/icon-192.png",badge:"icons/favicon-32.png"});n[x.key]=today()}
  await idb.set("notified",n);
-}
-
-/* ---------- import from Fuelio ---------- */
-function parseCsv(text){
- const rows=[];let row=[],cell="",q=false;
- for(let i=0;i<text.length;i++){const ch=text[i];
-  if(q){if(ch==='"'){if(text[i+1]==='"'){cell+='"';i++}else q=false}else cell+=ch}
-  else if(ch==='"')q=true;
-  else if(ch===","){row.push(cell);cell=""}
-  else if(ch==="\n"||ch==="\r"){if(ch==="\r"&&text[i+1]==="\n")i++;row.push(cell);rows.push(row);row=[];cell=""}
-  else cell+=ch}
- if(cell||row.length){row.push(cell);rows.push(row)}
- return rows;
-}
-/* A Fuelio CSV export holds sections ("## Vehicle", "## Log", "## CostCategories", "## Costs"), each with its own header row.
-   Columns are matched by name, so extra or reordered columns don't matter. */
-function fuelioSections(text){
- const sec={};let name=null,head=null;
- for(const r of parseCsv(text.replace(/^﻿/,""))){
-  if(r.every(c=>c.trim()===""))continue;
-  const c0=r[0].trim();
-  if(c0.startsWith("##")){name=c0.replace(/^#+\s*/,"").toLowerCase().replace(/\s+/g,"");head=null;sec[name]=[];continue}
-  if(!name)continue;
-  if(!head){head=r.map(h=>h.trim().toLowerCase());continue}
-  const o={};head.forEach((h,i)=>o[h]=(r[i]??"").trim());sec[name].push(o);
- }
- return sec;
-}
-const col=(o,...names)=>{for(const k in o)if(names.some(n=>k===n||k.startsWith(n+" ")||k.startsWith(n+"(")))return o[k];return""};
-function fuelioDate(s){
- let m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})(?:[ T](\d{1,2}):(\d{2}))?/);
- if(m)return[`${m[1]}-${pad(m[2])}-${pad(m[3])}`,m[4]?`${pad(m[4])}:${m[5]}`:""];
- m=s.match(/^(\d{1,2})[./-](\d{1,2})[./-](\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
- if(m)return[`${m[3]}-${pad(m[2])}-${pad(m[1])}`,m[4]?`${pad(m[4])}:${m[5]}`:""];
- return[null,""];
-}
-const costKind=n=>([[/napraw|repair/,"repair"],[/opon|tyre|tire/,"tyres"],[/przegl[aą]d tech|badanie tech|inspect|\bmot\b/,"inspection"],[/serwis|servic|olej|oil|przegl/,"service"],[/ubezp|insur|\boc\b|\bac\b/,"insurance"],[/podat|\btax|rejestr|op[lł]at/,"tax"],[/leasing|\brat[aty]|loan|kredyt/,"leasing"],[/parking/,"parking"],[/autostr|toll|winiet/,"tolls"],[/myjn|wash/,"wash"],[/mandat|fine/,"fines"],[/akcesor|access/,"accessories"]].find(([r])=>r.test(n))||[0,"other"])[1];
-async function importFuelio(e){
- const file=e.target.files[0];if(!file)return;e.target.value="";
- try{
-  const sec=fuelioSections(await file.text()),log=sec.log;
-  if(!log)throw new Error("no ## Log section");
-  const nn=v=>v==null||v===""?null:parseNum(v),vrow=sec.vehicle?.[0]||{};
-  let V=veh();
-  if(!V){V={id:uid(),name:col(vrow,"name")||"Fuelio",fuelType:"petrol"};S.vehicles.push(V);S.active=V.id}
-  V.plate||=col(vrow,"plate");V.vin||=col(vrow,"vin");V.year||=nn(col(vrow,"year"));V.tank||=nn(col(vrow,"tank1capacity"));
-  const seen=new Set(mine(S.fuel).map(f=>f.date+"|"+f.odo));let nf=0,nc=0;
-  for(const o of log){
-   const[date,time]=fuelioDate(col(o,"data","date")),odo=nn(col(o,"odo")),qty=nn(col(o,"fuel")),cost=nn(col(o,"price")),vp=nn(col(o,"volumeprice"));
-   if(!date||odo==null||!qty||seen.has(date+"|"+odo))continue;
-   seen.add(date+"|"+odo);
-   S.fuel.push({id:uid(),vid:V.id,date,time,odo,qty,price:vp||(cost!=null?+(cost/qty).toFixed(3):null),cost,full:col(o,"full")!=="0",grade:defGrade(V),place:col(o,"city"),note:col(o,"notes")});nf++;
-  }
-  const cats={};(sec.costcategories||[]).forEach(c=>cats[col(c,"costtypeid","id")]=col(c,"name"));
-  const seenC=new Set(mine(S.services).map(s=>`${s.date}|${s.title}|${s.cost}`));
-  for(const o of sec.costs||[]){
-   if(col(o,"isincome")==="1"||col(o,"istemplate")==="1")continue;
-   const[date]=fuelioDate(col(o,"date")),title=col(o,"costtitle","title"),cost=nn(col(o,"cost")),key=`${date}|${title}|${cost}`;
-   if(!date||seenC.has(key))continue;
-   seenC.add(key);
-   S.services.push({id:uid(),vid:V.id,kind:costKind(`${cats[col(o,"costtypeid")]||""} ${title}`.toLowerCase()),title,date,odo:nn(col(o,"odo")),cost,place:"",note:col(o,"notes")});nc++;
-  }
-  await save();render();alert(t("fuelioOk").replace("{n}",nf).replace("{c}",nc));
- }catch(err){console.error(err);alert(`${t("fuelioErr")}\n\n[${err.message||err}]`)}
 }
 
 function exportCsv(){
@@ -1002,6 +977,7 @@ $("#vehSel").onchange=e=>{S.active=e.target.value;save();render()};
   // a new version took over: reload to run it, unless a form is open (it would lose what was typed)
   navigator.serviceWorker.addEventListener("controllerchange",()=>{if(had&&!reloaded&&!$("#dlg").open){reloaded=true;location.reload()}});
  }
+ if(isNative)runNotifications().catch(console.warn);
  navigator.storage?.persist?.(); // ask the browser not to evict the data when space runs low
 })();
 </script>
