@@ -260,7 +260,17 @@ const UNITS={
  uk:{label:"mi · gal (UK) · mpg",d:"mi",v:"gal",cons:(q,d)=>d/q,cu:"mpg",econs:(e,d)=>d/e,ecu:"mi/kWh",used:(c,d)=>d/c}
 };
 const ZOOMS=[1,1.15,1.3,1.5,1.75,2];
-const CURRENCIES=["PLN","EUR","USD","GBP","CHF","CZK","SEK","NOK","DKK","HUF","RON","UAH","CAD","AUD","JPY","INR","BRL","MXN","TRY","ZAR"];
+const CURRENCIES=["PLN","EUR","USD","GBP","CHF","CZK","SEK","NOK","DKK","ISK","HUF","RON","UAH","CAD","AUD","JPY","INR","BRL","MXN","TRY","ZAR"];
+/* Polish and English are built in; the other languages live in lang/<code>.js and load when chosen.
+   [native name, Intl locale, default currency for a first start in that language] */
+const LANGS={pl:["Polski","pl-PL","PLN"],en:["English","en-GB","EUR"],de:["Deutsch","de-DE","EUR"],fr:["Français","fr-FR","EUR"],es:["Español","es-ES","EUR"],
+ it:["Italiano","it-IT","EUR"],pt:["Português","pt-PT","EUR"],nl:["Nederlands","nl-NL","EUR"],da:["Dansk","da-DK","DKK"],sv:["Svenska","sv-SE","SEK"],
+ nb:["Norsk","nb-NO","NOK"],fi:["Suomi","fi-FI","EUR"],is:["Íslenska","is-IS","ISK"],cs:["Čeština","cs-CZ","CZK"],sk:["Slovenčina","sk-SK","EUR"],
+ hu:["Magyar","hu-HU","HUF"],ro:["Română","ro-RO","RON"],bg:["Български","bg-BG","EUR"],uk:["Українська","uk-UA","UAH"],tr:["Türkçe","tr-TR","TRY"],
+ hi:["हिन्दी","hi-IN","INR"],ja:["日本語","ja-JP","JPY"]};
+const loadLang=code=>I18N[code]||!LANGS[code]?Promise.resolve():new Promise(res=>{
+ const s=document.createElement("script");s.src=`lang/${code}.js`;s.onload=res;s.onerror=()=>{console.warn("missing language",code);res()};document.head.appendChild(s);
+});
 const GROUP={service:"svc",repair:"svc",tyres:"svc",inspection:"svc",insurance:"fix",tax:"fix",leasing:"fix",parking:"oth",tolls:"oth",wash:"oth",fines:"oth",accessories:"oth",other:"oth"};
 const KIND_IC={service:"🔧",repair:"🛠️",tyres:"🛞",inspection:"📋",insurance:"🛡️",tax:"🏛️",leasing:"💳",parking:"🅿️",tolls:"🛣️",wash:"🧽",fines:"🚓",accessories:"🧰",other:"📦"};
 const HIST=["service","repair","tyres","inspection"];
@@ -280,16 +290,20 @@ const save=()=>{
  if(window.Capacitor?.isNativePlatform?.()){clearTimeout(save.t);save.t=setTimeout(()=>scheduleNative().catch(console.warn),1500)} // keep Android reminders in step
  return idb.set("state",S).catch(e=>alert(e));
 };
-const defaults=()=>{const pl=(navigator.language||"").toLowerCase().startsWith("pl");return{settings:{lang:pl?"pl":"en",currency:pl?"PLN":"EUR",units:"metric"},vehicles:[],active:null,fuel:[],charges:[],services:[],reminders:[]}};
+const defaults=()=>{
+ const nav=(navigator.language||"en").toLowerCase(),code=nav.split("-")[0]==="no"||nav.split("-")[0]==="nn"?"nb":nav.split("-")[0],lang=LANGS[code]?code:"en";
+ const currency=nav==="en-us"?"USD":nav==="en-gb"?"GBP":nav==="pt-br"?"BRL":LANGS[lang][2];
+ return{settings:{lang,currency,units:nav==="en-us"?"us":"metric"},vehicles:[],active:null,fuel:[],charges:[],services:[],reminders:[]};
+};
 
 /* ---------- helpers ---------- */
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const t=k=>I18N[S.settings.lang][k]??I18N.en[k]??k;
+const t=k=>I18N[S.settings.lang]?.[k]??I18N.en[k]??k;
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 const U=()=>UNITS[S.settings.units];
 const cur=()=>S.settings.currency;
-const loc=()=>S.settings.lang==="pl"?"pl-PL":/^en/i.test(navigator.language)?navigator.language:"en-GB";
+const loc=()=>S.settings.lang==="en"&&/^en/i.test(navigator.language)?navigator.language:(LANGS[S.settings.lang]||LANGS.en)[1];
 const num=(v,d=1)=>v==null||!isFinite(v)?"—":new Intl.NumberFormat(loc(),{maximumFractionDigits:d,minimumFractionDigits:d}).format(v);
 const money=v=>v==null||!isFinite(v)?"—":new Intl.NumberFormat(loc(),{style:"currency",currency:cur()}).format(v);
 const moneyShort=v=>new Intl.NumberFormat(loc(),{style:"currency",currency:cur(),notation:"compact",maximumFractionDigits:1}).format(v);
@@ -791,7 +805,7 @@ function viewSettings(){
  const s=S.settings;
  return`<h2>${t("settings")}</h2>
  <div class="card"><div class="grid2">
-  <label class="field"><span>${t("language")}</span><select data-set="lang"><option value="pl" ${s.lang==="pl"?"selected":""}>Polski</option><option value="en" ${s.lang==="en"?"selected":""}>English</option></select></label>
+  <label class="field"><span>${t("language")}</span><select data-set="lang">${Object.entries(LANGS).map(([k,[n]])=>`<option value="${k}" ${s.lang===k?"selected":""}>${n}</option>`).join("")}</select></label>
   <label class="field"><span>${t("currency")}</span><select data-set="currency">${CURRENCIES.map(c=>`<option ${c===s.currency?"selected":""}>${c}</option>`).join("")}</select></label>
  </div><label class="field" style="margin-top:12px"><span>🔍 ${t("textSize")}</span><select data-set="zoom">${ZOOMS.map(z=>`<option value="${z}" ${z==(s.zoom||1)?"selected":""}>${Math.round(z*100)}%${z==1?` (${t("normal")})`:""}</option>`).join("")}</select><small>${t("textSizeHint")}</small></label>
  <label class="field" style="margin-top:12px"><span>${t("units")}</span><select data-set="units">${Object.entries(UNITS).map(([k,v])=>`<option value="${k}" ${k===s.units?"selected":""}>${v.label} · ${v.ecu}</option>`).join("")}</select></label></div>
@@ -894,7 +908,7 @@ function demoState(lang){
 }
 
 /* ---------- install & notifications ---------- */
-const APP_VERSION="v10"; // keep in sync with VERSION in sw.js
+const APP_VERSION="v11"; // keep in sync with VERSION in sw.js
 let installEvt=null;
 const isNative=!!window.Capacitor?.isNativePlatform?.(); // running as the Google Play / App Store app
 const standalone=()=>isNative||matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
@@ -978,7 +992,7 @@ document.addEventListener("click",e=>{
  A[b.dataset.act]?.();
 });
 document.addEventListener("change",e=>{
- const k=e.target.dataset?.set;if(k){S.settings[k]=e.target.value;save();render()}
+ const k=e.target.dataset?.set;if(k){S.settings[k]=e.target.value;save();if(k==="lang")loadLang(e.target.value).then(render);else render()}
  if(e.target.id==="periodSel"){period=e.target.value;render()}
 });
 $("#vehSel").onchange=e=>{S.active=e.target.value;save();render()};
@@ -987,6 +1001,7 @@ $("#vehSel").onchange=e=>{S.active=e.target.value;save();render()};
  const qs=new URLSearchParams(location.search);
  if(!qs.has("demo"))try{S=await idb.get("state")}catch(e){console.error(e)}
  S=S?{...defaults(),...S}:defaults();
+ await loadLang(qs.get("lang")||S.settings.lang);
  if(qs.has("demo")){S=demoState(qs.get("lang")||S.settings.lang);tab=qs.get("tab")||tab;if(qs.has("z"))S.settings.zoom=+qs.get("z")} // sample data for store screenshots; never saved
  render();
  if(S.demo){if(qs.get("open")==="fuel")fuelForm();if(qs.get("open")==="fab")quickAdd();if(qs.get("at")==="trends")for(const el of [...$("#app").children]){if(el.nextElementSibling?.id==="carousel")break;el.hidden=true}}

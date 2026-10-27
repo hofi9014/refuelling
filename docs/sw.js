@@ -1,10 +1,11 @@
 // Bump VERSION on every release so phones pick up the new files.
-const VERSION = "v10";
+const VERSION = "v11";
 const CACHE = "refuelling-" + VERSION;
 // Big libraries in vendor/ are cached on first use, in a cache kept across versions (rename it when a library changes).
 const VENDOR_CACHE = "refuelling-vendor-1";
 const ASSETS = ["./", "./index.html", "./notify.js", "./manifest.webmanifest",
-  "./icons/icon-192.png", "./icons/icon-512.png", "./icons/maskable-512.png", "./icons/apple-touch-icon.png", "./icons/favicon-32.png"];
+  "./icons/icon-192.png", "./icons/icon-512.png", "./icons/maskable-512.png", "./icons/apple-touch-icon.png", "./icons/favicon-32.png",
+  ...["de", "fr", "es", "it", "pt", "nl", "da", "sv", "nb", "fi", "is", "cs", "sk", "hu", "ro", "bg", "uk", "tr", "hi", "ja"].map(l => `./lang/${l}.js`)];
 
 importScripts("notify.js");
 
