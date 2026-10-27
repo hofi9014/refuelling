@@ -16,8 +16,10 @@
 @media (prefers-color-scheme:dark){:root{--bg:#0d1419;--card:#16212a;--text:#e6edf3;--muted:#93a1ae;--line:#26343f;--accent:#2dd4bf;--accent-soft:#123a36;--on-accent:#04201d;--warn:#f59e0b;--warn-soft:#3a2a10;--danger:#f87171;--danger-soft:#3b1717;
  --c-fuel:#2dd4bf;--c-charge:#60a5fa;--c-svc:#fbbf24;--c-fix:#a78bfa;--c-oth:#94a3b8}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:84px}
-header{position:sticky;top:0;z-index:5;background:var(--accent);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:10px}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:calc(84px + var(--sab))}
+/* Safe areas: the Android app draws edge-to-edge and Capacitor puts the bar sizes in --safe-area-inset-*; browsers/iOS use env(). */
+:root{--sat:var(--safe-area-inset-top,env(safe-area-inset-top,0px));--sab:var(--safe-area-inset-bottom,env(safe-area-inset-bottom,0px))}
+header{position:sticky;top:0;z-index:5;background:var(--accent);color:#fff;padding:calc(12px + var(--sat)) 16px 12px;display:flex;align-items:center;gap:10px}
 @media (prefers-color-scheme:dark){header{background:#0f3d39}}
 header h1{font-size:18px;margin:0;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 select{max-width:100%}
@@ -28,7 +30,7 @@ nav .lbl{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowra
 header select{background:rgba(255,255,255,.15);color:#fff;border:0;border-radius:8px;padding:6px 8px;font:inherit;max-width:55vw;width:auto}
 header select option{color:#000}
 main{max-width:860px;margin:0 auto;padding:16px}
-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom);z-index:5}
+nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:var(--sab);z-index:5}
 nav button{flex:1;max-width:150px;background:none;border:0;border-radius:0;color:var(--muted);padding:9px 2px 8px;font:inherit;font-size:11px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0}
 nav button .ic{font-size:20px;line-height:1}
 nav button.on{color:var(--accent);font-weight:600}
@@ -102,9 +104,9 @@ svg text{fill:var(--muted);font-size:11px}
 .tbl tr:last-child td{border-bottom:0}
 .tbl .n{text-align:right}
 .scroll{overflow-x:auto}
-#fab{position:fixed;right:16px;bottom:calc(74px + env(safe-area-inset-bottom));width:58px;height:58px;border-radius:18px;background:var(--accent);color:var(--on-accent);border:0;font-size:30px;justify-content:center;padding:0;box-shadow:0 6px 18px rgba(0,0,0,.28);z-index:6}
+#fab{position:fixed;right:16px;bottom:calc(74px + var(--sab));width:58px;height:58px;border-radius:18px;background:var(--accent);color:var(--on-accent);border:0;font-size:30px;justify-content:center;padding:0;box-shadow:0 6px 18px rgba(0,0,0,.28);z-index:6}
 @media (min-width:900px){#fab{right:calc(50% - 430px)}}
-dialog.sheet{margin:auto auto 0;width:min(560px,100vw);max-width:100vw;border-radius:20px 20px 0 0;padding-bottom:env(safe-area-inset-bottom)}
+dialog.sheet{margin:auto auto 0;width:min(560px,100vw);max-width:100vw;border-radius:20px 20px 0 0;padding-bottom:var(--sab)}
 .sheet-list{display:flex;flex-direction:column;padding:12px 8px}
 .sheet-list button{border:0;background:none;justify-content:flex-start;gap:18px;padding:15px 16px;font-size:16px;border-radius:12px}
 .sheet-list button:hover{background:var(--bg)}
@@ -873,7 +875,7 @@ async function exportJson(){
 }
 
 /* ---------- install & notifications ---------- */
-const APP_VERSION="v9"; // keep in sync with VERSION in sw.js
+const APP_VERSION="v10"; // keep in sync with VERSION in sw.js
 let installEvt=null;
 const isNative=!!window.Capacitor?.isNativePlatform?.(); // running as the Google Play / App Store app
 const standalone=()=>isNative||matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
