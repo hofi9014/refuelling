@@ -1,5 +1,10 @@
 apply plugin: 'com.android.application'
 
+// Upload key for Google Play. signing/keystore.properties and the .jks file never go to git — keep a backup of both.
+def signingProps = new Properties()
+def signingFile = rootProject.file('../signing/keystore.properties')
+if (signingFile.exists()) signingFile.withInputStream { signingProps.load(it) }
+
 android {
     namespace = "com.refuelling.app"
     compileSdk = rootProject.ext.compileSdkVersion
@@ -16,8 +21,19 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        release {
+            if (signingProps['storeFile']) {
+                storeFile rootProject.file('../signing/' + signingProps['storeFile'])
+                storePassword signingProps['storePassword']
+                keyAlias signingProps['keyAlias']
+                keyPassword signingProps['keyPassword']
+            }
+        }
+    }
     buildTypes {
         release {
+            if (signingProps['storeFile']) signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

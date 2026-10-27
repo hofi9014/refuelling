@@ -71,7 +71,9 @@ button.small{padding:4px 10px;font-size:13px}
 .badge.warn{background:var(--warn-soft);color:var(--warn)}
 .badge.danger{background:var(--danger-soft);color:var(--danger)}
 .empty{text-align:center;color:var(--muted);padding:26px 10px}
-dialog{border:0;border-radius:var(--radius);padding:0;width:min(520px,calc(100vw - 24px));background:var(--card);color:var(--text);max-height:90vh}
+/* with the magnifier (CSS zoom) on, viewport units are not zoomed but px are, so overlays size themselves with --vw/--vh */
+:root{--vw:calc(100vw / var(--zoom,1));--vh:calc(100vh / var(--zoom,1))}
+dialog{border:0;border-radius:var(--radius);padding:0;width:min(520px,calc(var(--vw) - 24px));background:var(--card);color:var(--text);max-height:calc(var(--vh) * .9)}
 dialog::backdrop{background:rgba(0,0,0,.45)}
 dialog form{padding:18px;display:flex;flex-direction:column;gap:12px}
 .field{display:flex;flex-direction:column;gap:4px}
@@ -85,9 +87,9 @@ textarea{min-height:70px;resize:vertical}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .live{font-weight:600;color:var(--accent)}
 .warnbox{background:var(--warn-soft);color:var(--warn);padding:8px 10px;border-radius:10px;font-size:13px}
-#lightbox{background:transparent;width:auto;max-width:96vw}
-#lightbox img{max-width:96vw;max-height:88vh;display:block;border-radius:10px;cursor:zoom-in}
-#lightbox.big{width:100vw;max-width:100vw;height:100vh;max-height:100vh;margin:0;overflow:auto;background:#000;border-radius:0}
+#lightbox{background:transparent;width:auto;max-width:calc(var(--vw) * .96)}
+#lightbox img{max-width:calc(var(--vw) * .96);max-height:calc(var(--vh) * .88);display:block;border-radius:10px;cursor:zoom-in}
+#lightbox.big{width:var(--vw);max-width:var(--vw);height:var(--vh);max-height:var(--vh);margin:0;overflow:auto;background:#000;border-radius:0}
 #lightbox.big img{max-width:none;max-height:none;width:250%;border-radius:0;cursor:zoom-out}
 #zoomBtn{background:rgba(255,255,255,.15);color:#fff;border:0;padding:6px 10px;font-size:14px;font-weight:600;white-space:nowrap}
 svg text{fill:var(--muted);font-size:11px}
@@ -106,7 +108,7 @@ svg text{fill:var(--muted);font-size:11px}
 .scroll{overflow-x:auto}
 #fab{position:fixed;right:16px;bottom:calc(74px + var(--sab));width:58px;height:58px;border-radius:18px;background:var(--accent);color:var(--on-accent);border:0;font-size:30px;justify-content:center;padding:0;box-shadow:0 6px 18px rgba(0,0,0,.28);z-index:6}
 @media (min-width:900px){#fab{right:calc(50% - 430px)}}
-dialog.sheet{margin:auto auto 0;width:min(560px,100vw);max-width:100vw;border-radius:20px 20px 0 0;padding-bottom:var(--sab)}
+dialog.sheet{margin:auto auto 0;width:min(560px,var(--vw));max-width:var(--vw);border-radius:20px 20px 0 0;padding-bottom:var(--sab)}
 .sheet-list{display:flex;flex-direction:column;padding:12px 8px}
 .sheet-list button{border:0;background:none;justify-content:flex-start;gap:18px;padding:15px 16px;font-size:16px;border-radius:12px}
 .sheet-list button:hover{background:var(--bg)}
@@ -201,7 +203,7 @@ period:"Okres",p12m:"Ostatnie 12 miesięcy",pAll:"Cały okres",monthly:"Koszty m
 totalCost:"Łączny koszt",perMonth:"Średnio na miesiąc",perKm:"Koszt na 1",distance:"Przejechano",visits:"Tankowań",station:"Stacja",cheapest:"najtaniej",share:"Udział",
 saleReport:"Raport do sprzedaży auta (PDF)",saleReportHint:"Historia serwisowa auta gotowa do pokazania kupującemu. W oknie drukowania wybierz „Zapisz jako PDF”.",incCosts:"Pokaż koszty serwisów",incStats:"Dołącz statystyki spalania i zużycia",incPhotos:"Dołącz zdjęcia faktur",
 vehicleHistory:"Historia pojazdu",generated:"Wygenerowano",trackedSince:"Dane prowadzone od",serviceHistory:"Historia serwisowa",summary:"Podsumowanie",attachments:"Faktury i paragony",entries:"Liczba wpisów serwisowych",trackedDist:"Udokumentowany przebieg",
-textSize:"Powiększenie (lupa)",normal:"normalny",textSizeHint:"Powiększa całą aplikację: tekst, przyciski i wykresy. Przycisk 🔍 na górze ekranu szybko przełącza powiększenie. Zdjęcie paragonu powiększysz, stukając w nie.",
+privacy:"Polityka prywatności",textSize:"Powiększenie (lupa)",normal:"normalny",textSizeHint:"Powiększa całą aplikację: tekst, przyciski i wykresy. Przycisk 🔍 na górze ekranu szybko przełącza powiększenie. Zdjęcie paragonu powiększysz, stukając w nie.",
 sinceFill:"Od poprzedniego tankowania",sinceCharge:"Od poprzedniego ładowania",timeline:"Oś czasu",fillUp:"Tankowanie",charging:"Ładowanie",time:"Godzina",grade:"Rodzaj paliwa",lastValue:"Ostatnia wartość",calcHint:"Wpisz dowolne dwie z trzech wartości (ilość, cena, koszt) — trzecia wyliczy się sama.",
 nearby:"📍 Stacje w pobliżu",locating:"Ustalam lokalizację…",noStations:"Nie znaleziono stacji w promieniu 3 km.",gpsError:"Nie udało się ustalić lokalizacji. Zezwól aplikacji na dostęp do lokalizacji i włącz GPS.",stationsError:"Nie udało się pobrać listy stacji. Sprawdź połączenie z internetem.",
 fuelCard:"Paliwo",lastPrice:"Ostatnia cena",today:"dziś",daysAgo:"dni temu",prevMonth:"W poprzednim miesiącu",energyCosts:"Paliwo / prąd",trends:"Trendy",recent:"Ostatnie wpisy",
@@ -236,7 +238,7 @@ period:"Period",p12m:"Last 12 months",pAll:"All time",monthly:"Monthly costs",by
 totalCost:"Total cost",perMonth:"Average per month",perKm:"Cost per 1",distance:"Distance driven",visits:"Fill-ups",station:"Station",cheapest:"cheapest",share:"Share",
 saleReport:"Vehicle history report (PDF)",saleReportHint:"Service history ready to show a buyer. In the print window choose “Save as PDF”.",incCosts:"Show service costs",incStats:"Include consumption statistics",incPhotos:"Attach invoice photos",
 vehicleHistory:"Vehicle history",generated:"Generated",trackedSince:"Records kept since",serviceHistory:"Service history",summary:"Summary",attachments:"Invoices and receipts",entries:"Service entries",trackedDist:"Documented distance",
-textSize:"Magnifier (text size)",normal:"normal",textSizeHint:"Enlarges the whole app: text, buttons and charts. The 🔍 button at the top switches the size quickly. Tap a receipt photo to magnify it.",
+privacy:"Privacy policy",textSize:"Magnifier (text size)",normal:"normal",textSizeHint:"Enlarges the whole app: text, buttons and charts. The 🔍 button at the top switches the size quickly. Tap a receipt photo to magnify it.",
 sinceFill:"Since previous fill-up",sinceCharge:"Since previous charge",timeline:"Timeline",fillUp:"Fill-up",charging:"Charging",time:"Time",grade:"Fuel grade",lastValue:"Last value",calcHint:"Enter any two of amount, price and cost — the third is calculated.",
 nearby:"📍 Nearby stations",locating:"Finding your location…",noStations:"No stations found within 3 km.",gpsError:"Couldn't get your location. Allow location access for the app and turn on GPS.",stationsError:"Couldn't load the station list. Check your internet connection.",
 fuelCard:"Fuel",lastPrice:"Last price",today:"today",daysAgo:"days ago",prevMonth:"Last month",energyCosts:"Fuel / power",trends:"Trends",recent:"Recent entries",
@@ -274,6 +276,7 @@ const idb={
 };
 let S,tab="dashboard",tlFilter="all",costFilter="all",period="12m";
 const save=()=>{
+ if(S.demo)return Promise.resolve(); // demo data must never overwrite the user's own
  if(window.Capacitor?.isNativePlatform?.()){clearTimeout(save.t);save.t=setTimeout(()=>scheduleNative().catch(console.warn),1500)} // keep Android reminders in step
  return idb.set("state",S).catch(e=>alert(e));
 };
@@ -794,7 +797,7 @@ function viewSettings(){
  <label class="field" style="margin-top:12px"><span>${t("units")}</span><select data-set="units">${Object.entries(UNITS).map(([k,v])=>`<option value="${k}" ${k===s.units?"selected":""}>${v.label} · ${v.ecu}</option>`).join("")}</select></label></div>
  <h3>${t("vehicles")}</h3><div class="card list">${S.vehicles.map(v=>`<div class="item">${v.photo?`<img class="thumb" src="${v.photo}" alt="">`:`<div class="kic">${v.fuelType==="ev"?"⚡":"🚗"}</div>`}<div class="main"><div class="t">${esc(v.name)} ${v.id===S.active?`<span class="badge">✓</span>`:""}</div><div class="s">${[v.plate,t("fuelTypes")[v.fuelType]].filter(Boolean).map(esc).join(" · ")}</div></div><button class="small ghost" data-act="vehEditId" data-id="${v.id}">✎ ${t("edit")}</button></div>`).join("")}
   <div class="item"><button data-act="vehAdd">＋ ${t("addVehicle")}</button></div></div>
- <h3>${t("app")} <span style="text-transform:none;font-weight:400">· ${APP_VERSION}</span></h3><div class="card">
+ <h3>${t("app")} <span style="text-transform:none;font-weight:400">· ${APP_VERSION} · <a href="https://hofi9014.github.io/refuelling/privacy.html#${S.settings.lang==="pl"?"pl":"en"}" target="_blank" rel="noopener" style="color:var(--accent)">${t("privacy")}</a></span></h3><div class="card">
   ${standalone()?`<p style="margin-top:0">✅ ${t("installed")}</p>`:installEvt?`<p style="margin-top:0"><button class="primary" data-act="install">${t("install")}</button></p>`:isIOS?`<p class="muted" style="margin-top:0">${t("installIos")}</p>`:""}
   <b>${t("notifications")}</b><p class="muted" style="font-size:13px;margin:4px 0 10px">${t("notifHint")}</p>
   ${!isNative&&!("Notification" in window)?`<p class="muted">${t("notifUnsupported")}</p>`:s.notify&&(isNative||Notification.permission==="granted")?`<div class="row"><span>✅ ${t("notifEnabled")}</span><button class="small" data-act="notifOff">${t("notifOff")}</button></div>`:!isNative&&Notification.permission==="denied"?`<p class="warnbox">${t("notifDenied")}</p>`:`<button data-act="notifOn">${t("notifOn")}</button>`}
@@ -834,7 +837,7 @@ function printReport(o){
 function render(){
  document.documentElement.lang=S.settings.lang;
  // magnifier: CSS zoom scales the whole layout (text, buttons, charts) and reflows it, so nothing gets cut off
- const zm=+S.settings.zoom||1;document.documentElement.style.zoom=zm;document.documentElement.classList.toggle("zoom-xl",zm>=1.75);
+ const zm=+S.settings.zoom||1;document.documentElement.style.zoom=zm;document.documentElement.style.setProperty("--zoom",zm);$("#zoomBtn").hidden=!!S.demo;document.documentElement.classList.toggle("zoom-xl",zm>=1.75&&!S.demo);
  $("#zoomBtn").textContent=`🔍 ${Math.round(zm*100)}%`;$("#zoomBtn").title=$("#zoomBtn").ariaLabel=t("textSize");
  const V=veh(),sel=$("#vehSel");sel.hidden=S.vehicles.length<2;sel.innerHTML=S.vehicles.map(v=>`<option value="${v.id}" ${v.id===S.active?"selected":""}>${esc(v.name)}</option>`).join("");
  const due=mine(S.reminders).filter(r=>remStatus(r)?.cls==="danger").length;
@@ -872,6 +875,22 @@ async function exportJson(){
  }
  if(!shared)download(name,data,"application/json");
  S.lastBackup=today();save();render();
+}
+
+/* Sample car and history for store screenshots (?demo&lang=en&tab=fuel). */
+function demoState(lang){
+ const pl=lang==="pl",d=n=>{const x=new Date();x.setDate(x.getDate()-n);return`${x.getFullYear()}-${pad(x.getMonth()+1)}-${pad(x.getDate())}`};
+ const st=pl?["Bydgoszcz - Orlen","Toruń - Shell","Bydgoszcz - BP","Nakło - Circle K"]:["London - Shell","Reading - BP","London - Esso","Oxford - Texaco"];
+ const fills=[[175,12400,41.2,6.89],[160,13010,39.8,6.95],[146,13640,40.6,6.79],[131,14270,39.1,6.72],[118,14890,40.3,6.84],[103,15520,41.0,6.69],[89,16140,39.4,6.61],[74,16770,40.8,6.55],[60,17390,39.9,6.62],[45,18020,40.2,6.49],[31,18650,39.6,6.45],[16,19280,40.4,6.39],[3,19905,39.8,6.35]];
+ return{demo:true,settings:{lang,currency:pl?"PLN":"EUR",units:"metric",zoom:1,notify:false},active:"d",lastBackup:d(1),
+  vehicles:[{id:"d",name:pl?"Mój samochód":"My car",plate:pl?"WA 12345":"AB12 CDE",year:2023,fuelType:"hybrid",tank:44}],
+  fuel:fills.map(([ago,odo,qty,price],i)=>({id:"f"+i,vid:"d",date:d(ago),time:`${pad(7+i%3)}:${pad((10+i*7)%60)}`,odo,qty,price,cost:+(qty*price).toFixed(2),full:true,grade:"pb95",place:st[i%4]})),
+  charges:[],
+  services:[{id:"s1",vid:"d",kind:"service",title:pl?"Przegląd okresowy, wymiana oleju":"Annual service, oil change",date:d(95),odo:15100,cost:pl?690:160,place:pl?"ASO Bydgoszcz":"Main dealer"},
+   {id:"s2",vid:"d",kind:"tyres",title:pl?"Opony zimowe":"Winter tyres",date:d(20),odo:18800,cost:pl?180:45,place:pl?"Vulco":"Kwik Fit"},
+   {id:"s3",vid:"d",kind:"insurance",title:pl?"OC/AC":"Car insurance",date:d(40),odo:null,cost:pl?2350:540,until:d(-325)},
+   {id:"s4",vid:"d",kind:"wash",title:pl?"Myjnia":"Car wash",date:d(8),cost:pl?35:10}],
+  reminders:[{id:"r1",vid:"d",title:pl?"Przegląd techniczny":"Roadworthiness test",date:d(-12),done:false},{id:"r2",vid:"d",title:pl?"Wymiana oleju":"Oil change",odo:25100,done:false}]};
 }
 
 /* ---------- install & notifications ---------- */
@@ -965,9 +984,12 @@ document.addEventListener("change",e=>{
 $("#vehSel").onchange=e=>{S.active=e.target.value;save();render()};
 
 (async()=>{
- try{S=await idb.get("state")}catch(e){console.error(e)}
+ const qs=new URLSearchParams(location.search);
+ if(!qs.has("demo"))try{S=await idb.get("state")}catch(e){console.error(e)}
  S=S?{...defaults(),...S}:defaults();
+ if(qs.has("demo")){S=demoState(qs.get("lang")||S.settings.lang);tab=qs.get("tab")||tab;if(qs.has("z"))S.settings.zoom=+qs.get("z")} // sample data for store screenshots; never saved
  render();
+ if(S.demo){if(qs.get("open")==="fuel")fuelForm();if(qs.get("open")==="fab")quickAdd();if(qs.get("at")==="trends")for(const el of [...$("#app").children]){if(el.nextElementSibling?.id==="carousel")break;el.hidden=true}}
  if(!S.vehicles.length)vehicleForm();
  if("serviceWorker" in navigator&&location.protocol.startsWith("http")&&!isNative){ // the store app ships its files inside the app, so no service worker there
   const had=!!navigator.serviceWorker.controller;let reloaded=false;
