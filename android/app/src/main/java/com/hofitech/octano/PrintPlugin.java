@@ -1,4 +1,4 @@
-package com.refuelling.app;
+package com.hofitech.octano;
 
 import android.content.Context;
 import android.print.PrintAttributes;
@@ -18,7 +18,7 @@ public class PrintPlugin extends Plugin {
 
     @PluginMethod
     public void print(PluginCall call) {
-        String name = call.getString("name", "Refuelling");
+        String name = call.getString("name", "Octano");
         getActivity().runOnUiThread(() -> {
             WebView webView = getBridge().getWebView();
             PrintManager printManager = (PrintManager) getActivity().getSystemService(Context.PRINT_SERVICE);

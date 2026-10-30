@@ -1,6 +1,6 @@
 {
-  "name": "Refuelling",
-  "short_name": "Refuelling",
+  "name": "Octano",
+  "short_name": "Octano",
   "description": "Fuel, charging, service and car cost log",
   "id": "./",
   "start_url": "./",

@@ -1,6 +1,6 @@
 {
-  "appId": "com.refuelling.app",
-  "appName": "Refuelling",
+  "appId": "com.hofitech.octano",
+  "appName": "Octano",
   "webDir": "docs",
   "android": {
     "backgroundColor": "#17191C"

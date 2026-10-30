@@ -1,4 +1,4 @@
-package com.refuelling.app;
+package com.hofitech.octano;
 
 import android.os.Bundle;
 import com.getcapacitor.BridgeActivity;

@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from make_icons import art, AMBER, GRAPHITE, PAPER  # noqa: E402  (shares the logo drawing)
 
 out = sys.argv[1]
-NAME = "REFUELLING"
+NAME = "OCTANO"
 FONTS = "C:/Windows/Fonts/"
 TAGLINES = {
     "pl": ("Tankowania, spalanie, serwisy", "i koszty auta w jednym miejscu"),
