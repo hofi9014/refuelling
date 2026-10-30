@@ -1,4 +1,4 @@
-package com.hofitech.octano;
+package com.hofitech.tankvia;
 
 import android.os.Bundle;
 import com.getcapacitor.BridgeActivity;

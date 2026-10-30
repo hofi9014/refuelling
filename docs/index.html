@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#17191C">
-<title>Octano</title>
+<title>Tankvia</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/favicon-32.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Octano">
+<meta name="apple-mobile-web-app-title" content="Tankvia">
 <style>
-/* ===== Octano design: "logbook & instrument cluster" =====
+/* ===== Tankvia design: "logbook & instrument cluster" =====
    Warm paper and graphite, one signal-amber accent, condensed figures like dashboard gauges, road-marking dashes. */
 @font-face{font-family:"Barlow";font-weight:400;font-display:swap;src:url(fonts/barlow-latin-400-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2190-2199,U+2212,U+FEFF}
 @font-face{font-family:"Barlow";font-weight:400;font-display:swap;src:url(fonts/barlow-latin-ext-400-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1EFF,U+20A0-20AB,U+20AD-20C0,U+2C60-2C7F,U+A720-A7FF}
@@ -313,7 +313,7 @@ select{max-width:100%}
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
-<!-- Octano icon set: 24px grid, 1.8 stroke, one accent detail per icon (takes --ic-a, so a category can colour it) -->
+<!-- Tankvia icon set: 24px grid, 1.8 stroke, one accent detail per icon (takes --ic-a, so a category can colour it) -->
 <symbol id="logo" viewBox="0 0 32 32"><path d="M16 2.5c5.6 6.8 9.4 11.6 9.4 16.4a9.4 9.4 0 0 1-18.8 0C6.6 14.1 10.4 9.3 16 2.5z" fill="currentColor" stroke="none"/><path d="M10.6 22.2a5.8 5.8 0 0 1 10.8-3.4" fill="none" stroke="var(--head,#17191C)" stroke-width="2.2" stroke-linecap="round"/><path d="M16 21.6 20.4 15.9" fill="none" stroke="var(--accent,#E29A17)" stroke-width="2.6" stroke-linecap="round"/><circle cx="16" cy="21.8" r="1.9" fill="var(--accent,#E29A17)"/></symbol>
 <symbol id="i-home" viewBox="0 0 24 24"><path d="M3.5 11.2 12 4.5l8.5 6.7"/><path d="M5.5 9.8v9.7h13V9.8"/><rect x="10" y="13.5" width="4" height="6" style="fill:var(--ic-a);stroke:none"/></symbol>
 <symbol id="i-timeline" viewBox="0 0 24 24"><path d="M6 3.5v17" stroke-dasharray="2.2 2.6"/><rect x="3.8" y="5" width="4.4" height="4.4" style="fill:var(--ic-a);stroke:none"/><rect x="3.8" y="14.6" width="4.4" height="4.4"/><path d="M11 7.2h9M11 16.8h6.5"/></symbol>
@@ -361,7 +361,7 @@ select{max-width:100%}
 <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h13M13 7l5 5-5 5"/></symbol>
 <symbol id="i-trend" viewBox="0 0 24 24"><path d="M3.5 17.5 9 12l3.5 3.5L20 8"/><path d="M15 8h5v5" style="stroke:var(--ic-a)" stroke-width="2.2"/></symbol>
 </svg>
-<header><h1><svg class="logo" aria-hidden="true"><use href="#logo"/></svg><span>Octano</span></h1><select id="vehSel" aria-label="vehicle"></select><button id="zoomBtn" data-act="zoom"></button></header>
+<header><h1><svg class="logo" aria-hidden="true"><use href="#logo"/></svg><span>Tankvia</span></h1><select id="vehSel" aria-label="vehicle"></select><button id="zoomBtn" data-act="zoom"></button></header>
 <main id="app"></main>
 <nav id="tabs"></nav>
 <button id="fab" data-act="fab" aria-label="+" hidden><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg></button>
@@ -1059,7 +1059,7 @@ function printReport(o){
  ${hist.length?`<table><tr><th>${t("date")}</th><th class="n">${t("odometer")}</th><th>${t("kind")}</th><th>${t("desc").split(" (")[0]}</th><th>${t("where").split(" (")[0]}</th>${o.costs?`<th class="n">${t("cost")}</th>`:""}</tr>
  ${hist.map(s=>`<tr><td>${fdate(s.date)}</td><td class="n">${s.odo?num(s.odo,0)+" "+u.d:""}</td><td>${kindLabel(s.kind)}</td><td>${esc(s.title)}${s.note?`<br><span style="color:#666">${esc(s.note)}</span>`:""}</td><td>${esc(s.place)}</td>${o.costs?`<td class="n">${s.cost!=null?money(s.cost):""}</td>`:""}</tr>`).join("")}</table>`:`<p>${t("noEntries")}</p>`}
  ${photos.length?`<h3>${t("attachments")}</h3><div class="att">${photos.map(s=>`<figure><img src="${s.photo}" alt=""><figcaption>${fdate(s.date)} · ${esc(s.title||kindLabel(s.kind))}</figcaption></figure>`).join("")}</div>`:""}
- <p class="foot">Octano · ${fdate(today())}</p></div>`;
+ <p class="foot">Tankvia · ${fdate(today())}</p></div>`;
  const prev=document.title;document.title=`${t("vehicleHistory")} - ${V.name}`;
  setTimeout(()=>{
   if(isNative)Cap("Printer").print({name:document.title}).catch(e=>alert(e?.message||e)).finally(()=>document.title=prev);
@@ -1102,7 +1102,7 @@ async function importData(e){
 }
 /* On phones the backup goes to the share sheet (Google Drive, e-mail…), elsewhere it is downloaded. */
 async function exportJson(){
- const name=`octano-${today()}.json`,data=JSON.stringify(S),file=new File([data],name,{type:"application/json"});
+ const name=`tankvia-${today()}.json`,data=JSON.stringify(S),file=new File([data],name,{type:"application/json"});
  let shared=false;
  if(matchMedia("(pointer:coarse)").matches&&navigator.canShare?.({files:[file]})){
   try{await navigator.share({files:[file],title:name});shared=true}catch(e){if(e.name==="AbortError")return}
@@ -1128,7 +1128,7 @@ function demoState(lang){
 }
 
 /* ---------- install & notifications ---------- */
-const APP_VERSION="v14"; // keep in sync with VERSION in sw.js
+const APP_VERSION="v15"; // keep in sync with VERSION in sw.js
 let installEvt=null;
 const isNative=!!window.Capacitor?.isNativePlatform?.(); // running as the Google Play / App Store app
 const standalone=()=>isNative||matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
@@ -1185,7 +1185,7 @@ function exportCsv(){
  mine(S.services).forEach(s=>rows.push(["cost",s.date,s.odo,s.kind,s.title,s.place,"","","",s.cost!=null?(+s.cost).toFixed(2):"",s.note]));
  rows.sort((a,b)=>a[1].localeCompare(b[1]));
  rows.unshift(["type","date","odometer_"+u.d,"category","description","place","quantity","unit","unit_price","total_"+cur(),"note"]);
- download(`octano-${(veh()?.name||"car").replace(/\W+/g,"_")}-${today()}.csv`,"﻿"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(";")).join("\n"),"text/csv");
+ download(`tankvia-${(veh()?.name||"car").replace(/\W+/g,"_")}-${today()}.csv`,"﻿"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(";")).join("\n"),"text/csv");
 }
 document.addEventListener("click",e=>{
  const z=e.target.closest("[data-zoom]");if(z){const lb=$("#lightbox");lb.classList.remove("big");lb.querySelector("img").src=z.src;lb.showModal();return}

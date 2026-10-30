@@ -1,6 +1,6 @@
 {
-  "appId": "com.hofitech.octano",
-  "appName": "Octano",
+  "appId": "com.hofitech.tankvia",
+  "appName": "Tankvia",
   "webDir": "docs",
   "android": {
     "backgroundColor": "#17191C"

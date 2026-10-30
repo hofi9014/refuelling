@@ -6,10 +6,10 @@ def signingFile = rootProject.file('../signing/keystore.properties')
 if (signingFile.exists()) signingFile.withInputStream { signingProps.load(it) }
 
 android {
-    namespace = "com.hofitech.octano"
+    namespace = "com.hofitech.tankvia"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.hofitech.octano"
+        applicationId "com.hofitech.tankvia"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

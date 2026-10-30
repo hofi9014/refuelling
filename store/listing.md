@@ -8,7 +8,7 @@ Limity Google Play: nazwa 30 znaków, krótki opis 80 znaków, pełny opis 4000 
 
 **Nazwa aplikacji** (23 znaki)
 ```
-Octano: koszty auta
+Tankvia: koszty auta
 ```
 
 **Krótki opis** (78 znaków)
@@ -18,7 +18,7 @@ Tankowania, spalanie, ładowanie EV, serwisy i przypomnienia – wszystko o auci
 
 **Pełny opis**
 ```
-Octano to prosty i czytelny dziennik Twojego samochodu. Zapisuj tankowania, sprawdzaj realne spalanie, pilnuj terminów serwisów i miej pełną kontrolę nad kosztami auta – bez zakładania konta.
+Tankvia to prosty i czytelny dziennik Twojego samochodu. Zapisuj tankowania, sprawdzaj realne spalanie, pilnuj terminów serwisów i miej pełną kontrolę nad kosztami auta – bez zakładania konta.
 
 ⛽ TANKOWANIA I SPALANIE
 • Data, godzina, stacja, rodzaj paliwa, ilość, cena i koszt – wpisz dowolne dwie wartości, trzecia wyliczy się sama
@@ -61,7 +61,7 @@ Twoje dane są zapisywane wyłącznie na Twoim telefonie. Bez kont, bez reklam, 
 
 **App name** (21 chars)
 ```
-Octano: car costs
+Tankvia: car costs
 ```
 
 **Short description** (79 chars)
@@ -71,7 +71,7 @@ Fill-ups, fuel economy, EV charging, service and reminders – all about your ca
 
 **Full description**
 ```
-Octano is a simple, clear logbook for your car. Record fill-ups, see your real fuel economy, keep track of service dates and stay on top of every car cost – no account needed.
+Tankvia is a simple, clear logbook for your car. Record fill-ups, see your real fuel economy, keep track of service dates and stay on top of every car cost – no account needed.
 
 ⛽ FILL-UPS AND FUEL ECONOMY
 • Date, time, station, fuel grade, amount, price and cost – enter any two, the third is calculated
@@ -117,7 +117,7 @@ Your data is stored only on your phone. No accounts, no ads, no tracking.
 | Ikona aplikacji (512×512) | `store/icon-512.png` |
 | Grafika (1024×500) | `store/feature-graphic-pl.png` / `store/feature-graphic-en.png` |
 | Zrzuty ekranu telefonu (2–8 szt.) | `store/screenshots/pl/*.png` / `store/screenshots/en/*.png` |
-| Pakiet aplikacji (AAB) | `dist/Octano-<wersja>.aab` |
+| Pakiet aplikacji (AAB) | `dist/Tankvia-<wersja>.aab` |
 | Polityka prywatności (URL) | `https://hofi9014.github.io/refuelling/privacy.html` |
 
 ---

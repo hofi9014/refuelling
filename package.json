@@ -1,8 +1,8 @@
 {
-  "name": "octano",
+  "name": "tankvia",
   "version": "1.0.0",
   "private": true,
-  "description": "Octano - fuel, charging, service and car cost log (PL/EN)",
+  "description": "Tankvia - fuel, charging, service and car cost log (PL/EN)",
   "scripts": {
     "sync": "cap sync android",
     "open": "cap open android",
