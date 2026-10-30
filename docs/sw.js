@@ -1,11 +1,14 @@
-// Bump VERSION on every release so phones pick up the new files.
-const VERSION = "v11";
+﻿// Bump VERSION on every release so phones pick up the new files.
+const VERSION = "v13";
 const CACHE = "refuelling-" + VERSION;
 // Big libraries in vendor/ are cached on first use, in a cache kept across versions (rename it when a library changes).
 const VENDOR_CACHE = "refuelling-vendor-1";
 const ASSETS = ["./", "./index.html", "./notify.js", "./manifest.webmanifest",
   "./icons/icon-192.png", "./icons/icon-512.png", "./icons/maskable-512.png", "./icons/apple-touch-icon.png", "./icons/favicon-32.png",
-  ...["de", "fr", "es", "it", "pt", "nl", "da", "sv", "nb", "fi", "is", "cs", "sk", "hu", "ro", "bg", "uk", "tr", "hi", "ja"].map(l => `./lang/${l}.js`)];
+  ...["de", "fr", "es", "it", "pt", "nl", "da", "sv", "nb", "fi", "is", "cs", "sk", "hu", "ro", "bg", "uk", "tr", "hi", "ja"].map(l => `./lang/${l}.js`),
+  ...["barlow-latin-400", "barlow-latin-500", "barlow-latin-600", "barlow-latin-ext-400", "barlow-latin-ext-500", "barlow-latin-ext-600",
+      "barlow-condensed-latin-500", "barlow-condensed-latin-600", "barlow-condensed-latin-700",
+      "barlow-condensed-latin-ext-500", "barlow-condensed-latin-ext-600", "barlow-condensed-latin-ext-700"].map(f => `./fonts/${f}-normal.woff2`)];
 
 importScripts("notify.js");
 

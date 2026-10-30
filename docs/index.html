@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0f766e">
+<meta name="theme-color" content="#17191C">
 <title>Refuelling</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/favicon-32.png">
@@ -11,150 +11,290 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Refuelling">
 <style>
-:root{--bg:#f4f6f8;--card:#fff;--text:#14202b;--muted:#5d6b78;--line:#dfe4ea;--accent:#0f766e;--accent-soft:#d5f0ec;--on-accent:#fff;--warn:#b45309;--warn-soft:#fdf0dc;--danger:#b91c1c;--danger-soft:#fde2e2;--radius:14px;
- --c-fuel:#0f766e;--c-charge:#2563eb;--c-svc:#d97706;--c-fix:#7c3aed;--c-oth:#64748b}
-@media (prefers-color-scheme:dark){:root{--bg:#0d1419;--card:#16212a;--text:#e6edf3;--muted:#93a1ae;--line:#26343f;--accent:#2dd4bf;--accent-soft:#123a36;--on-accent:#04201d;--warn:#f59e0b;--warn-soft:#3a2a10;--danger:#f87171;--danger-soft:#3b1717;
- --c-fuel:#2dd4bf;--c-charge:#60a5fa;--c-svc:#fbbf24;--c-fix:#a78bfa;--c-oth:#94a3b8}}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:calc(84px + var(--sab))}
+/* ===== Refuelling design: "logbook & instrument cluster" =====
+   Warm paper and graphite, one signal-amber accent, condensed figures like dashboard gauges, road-marking dashes. */
+@font-face{font-family:"Barlow";font-weight:400;font-display:swap;src:url(fonts/barlow-latin-400-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2190-2199,U+2212,U+FEFF}
+@font-face{font-family:"Barlow";font-weight:400;font-display:swap;src:url(fonts/barlow-latin-ext-400-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1EFF,U+20A0-20AB,U+20AD-20C0,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Barlow";font-weight:500;font-display:swap;src:url(fonts/barlow-latin-500-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2190-2199,U+2212,U+FEFF}
+@font-face{font-family:"Barlow";font-weight:500;font-display:swap;src:url(fonts/barlow-latin-ext-500-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1EFF,U+20A0-20AB,U+20AD-20C0,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Barlow";font-weight:600;font-display:swap;src:url(fonts/barlow-latin-600-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2190-2199,U+2212,U+FEFF}
+@font-face{font-family:"Barlow";font-weight:600;font-display:swap;src:url(fonts/barlow-latin-ext-600-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1EFF,U+20A0-20AB,U+20AD-20C0,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Barlow Condensed";font-weight:500;font-display:swap;src:url(fonts/barlow-condensed-latin-500-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2190-2199,U+2212,U+FEFF}
+@font-face{font-family:"Barlow Condensed";font-weight:500;font-display:swap;src:url(fonts/barlow-condensed-latin-ext-500-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1EFF,U+20A0-20AB,U+20AD-20C0,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Barlow Condensed";font-weight:600;font-display:swap;src:url(fonts/barlow-condensed-latin-600-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2190-2199,U+2212,U+FEFF}
+@font-face{font-family:"Barlow Condensed";font-weight:600;font-display:swap;src:url(fonts/barlow-condensed-latin-ext-600-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1EFF,U+20A0-20AB,U+20AD-20C0,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Barlow Condensed";font-weight:700;font-display:swap;src:url(fonts/barlow-condensed-latin-700-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2190-2199,U+2212,U+FEFF}
+@font-face{font-family:"Barlow Condensed";font-weight:700;font-display:swap;src:url(fonts/barlow-condensed-latin-ext-700-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1EFF,U+20A0-20AB,U+20AD-20C0,U+2C60-2C7F,U+A720-A7FF}
+
+:root{
+ --bg:#ECE8DF;--surface:#FBF9F4;--surface-2:#F2EEE5;--ink:#17191C;--ink-2:#585C63;--ink-3:#8A8D93;--line:#DCD6C9;--line-2:#C8C1B2;
+ --accent:#E29A17;--accent-ink:#17191C;--accent-soft:#F7E5C0;--head:#17191C;--head-ink:#F2EEE5;--head-2:#2A2D31;
+ --good:#2D7A4E;--bad:#B5392C;--warn:#A86400;--warn-soft:#F6E7CA;--danger:#B5392C;--danger-soft:#F4DAD5;
+ --c-fuel:#D98A00;--c-charge:#2C6FB7;--c-svc:#A84B32;--c-fix:#2D6E6A;--c-oth:#7B7F86;
+ --r:6px;--f-body:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--f-num:"Barlow Condensed","Barlow",system-ui,sans-serif;
+ /* names used by older markup */
+ --card:var(--surface);--text:var(--ink);--muted:var(--ink-2);--on-accent:var(--accent-ink);--radius:var(--r);--ic-a:var(--accent)}
+@media (prefers-color-scheme:dark){:root{
+ --bg:#0E1012;--surface:#171A1D;--surface-2:#1F2327;--ink:#ECE8E0;--ink-2:#A3A7AE;--ink-3:#71757C;--line:#2A2E33;--line-2:#3B4046;
+ --accent:#F2AE2E;--accent-soft:#3B2F16;--head:#08090A;--head-ink:#ECE8E0;--head-2:#1F2327;
+ --good:#5DB67F;--bad:#E66C5E;--warn:#F2AE2E;--warn-soft:#3B2F16;--danger:#E66C5E;--danger-soft:#3E1E1A;
+ --c-fuel:#F2AE2E;--c-charge:#5C9DE8;--c-svc:#E07B60;--c-fix:#4FB3A9;--c-oth:#8E939B}}
 /* Safe areas: the Android app draws edge-to-edge and Capacitor puts the bar sizes in --safe-area-inset-*; browsers/iOS use env(). */
 :root{--sat:var(--safe-area-inset-top,env(safe-area-inset-top,0px));--sab:var(--safe-area-inset-bottom,env(safe-area-inset-bottom,0px))}
-header{position:sticky;top:0;z-index:5;background:var(--accent);color:#fff;padding:calc(12px + var(--sat)) 16px 12px;display:flex;align-items:center;gap:10px}
-@media (prefers-color-scheme:dark){header{background:#0f3d39}}
-header h1{font-size:18px;margin:0;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-select{max-width:100%}
-nav button{overflow:hidden}
-nav .lbl{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.zoom-xl nav .lbl{display:none} /* at 175%+ the tab bar shows icons only, so all tabs still fit */
-.zoom-xl nav button{padding:12px 0}
-header select{background:rgba(255,255,255,.15);color:#fff;border:0;border-radius:8px;padding:6px 8px;font:inherit;max-width:55vw;width:auto}
-header select option{color:#000}
-main{max-width:860px;margin:0 auto;padding:16px}
-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:var(--sab);z-index:5}
-nav button{flex:1;max-width:150px;background:none;border:0;border-radius:0;color:var(--muted);padding:9px 2px 8px;font:inherit;font-size:11px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0}
-nav button .ic{font-size:20px;line-height:1}
-nav button.on{color:var(--accent);font-weight:600}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-bottom:12px}
-h2{font-size:17px;margin:4px 0 12px}
-h3{font-size:14px;margin:18px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
-.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.sp{flex:1}
-button,.btn{font:inherit;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--text);padding:8px 14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
-button.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
-button.danger{color:var(--danger);border-color:var(--danger)}
-button.small{padding:4px 10px;font-size:13px}
-.ghost{background:transparent}
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-.chips button{border-radius:99px;padding:5px 12px;font-size:13px}
-.chips button.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
-.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:12px}
-.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:12px}
-.stat .v{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
-.stat .v.good{color:var(--accent)}
-.stat .l{font-size:12px;color:var(--muted)}
-.car{display:flex;gap:14px;align-items:center}
-.car{flex-wrap:wrap}
-.car .main{flex:1 1 130px!important;min-width:0;overflow-wrap:break-word}
-.car>button{flex-shrink:0}
-.car img,.car .ph{width:30%;max-width:120px;height:auto;aspect-ratio:3/2;object-fit:cover;border-radius:10px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;font-size:34px;flex-shrink:0}
-.car .n{font-size:18px;font-weight:700}
-.muted{color:var(--muted)}
-.list .item{display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--line);align-items:flex-start}
-.list .item:first-child{border-top:0}
-.item .main{flex:1;min-width:0}
-.item .t{font-weight:600}
-.item .s{font-size:13px;color:var(--muted)}
-.item .r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-.thumb{width:46px;height:46px;border-radius:8px;object-fit:cover;cursor:zoom-in;border:1px solid var(--line);flex-shrink:0}
-.kic{width:46px;height:46px;border-radius:8px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:99px;background:var(--accent-soft);color:var(--accent);font-weight:600}
-.badge.warn{background:var(--warn-soft);color:var(--warn)}
-.badge.danger{background:var(--danger-soft);color:var(--danger)}
-.empty{text-align:center;color:var(--muted);padding:26px 10px}
 /* with the magnifier (CSS zoom) on, viewport units are not zoomed but px are, so overlays size themselves with --vw/--vh */
 :root{--vw:calc(100vw / var(--zoom,1));--vh:calc(100vh / var(--zoom,1))}
-dialog{border:0;border-radius:var(--radius);padding:0;width:min(520px,calc(var(--vw) - 24px));background:var(--card);color:var(--text);max-height:calc(var(--vh) * .9)}
-dialog::backdrop{background:rgba(0,0,0,.45)}
-dialog form{padding:18px;display:flex;flex-direction:column;gap:12px}
-.field{display:flex;flex-direction:column;gap:4px}
-.field>span{font-size:13px;color:var(--muted)}
-.field small,.chk+small{font-size:12px;color:var(--muted)}
-input,select,textarea{font:inherit;padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text);width:100%}
-textarea{min-height:70px;resize:vertical}
-.chk{display:flex;gap:8px;align-items:center}
-.chk input{width:auto}
-.photo img{max-width:100%;max-height:200px;border-radius:10px;display:block}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.live{font-weight:600;color:var(--accent)}
-.warnbox{background:var(--warn-soft);color:var(--warn);padding:8px 10px;border-radius:10px;font-size:13px}
-#lightbox{background:transparent;width:auto;max-width:calc(var(--vw) * .96)}
-#lightbox img{max-width:calc(var(--vw) * .96);max-height:calc(var(--vh) * .88);display:block;border-radius:10px;cursor:zoom-in}
-#lightbox.big{width:var(--vw);max-width:var(--vw);height:var(--vh);max-height:var(--vh);margin:0;overflow:auto;background:#000;border-radius:0}
-#lightbox.big img{max-width:none;max-height:none;width:250%;border-radius:0;cursor:zoom-out}
-#zoomBtn{background:rgba(255,255,255,.15);color:#fff;border:0;padding:6px 10px;font-size:14px;font-weight:600;white-space:nowrap}
-svg text{fill:var(--muted);font-size:11px}
-.card svg{max-height:240px;display:block}
-.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:8px}
-.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
-.hbr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;align-items:center;margin:9px 0;font-size:14px}
-.hbt{background:var(--bg);border-radius:6px;height:12px;overflow:hidden;grid-column:1/-1;order:3}
-.hbt div{height:100%;border-radius:6px}
-.hbv{font-variant-numeric:tabular-nums;white-space:nowrap}
-.tbl{width:100%;border-collapse:collapse;font-size:14px}
-.tbl th{text-align:left;font-weight:600;color:var(--muted);font-size:12px;padding:6px 6px;border-bottom:1px solid var(--line)}
-.tbl td{padding:7px 6px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
-.tbl tr:last-child td{border-bottom:0}
-.tbl .n{text-align:right}
-.scroll{overflow-x:auto}
-#fab{position:fixed;right:16px;bottom:calc(74px + var(--sab));width:58px;height:58px;border-radius:18px;background:var(--accent);color:var(--on-accent);border:0;font-size:30px;justify-content:center;padding:0;box-shadow:0 6px 18px rgba(0,0,0,.28);z-index:6}
-@media (min-width:900px){#fab{right:calc(50% - 430px)}}
-dialog.sheet{margin:auto auto 0;width:min(560px,var(--vw));max-width:var(--vw);border-radius:20px 20px 0 0;padding-bottom:var(--sab)}
-.sheet-list{display:flex;flex-direction:column;padding:12px 8px}
-.sheet-list button{border:0;background:none;justify-content:flex-start;gap:18px;padding:15px 16px;font-size:16px;border-radius:12px}
-.sheet-list button:hover{background:var(--bg)}
-.sheet-list .ic{font-size:22px;width:28px;text-align:center}
-.carbig{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
-.kpi{display:flex;flex-wrap:wrap;align-items:center;gap:2px 10px;padding:6px 0}
-.kpi .v{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
-.kpi .u,.slide .u{font-size:12px;color:var(--muted);font-weight:400}
-.kpi .l{margin-left:auto;color:var(--muted);font-size:13px;text-align:right}
-.trend{font-size:16px;width:22px;text-align:center;flex-shrink:0}
-.trend.good,.good-t{color:#16a34a}
-.trend.bad,.bad-t{color:var(--danger)}
-.sect{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:2px 8px;display:inline-block;margin:8px 0 2px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15.5px/1.45 var(--f-body);padding-bottom:calc(84px + var(--sab));-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+.i{width:20px;height:20px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-4px}
+.i.sm{width:15px;height:15px;vertical-align:-2px}
+.muted{color:var(--ink-2)}
+.u{font:500 13px var(--f-body);color:var(--ink-2);margin-left:3px;letter-spacing:0}
+
+/* header: the dark instrument band with an amber edge */
+header{position:sticky;top:0;z-index:5;background:var(--head);color:var(--head-ink);padding:calc(10px + var(--sat)) 16px 10px;display:flex;align-items:center;gap:10px;border-bottom:3px solid var(--accent)}
+header h1{margin:0;flex:1;min-width:0;display:flex;align-items:center;gap:9px;font:700 21px/1 var(--f-num);letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;overflow:hidden}
+header h1 .logo{width:28px;height:28px;flex-shrink:0}
+header select,#zoomBtn{background:var(--head-2);color:var(--head-ink);border:1px solid #3B4046;border-radius:4px;padding:6px 8px;font:600 15px var(--f-num);max-width:45vw;width:auto}
+header select option{color:#000;background:#fff}
+#zoomBtn{display:inline-flex;align-items:center;gap:5px;cursor:pointer;white-space:nowrap}
+#zoomBtn .i{--ic-a:var(--accent)}
+main{max-width:860px;margin:0 auto;padding:16px}
+
+/* bottom bar: same dark band, amber needle over the active tab */
+nav{position:fixed;bottom:0;left:0;right:0;background:var(--head);display:flex;justify-content:center;padding-bottom:var(--sab);z-index:5}
+nav button{position:relative;flex:1;max-width:150px;min-width:0;background:none;border:0;color:#8F949B;padding:10px 2px 8px;font:500 12px var(--f-num);letter-spacing:.05em;text-transform:uppercase;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;overflow:hidden;--ic-a:#8F949B}
+nav button .ic{position:relative;line-height:0}
+nav button .i{width:23px;height:23px}
+nav button.on{color:var(--head-ink);--ic-a:var(--accent)}
+nav button.on::before{content:"";position:absolute;top:0;left:50%;width:28px;height:3px;margin-left:-14px;background:var(--accent)}
+nav .lbl{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+nav .badge{position:absolute;top:-6px;right:-12px}
+/* magnifier 130%+: stack what sits side by side, so nothing runs off the screen */
+.zoom-l .hero{grid-template-columns:1fr}
+.zoom-l .hero>img,.zoom-l .hero>.ph{width:100%;aspect-ratio:16/9;max-height:160px}
+.zoom-l .hero>button{position:absolute;top:10px;right:10px;background:var(--surface)}
+.zoom-l .odo b{width:16px;font-size:18px}
+.zoom-l .grid2,.zoom-l .ros{grid-template-columns:1fr}
+.zoom-l .ros .ro:nth-child(2){border-top:1px dashed var(--line-2);padding-top:10px}
+.zoom-l .list .item{flex-wrap:wrap}
+.zoom-l .item>.row,.zoom-l .item .r{width:100%;flex-direction:row;justify-content:flex-end;align-items:center}
+.zoom-l .slide .grid>div:first-child{grid-template-columns:1fr 1fr}
+.zoom-l .mtab{grid-template-columns:1fr 1fr}
+.zoom-l .mtab>span:first-child{display:none}
+.zoom-l .mtab>span{grid-column:1/-1;margin-top:6px}
+.zoom-l .mtab>b,.zoom-l .mtab>em{text-align:left}
+.zoom-l dialog form{padding:0 10px 14px}
+.zoom-l dialog form>h2{margin:0 -10px 2px;padding:12px 10px 10px}
+.zoom-l input[type=date],.zoom-l input[type=time]{font-size:13px;padding:8px 3px;letter-spacing:0}
+.zoom-xl .mtab{grid-template-columns:1fr;gap:4px}
+.zoom-xl .mtab>b{display:none}
+.zoom-xl .mtab>em{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:18px;flex-wrap:wrap}
+.zoom-xl .mtab>em::before{content:attr(data-l);font:600 12px var(--f-num);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.zoom-xl input[type=date],.zoom-xl input[type=time]{font-size:11.5px;padding:8px 2px}
+.zoom-xl dialog{width:calc(var(--vw) - 6px)}
+.zoom-xl dialog form{padding:0 6px 12px}
+.zoom-xl dialog form>h2{margin:0 -6px 2px;padding:12px 6px 10px}
+.tl-i .main,.item .main{overflow-wrap:anywhere}
+.zoom-xl .tl-i{flex-wrap:wrap}
+.zoom-xl .tl-i .main{flex-basis:calc(100% - 52px)}
+.zoom-xl .tl-i .r{width:100%}
+.mtab>b{overflow-wrap:anywhere}
+.ch,h3{flex-wrap:wrap}
+h2{overflow-wrap:anywhere;min-width:0}
+.badge{white-space:normal;overflow-wrap:anywhere}
+input,select,textarea{min-width:0}
+.zoom-xl nav .lbl{display:none}
+.zoom-xl nav button{padding:12px 0}
+
+/* type */
+h2{font:700 22px/1.15 var(--f-num);letter-spacing:.04em;text-transform:uppercase;margin:4px 0 12px;display:flex;align-items:center;gap:8px}
+h3{display:flex;align-items:center;gap:10px;font:600 13px var(--f-num);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);margin:22px 0 10px}
+h3::after{content:"";flex:1;border-top:2px dashed var(--line-2)}
+h3 .i{color:var(--ink)}
+
+/* surfaces */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;margin-bottom:12px;position:relative}
+.ch{display:flex;align-items:center;gap:9px;margin:-2px 0 12px;font:600 15px var(--f-num);letter-spacing:.09em;text-transform:uppercase}
+.ch>.i{width:22px;height:22px}
+.ch .sp{flex:1}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.sp{flex:1}
+
+/* controls */
+button,.btn{font:600 15px var(--f-num);letter-spacing:.03em;border-radius:4px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);padding:8px 14px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;min-height:38px}
+button:active,.btn:active{transform:translateY(1px)}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);--ic-a:var(--accent-ink)}
+button.danger{color:var(--danger);border-color:var(--danger)}
+button.small{padding:4px 10px;font-size:14px;min-height:32px}
+.ghost{background:transparent}
+button.ghost{border-color:transparent}
+button.icon{padding:6px;min-height:34px;min-width:34px;justify-content:center}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chips button{border-radius:3px;padding:5px 11px;font-size:14px;min-height:32px;text-transform:uppercase;letter-spacing:.06em}
+.chips button.on{background:var(--ink);border-color:var(--ink);color:var(--surface);--ic-a:var(--accent)}
+.badge{display:inline-block;font:600 11.5px/1.5 var(--f-num);letter-spacing:.07em;text-transform:uppercase;padding:1px 6px;border-radius:2px;background:var(--accent-soft);color:var(--ink);vertical-align:2px}
+.badge.warn{background:var(--warn-soft);color:var(--warn)}
+.badge.danger{background:var(--danger);color:#fff}
+.leg{color:var(--ink);font-weight:600;background:var(--accent-soft);padding:0 4px;border-radius:2px}
+
+/* car hero with a mechanical odometer */
+.hero{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center}
+.hero>img,.hero>.ph{width:104px;aspect-ratio:4/3;border-radius:4px;object-fit:cover;background:var(--surface-2);border:1px solid var(--line);display:grid;place-items:center;cursor:zoom-in}
+.hero>.ph{cursor:default}
+.hero>.ph .i{width:44px;height:44px;stroke-width:1.4;color:var(--ink-2)}
+.hero .main{min-width:0;overflow-wrap:break-word}
+.hero .n{font:700 22px/1.1 var(--f-num);letter-spacing:.02em;margin-bottom:6px}
+.hero .meta{font-size:13px;color:var(--ink-2);margin-top:6px}
+.odo{display:inline-flex;gap:2px;vertical-align:middle}
+.odo b{font:600 21px/1 var(--f-num);background:var(--head);color:var(--head-ink);width:19px;padding:4px 0 3px;text-align:center;border-radius:2px;box-shadow:inset 0 -6px 6px -4px rgba(0,0,0,.5),inset 0 6px 6px -4px rgba(0,0,0,.5)}
+.odo b:last-child{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:420px){.hero{grid-template-columns:auto 1fr}.hero>button{position:absolute;top:10px;right:10px}.hero>img,.hero>.ph{width:84px}}
+
+/* gauge readouts */
+.ros{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+.ro{padding:10px 0 9px;border-top:1px dashed var(--line-2);min-width:0}
+.ros .ro:nth-child(-n+2){border-top:0;padding-top:2px}
+.rl{font:600 12px var(--f-num);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2)}
+.rv{display:flex;align-items:baseline;gap:4px;font:700 26px/1.15 var(--f-num);font-variant-numeric:tabular-nums;white-space:nowrap}
+.rv .trend{align-self:center}
+.rs{font-size:12.5px;color:var(--ink-3)}
+.mtab{display:grid;grid-template-columns:1fr auto auto;gap:8px 16px;align-items:center}
+.mtab>b{font:600 12px var(--f-num);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2);text-align:right}
+.mtab>span{display:flex;align-items:center;gap:8px;font-size:14.5px}
+.mtab>em{font:700 20px var(--f-num);font-style:normal;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.mtab>em.dim{color:var(--ink-2);font-weight:600}
+.trend .i{width:16px;height:16px;stroke:none;fill:currentColor}
+.trend{display:inline-flex;color:var(--ink-3)}
+.trend.good,.good-t{color:var(--good)}
+.trend.bad,.bad-t{color:var(--bad)}
+
+/* stats (reports) */
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--r);padding:11px 13px}
+.stat .v{font:700 26px/1.15 var(--f-num);font-variant-numeric:tabular-nums}
+.stat .v.good{color:var(--good)}
+.stat .l{font:600 12px var(--f-num);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.stat .l+.v+.l{text-transform:none;letter-spacing:0;font:400 12.5px var(--f-body);color:var(--ink-3)}
+
+/* lists */
+.list .item{display:flex;gap:12px;padding:12px 0;border-top:1px dashed var(--line-2);align-items:flex-start}
+.list .item:first-child{border-top:0;padding-top:2px}
+.item .main{flex:1;min-width:0}
+.item .t{font-weight:600}
+.item .s{font-size:13.5px;color:var(--ink-2)}
+.item .r{text-align:right;font:700 18px var(--f-num);font-variant-numeric:tabular-nums;white-space:nowrap;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.thumb{width:44px;height:44px;border-radius:4px;object-fit:cover;cursor:zoom-in;border:1px solid var(--line);flex-shrink:0}
+.kic{width:44px;height:44px;border-radius:4px;background:var(--surface-2);border:1px solid var(--line);display:grid;place-items:center;flex-shrink:0}
+.kic .i{width:24px;height:24px}
+.empty{text-align:center;color:var(--ink-2);padding:26px 10px}
+.empty .i{width:40px;height:40px;stroke-width:1.3;display:block;margin:0 auto 8px;color:var(--ink-3)}
+.warnbox{background:var(--warn-soft);color:var(--ink);padding:9px 12px;border-radius:2px;border-left:3px solid var(--warn);font-size:14px}
+.warnbox .i{color:var(--warn)}
+.card.warnbox{border:0;border-left:3px solid var(--warn)}
+
+/* timeline: dashed road line with square stops */
+.tl{position:relative}
+.tl::before{content:"";position:absolute;left:19px;top:10px;bottom:10px;border-left:2px dashed var(--line-2)}
+.tl-m{position:relative;display:flex;align-items:center;gap:14px;margin:16px 0 6px;font:600 14px var(--f-num);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
+.tl-m::before{content:"";width:12px;height:12px;background:var(--accent);margin-left:14px;flex-shrink:0;transform:rotate(45deg)}
+.tl-i{position:relative;display:flex;gap:12px;align-items:flex-start;padding:9px 0;cursor:pointer}
+.card>.tl-i{border-top:1px dashed var(--line-2)}
+.card>.ch+.tl-i{border-top:0}
+.tl-ic{width:40px;height:40px;border-radius:4px;background:var(--surface-2);border:1px solid var(--line-2);display:grid;place-items:center;flex-shrink:0;color:var(--ink)}
+.tl-ic .i{width:23px;height:23px}
+.tl-i .main{flex:1;min-width:0}
+.tl-i .t{font-weight:600}
+.tl-i .s{font-size:13.5px;color:var(--ink-2);display:flex;flex-wrap:wrap;align-items:center;gap:2px 6px}
+.tl-i .r{text-align:right;font:700 18px var(--f-num);white-space:nowrap;font-variant-numeric:tabular-nums}
+.tl-i .r .s{font:500 13px var(--f-body);justify-content:flex-end}
+
+/* trends carousel */
 .carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;scrollbar-width:none;margin:0 -16px;padding:0 16px;scroll-padding:0 16px}
 .carousel::-webkit-scrollbar{display:none}
 .slide{flex:0 0 100%;scroll-snap-align:start;margin-bottom:8px}
-.slide .grid{display:grid;grid-template-columns:minmax(105px,36%) 1fr;gap:10px;align-items:center}
-.slide .sv{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums}
-.slide .sl{font-size:12px;color:var(--muted);margin-top:6px}
-.dots{display:flex;justify-content:center;gap:7px;margin:0 0 14px}
-.dots i{width:8px;height:8px;border-radius:50%;background:var(--line)}
-.dots i.on{background:var(--accent)}
-.tl{position:relative}
-.tl::before{content:"";position:absolute;left:20px;top:8px;bottom:8px;width:2px;background:var(--accent-soft)}
-.tl-m{position:relative;display:flex;align-items:center;gap:14px;margin:14px 0 4px;color:var(--accent);font-weight:600}
-.tl-m::before{content:"";width:14px;height:14px;border-radius:50%;background:var(--accent);margin-left:14px;flex-shrink:0}
-.tl-i{position:relative;display:flex;gap:12px;align-items:flex-start;padding:9px 0;cursor:pointer}
-.tl-ic{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
-.tl-i .main{flex:1;min-width:0}
-.tl-i .t{font-weight:600}
-.tl-i .s{font-size:13px;color:var(--muted)}
-.tl-i .r{text-align:right;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
-.leg{color:var(--accent);font-weight:600}
+.sect{display:flex;align-items:center;gap:8px;font:600 14px var(--f-num);letter-spacing:.09em;text-transform:uppercase;margin-bottom:8px}
+.slide .grid>div:first-child{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 12px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px dashed var(--line-2)}
+.slide .sl{font:600 11.5px var(--f-num);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2)}
+.slide .sv{font:700 21px/1.15 var(--f-num);font-variant-numeric:tabular-nums}
+.slide .sn{font-size:11.5px;color:var(--ink-3);line-height:1.25}
+.dots{display:flex;justify-content:center;gap:5px;margin:2px 0 16px}
+.dots i{width:14px;height:3px;background:var(--line-2)}
+.dots i.on{background:var(--accent);width:24px}
+
+/* charts */
+.chart{display:block;max-height:240px}
+.chart text{fill:var(--ink-3);font:500 11px var(--f-num);letter-spacing:.03em}
+.chart .bv{fill:var(--ink);font:600 11px var(--f-num)}
+.chart .area{fill:var(--accent);opacity:.14}
+.chart .trace{stroke:var(--accent);stroke-width:2.5;stroke-linejoin:round}
+.chart .avgline{stroke:var(--ink-2);stroke-width:1.2;stroke-dasharray:4 4}
+.chart .pt{fill:var(--surface);stroke:var(--accent);stroke-width:2}
+.chart .pt.last{fill:var(--accent)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font:500 13px var(--f-num);letter-spacing:.04em;color:var(--ink-2);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;margin-right:5px;vertical-align:-1px}
+.hbr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px 10px;align-items:center;margin:10px 0;font-size:14.5px}
+.hbr>div:first-child{display:flex;align-items:center;gap:8px}
+.hbt{background:var(--surface-2);height:10px;overflow:hidden;grid-column:1/-1;order:3}
+.hbt div{height:100%}
+.hbv{font:700 17px var(--f-num);font-variant-numeric:tabular-nums;white-space:nowrap}
+.hbv .muted{font:500 13px var(--f-num)}
+.tbl{width:100%;border-collapse:collapse;font-size:14.5px}
+.tbl th{text-align:left;font:600 12px var(--f-num);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);padding:6px;border-bottom:2px solid var(--line-2)}
+.tbl td{padding:8px 6px;border-bottom:1px dashed var(--line-2);font-variant-numeric:tabular-nums}
+.tbl tr:last-child td{border-bottom:0}
+.tbl .n{text-align:right}
+.tbl b{font:700 16px var(--f-num)}
+.scroll{overflow-x:auto}
+
+/* dialogs & forms */
+dialog{border:0;border-radius:var(--r);padding:0;width:min(520px,calc(var(--vw) - 24px));background:var(--surface);color:var(--ink);max-height:calc(var(--vh) * .9);box-shadow:0 18px 50px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(10,11,12,.55)}
+dialog form{padding:0 18px 18px;display:flex;flex-direction:column;gap:12px}
+dialog form>h2{margin:0 -18px 2px;padding:14px 18px 12px;border-bottom:3px solid var(--accent);background:var(--head);color:var(--head-ink);font-size:20px;position:sticky;top:0;z-index:1}
+.field{display:flex;flex-direction:column;gap:4px}
+.field>span{font:600 12.5px var(--f-num);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.field small,.chk+small{font-size:12.5px;color:var(--ink-3)}
+input,select,textarea{font:500 16px var(--f-body);padding:9px 10px;border-radius:4px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--ink);width:100%;max-width:100%}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+input[type=number],input[type=date],input[type=time]{font:600 18px var(--f-num);letter-spacing:.02em}
+textarea{min-height:70px;resize:vertical}
+.chk{display:flex;gap:9px;align-items:center;font-weight:600}
+.chk input{width:20px;height:20px;accent-color:var(--accent)}
+.photo img{max-width:100%;max-height:200px;border-radius:4px;display:block;border:1px solid var(--line)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.live{font-weight:600;color:var(--ink)}
 .near{display:flex;flex-direction:column;gap:6px;margin-top:8px}
-.near button{justify-content:space-between;text-align:left}
-[hidden]{display:none!important}
+.near button{justify-content:space-between;text-align:left;font:500 15px var(--f-body)}
+dialog.sheet{margin:auto auto 0;width:min(560px,var(--vw));max-width:var(--vw);border-radius:var(--r) var(--r) 0 0;padding-bottom:var(--sab);border-top:3px solid var(--accent)}
+.sheet-list{display:flex;flex-direction:column;padding:10px 10px 14px}
+.sheet-list button{border:0;border-radius:4px;justify-content:flex-start;gap:14px;padding:12px;font:600 18px var(--f-num);letter-spacing:.04em;text-transform:uppercase;background:none}
+.sheet-list button:hover{background:var(--surface-2)}
+.sheet-list .kic{width:42px;height:42px}
+#lightbox{background:transparent;width:auto;max-width:calc(var(--vw) * .96);box-shadow:none}
+#lightbox img{max-width:calc(var(--vw) * .96);max-height:calc(var(--vh) * .88);display:block;border-radius:4px;cursor:zoom-in}
+#lightbox.big{width:var(--vw);max-width:var(--vw);height:var(--vh);max-height:var(--vh);margin:0;overflow:auto;background:#000;border-radius:0}
+#lightbox.big img{max-width:none;max-height:none;width:250%;border-radius:0;cursor:zoom-out}
+
+/* quick-add key: square amber keycap with a hard shadow */
+#fab{position:fixed;right:16px;bottom:calc(76px + var(--sab));width:58px;height:58px;border-radius:var(--r);background:var(--accent);color:var(--accent-ink);border:2px solid var(--accent-ink);justify-content:center;padding:0;box-shadow:0 5px 0 var(--accent-ink);z-index:6}
+#fab:active{transform:translateY(3px);box-shadow:0 2px 0 var(--accent-ink)}
+#fab .i{width:28px;height:28px;stroke-width:2.4}
+@media (min-width:900px){#fab{right:calc(50% - 430px)}}
+select{max-width:100%}
+
+/* print report */
 #printArea{display:none}
 .rep{color:#000;background:#fff;font:12px/1.45 system-ui,"Segoe UI",sans-serif}
 .rep h1{font-size:22px;margin:0}
-.rep h2{font-size:16px;margin:2px 0 10px;color:#333}
-.rep h3{color:#0f766e;border-bottom:2px solid #0f766e;padding-bottom:3px;margin:20px 0 8px;text-transform:none;font-size:14px;letter-spacing:0}
+.rep h2{font-size:16px;margin:2px 0 10px;color:#333;text-transform:none;letter-spacing:0;display:block;font-family:inherit}
+.rep h3{color:#000;border-bottom:2px solid #E29A17;padding-bottom:3px;margin:20px 0 8px;text-transform:none;font-size:14px;letter-spacing:0;display:block}
+.rep h3::after{content:none}
 .rep-h{display:flex;gap:18px;align-items:flex-start}
-.rep-h img{width:220px;height:145px;object-fit:cover;border-radius:8px}
+.rep-h img{width:220px;height:145px;object-fit:cover;border-radius:4px}
 .rep table{width:100%;border-collapse:collapse}
 .rep td,.rep th{text-align:left;padding:5px 6px;border-bottom:1px solid #ddd;vertical-align:top}
-.rep th{background:#eef5f4}
+.rep th{background:#F2EEE5}
 .rep .kv td:first-child{color:#555;width:42%}
 .rep .n{text-align:right;white-space:nowrap}
 .rep .att{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -172,29 +312,78 @@ dialog.sheet{margin:auto auto 0;width:min(560px,var(--vw));max-width:var(--vw);b
 </style>
 </head>
 <body>
-<header><h1>⛽ Refuelling</h1><select id="vehSel" aria-label="vehicle"></select><button id="zoomBtn" data-act="zoom"></button></header>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<!-- Refuelling icon set: 24px grid, 1.8 stroke, one accent detail per icon (takes --ic-a, so a category can colour it) -->
+<symbol id="logo" viewBox="0 0 32 32"><path d="M16 2.5c5.6 6.8 9.4 11.6 9.4 16.4a9.4 9.4 0 0 1-18.8 0C6.6 14.1 10.4 9.3 16 2.5z" fill="currentColor" stroke="none"/><path d="M10.6 22.2a5.8 5.8 0 0 1 10.8-3.4" fill="none" stroke="var(--head,#17191C)" stroke-width="2.2" stroke-linecap="round"/><path d="M16 21.6 20.4 15.9" fill="none" stroke="var(--accent,#E29A17)" stroke-width="2.6" stroke-linecap="round"/><circle cx="16" cy="21.8" r="1.9" fill="var(--accent,#E29A17)"/></symbol>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M3.5 11.2 12 4.5l8.5 6.7"/><path d="M5.5 9.8v9.7h13V9.8"/><rect x="10" y="13.5" width="4" height="6" style="fill:var(--ic-a);stroke:none"/></symbol>
+<symbol id="i-timeline" viewBox="0 0 24 24"><path d="M6 3.5v17" stroke-dasharray="2.2 2.6"/><rect x="3.8" y="5" width="4.4" height="4.4" style="fill:var(--ic-a);stroke:none"/><rect x="3.8" y="14.6" width="4.4" height="4.4"/><path d="M11 7.2h9M11 16.8h6.5"/></symbol>
+<symbol id="i-receipt" viewBox="0 0 24 24"><path d="M6 3.5h12v17l-2.4-1.6-2.4 1.6-2.4-1.6-2.4 1.6L6 18.9z"/><path d="M9 8h6M9 11.5h6"/><path d="M9 15h3" style="stroke:var(--ic-a)" stroke-width="2.4"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M6.5 16.5v-5a5.5 5.5 0 0 1 11 0v5l1.8 1.8H4.7z"/><path d="M12 3.2v2"/><rect x="10.2" y="19.6" width="3.6" height="2" style="fill:var(--ic-a);stroke:none"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 3.5v17h16.5"/><path d="M8.5 13v4.5M12.5 9v8.5"/><rect x="15.4" y="5.5" width="3.2" height="12" style="fill:var(--ic-a);stroke:none"/></symbol>
+<symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7.5h3.2M11.8 7.5H20M4 16.5h9.2M17.8 16.5H20"/><circle cx="9.5" cy="7.5" r="2.3"/><circle cx="15.5" cy="16.5" r="2.4" style="fill:var(--ic-a);stroke:none"/></symbol>
+<symbol id="i-pump" viewBox="0 0 24 24"><path d="M5 20.5V5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v15.5M3.5 20.5h12"/><rect x="7" y="6.5" width="5" height="4" style="fill:var(--ic-a);stroke:none"/><path d="M14 9.5h2a1.5 1.5 0 0 1 1.5 1.5v4.5a1.5 1.5 0 0 0 3 0V8.2L18.3 6"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M9 3v4M15 3v4"/><path d="M6.5 7h11v3.5a5.5 5.5 0 0 1-11 0z"/><path d="M12 16v5"/><path d="M12.9 8.4 10.3 12h2.4l-1.2 2.7 3.1-3.9h-2.4z" style="fill:var(--ic-a);stroke:none"/></symbol>
+<symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.5 4.2a4.5 4.5 0 0 0-4.8 6l-5.7 5.7a1.8 1.8 0 0 0 2.6 2.6l5.7-5.7a4.5 4.5 0 0 0 6-4.8l-2.6 2.6-2.4-.6-.6-2.4z"/><circle cx="5.9" cy="17.6" r="1.2" style="fill:var(--ic-a);stroke:none"/></symbol>
+<symbol id="i-hammer" viewBox="0 0 24 24"><path d="M13.4 10.6 4.6 19.4"/><path d="M10.3 7.4 13.9 3.8l6.3 6.3-3.6 3.6z" style="fill:var(--ic-a);stroke:none"/><path d="M10.3 7.4l6.3 6.3"/></symbol>
+<symbol id="i-tyre" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="12" cy="12" r="1.7" style="fill:var(--ic-a);stroke:none"/><path d="M12 3.5v2.2M12 18.3v2.2M3.5 12h2.2M18.3 12h2.2"/></symbol>
+<symbol id="i-inspect" viewBox="0 0 24 24"><rect x="5" y="4.5" width="14" height="16.5" rx="1"/><path d="M9 4.5V3h6v1.5"/><path d="M8.5 13l2.5 2.5 4.6-5" style="stroke:var(--ic-a)" stroke-width="2.3"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.2 19 6v5.3c0 4.6-3.1 8-7 9.5-3.9-1.5-7-4.9-7-9.5V6z"/><path d="M12 6.4v11.2c2.4-1.3 4.2-3.6 4.2-6.6V8.2z" style="fill:var(--ic-a);stroke:none"/></symbol>
+<symbol id="i-tax" viewBox="0 0 24 24"><path d="M6 3.5h8.5l4 4v13H6z"/><path d="M14.5 3.5v4h4"/><path d="M14.8 11 9.2 17.5"/><circle cx="9.7" cy="11.7" r="1.3"/><circle cx="14.3" cy="16.8" r="1.4" style="fill:var(--ic-a);stroke:none"/></symbol>
+<symbol id="i-key" viewBox="0 0 24 24"><circle cx="7.5" cy="12" r="3.8"/><path d="M11.3 12H21M17.5 12v3M20.5 12v2.2"/><circle cx="7.5" cy="12" r="1.4" style="fill:var(--ic-a);stroke:none"/></symbol>
+<symbol id="i-parking" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="1.5"/><path d="M10 17V7.5h3.2a2.7 2.7 0 0 1 0 5.4H10" style="stroke:var(--ic-a)" stroke-width="2.3"/></symbol>
+<symbol id="i-gate" viewBox="0 0 24 24"><path d="M5 20.5V8M3 20.5h4"/><rect x="5" y="8" width="16" height="3" rx=".5"/><path d="M9 8h3v3H9zM15 8h3v3h-3z" style="fill:var(--ic-a);stroke:none"/></symbol>
+<symbol id="i-wash" viewBox="0 0 24 24"><path d="M10 4.5c2.8 3.7 4.6 6 4.6 8.4a4.6 4.6 0 0 1-9.2 0c0-2.4 1.8-4.7 4.6-8.4z"/><path d="M17.5 11c1.4 1.8 2.3 3 2.3 4.2a2.3 2.3 0 0 1-4.6 0c0-1.2.9-2.4 2.3-4.2z" style="fill:var(--ic-a);stroke:none"/></symbol>
+<symbol id="i-ticket" viewBox="0 0 24 24"><path d="M3.5 7h17v3.2a1.8 1.8 0 0 0 0 3.6V17h-17v-3.2a1.8 1.8 0 0 0 0-3.6z"/><path d="M12 9.3v3.3" style="stroke:var(--ic-a)" stroke-width="2.3"/><circle cx="12" cy="14.8" r="1.2" style="fill:var(--ic-a);stroke:none"/></symbol>
+<symbol id="i-toolbox" viewBox="0 0 24 24"><path d="M3.5 9h17v10.5h-17z"/><path d="M9 9V6.2h6V9M3.5 13h17"/><rect x="10.3" y="11.7" width="3.4" height="2.8" style="fill:var(--ic-a);stroke:none"/></symbol>
+<symbol id="i-dots" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.9" style="fill:var(--ic-a);stroke:none"/><circle cx="18" cy="12" r="1.7"/></symbol>
+<symbol id="i-car" viewBox="0 0 24 24"><path d="M3.5 16.5v-4l2.2-5h12.6l2.2 5v4zM5 12.5h14"/><circle cx="7.5" cy="17.5" r="1.8"/><circle cx="16.5" cy="17.5" r="1.8"/><rect x="16.8" y="13.8" width="2.2" height="1.4" style="fill:var(--ic-a);stroke:none"/></symbol>
+<symbol id="i-camera" viewBox="0 0 24 24"><path d="M3.5 8h4l1.8-2.5h5.4L16.5 8h4v11.5h-17z"/><circle cx="12" cy="13.5" r="3.6"/><circle cx="12" cy="13.5" r="1.4" style="fill:var(--ic-a);stroke:none"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4" style="fill:var(--ic-a);stroke:none"/></symbol>
+<symbol id="i-calendar" viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="15" rx="1"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/><rect x="13.5" y="13.5" width="3.5" height="3.5" style="fill:var(--ic-a);stroke:none"/></symbol>
+<symbol id="i-gauge" viewBox="0 0 24 24"><path d="M4.2 17a8.5 8.5 0 1 1 15.6 0"/><path d="M12 14.5 16.2 9" style="stroke:var(--ic-a)" stroke-width="2.3"/><circle cx="12" cy="14.5" r="1.4"/></symbol>
+<symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3.5c3.6 4.5 6 7.6 6 10.5a6 6 0 0 1-12 0c0-2.9 2.4-6 6-10.5z"/><path d="M7.2 14.5h9.6a4.8 4.8 0 0 1-9.6 0z" style="fill:var(--ic-a);stroke:none"/></symbol>
+<symbol id="i-coins" viewBox="0 0 24 24"><ellipse cx="12" cy="7" rx="6.5" ry="2.6"/><path d="M5.5 7v5c0 1.4 2.9 2.6 6.5 2.6s6.5-1.2 6.5-2.6V7M5.5 12v5c0 1.4 2.9 2.6 6.5 2.6s6.5-1.2 6.5-2.6v-5"/><ellipse cx="12" cy="7" rx="2.8" ry="1" style="fill:var(--ic-a);stroke:none"/></symbol>
+<symbol id="i-road" viewBox="0 0 24 24"><path d="M7.5 20.5 10 3.5M16.5 20.5 14 3.5"/><path d="M12 5.5v2.2M12 10.5V13M12 16v3" style="stroke:var(--ic-a)" stroke-width="2"/></symbol>
+<symbol id="i-up" viewBox="0 0 24 24"><path d="M5 16.5 12 7.5l7 9z"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><path d="M5 7.5 12 16.5l7-9z"/></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19.2 8.8l-4-4L4 16z"/><path d="M13.8 6.2l4 4" style="stroke:var(--ic-a)" stroke-width="2.3"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5.5 5.5" style="stroke:var(--ic-a)" stroke-width="2.7"/></symbol>
+<symbol id="i-homebolt" viewBox="0 0 24 24"><path d="M3.5 11.2 12 4.5l8.5 6.7"/><path d="M5.5 9.8v9.7h13V9.8"/><path d="M12.9 10.6 10.3 14.3h2.5l-1.2 2.9 3.2-4.1h-2.5z" style="fill:var(--ic-a);stroke:none"/></symbol>
+<symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19c0-8.3 5.7-14 14.5-14.5C19 13.3 13.3 19 5 19z"/><path d="M5 19l8-8" style="stroke:var(--ic-a)" stroke-width="2.2"/></symbol>
+<symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3.5h8.5l4 4v13H6z"/><path d="M9 11h6M9 14.5h6M9 18h3.5"/><path d="M14.5 3.5v4h4z" style="fill:var(--ic-a);stroke:none"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5"/><path d="M4.5 16.5v3h15v-3" style="stroke:var(--ic-a)" stroke-width="2.2"/></symbol>
+<symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 15V4M7.5 8.5 12 4l4.5 4.5"/><path d="M4.5 16.5v3h15v-3" style="stroke:var(--ic-a)" stroke-width="2.2"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" style="stroke:var(--ic-a)" stroke-width="2.4"/></symbol>
+<symbol id="i-undo" viewBox="0 0 24 24"><path d="M8 6 4 10l4 4M4 10h10a5.5 5.5 0 0 1 0 11h-3"/></symbol>
+<symbol id="i-clip" viewBox="0 0 24 24"><path d="M15.5 7 8.8 13.7a2 2 0 0 0 2.8 2.8l7-7a3.8 3.8 0 0 0-5.4-5.4l-7 7a5.6 5.6 0 0 0 7.9 7.9l6-6"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="1.5"/><path d="M12 7.5v6M9.5 11 12 13.5l2.5-2.5" style="stroke:var(--ic-a)" stroke-width="2"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h13M13 7l5 5-5 5"/></symbol>
+<symbol id="i-trend" viewBox="0 0 24 24"><path d="M3.5 17.5 9 12l3.5 3.5L20 8"/><path d="M15 8h5v5" style="stroke:var(--ic-a)" stroke-width="2.2"/></symbol>
+</svg>
+<header><h1><svg class="logo" aria-hidden="true"><use href="#logo"/></svg><span>Refuelling</span></h1><select id="vehSel" aria-label="vehicle"></select><button id="zoomBtn" data-act="zoom"></button></header>
 <main id="app"></main>
 <nav id="tabs"></nav>
-<button id="fab" data-act="fab" aria-label="+" hidden>＋</button>
+<button id="fab" data-act="fab" aria-label="+" hidden><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg></button>
 <dialog id="dlg"></dialog>
 <dialog id="lightbox"><img alt=""></dialog>
 <div id="printArea"></div>
 <script src="notify.js"></script>
 <script>
 const I18N={
-pl:{dashboard:"Pulpit",fuelTab:"Tankowania",chargeTab:"Ładowania",energyTab:"Paliwo i prąd",costs:"Koszty",reminders:"Przypomnienia",reports:"Raporty",settings:"Ustawienia",
+pl:{avgAll:"z całego okresu",avgPerUnit:"ważona ilością",avgMonthNote:"z {n} mies.",avgTooShort:"potrzeba min. 4 tygodni danych",dashboard:"Pulpit",fuelTab:"Tankowania",chargeTab:"Ładowania",energyTab:"Paliwo i prąd",costs:"Koszty",reminders:"Przypomnienia",reports:"Raporty",settings:"Ustawienia",
 addFuel:"Dodaj tankowanie",editFuel:"Edytuj tankowanie",addCharge:"Dodaj ładowanie",editCharge:"Edytuj ładowanie",addCost:"Dodaj koszt",editCost:"Edytuj koszt",addReminder:"Zaplanuj serwis",editReminder:"Edytuj planowany serwis",addVehicle:"Dodaj samochód",editVehicle:"Edytuj samochód",
 vehicles:"Samochody",name:"Nazwa (np. Skoda Octavia)",plate:"Nr rejestracyjny",year:"Rok produkcji",vin:"VIN",tankCap:"Pojemność baku",battery:"Pojemność baterii (kWh)",batteryShort:"Bateria",carPhoto:"Zdjęcie samochodu",fuelType:"Napęd",
 refCons:"Spalanie porównywalnego auta spalinowego",refPrice:"Cena paliwa do porównania",refHint:"Na tej podstawie aplikacja policzy, ile oszczędzasz, jeżdżąc na prądzie.",
 date:"Data",place:"Miejsce (stacja, miasto)",odometer:"Stan licznika",quantity:"Zatankowano",pricePerUnit:"Cena za",total:"Razem",fullTank:"Do pełna",fullTankHint:"Spalanie liczone jest między dwoma tankowaniami do pełna.",
 energy:"Naładowano (kWh)",pricePerKwh:"Cena za kWh",chargeType:"Rodzaj ładowania",socFrom:"Bateria przed (%)",socTo:"Bateria po (%)",duration:"Czas ładowania (min)",socHint:"Opcjonalne. Pozwala policzyć zużycie energii po każdym ładowaniu.",
 chargeWarn:"Naładowano dużo więcej, niż mieści bateria",socWarn:"Poziom baterii musi być między 0 a 100%",
-receipt:"Zdjęcie paragonu / faktury",note:"Notatka",save:"Zapisz",cancel:"Anuluj",delete:"Usuń",remove:"Usuń zdjęcie",choosePhoto:"📷 Wybierz / zrób zdjęcie",photoLoading:"Wczytywanie zdjęcia…",photoOffline:"Do pierwszego wczytania zdjęcia HEIC potrzebny jest internet. Połącz się i spróbuj ponownie.",photoError:"Nie udało się wczytać tego zdjęcia. Spróbuj innego pliku lub zrób zdjęcie jeszcze raz.",photoHeic:"Ta przeglądarka nie obsługuje zdjęć w formacie HEIC/HEIF. W ustawieniach aparatu zmień format na JPG (np. wyłącz „Zdjęcia o wysokiej wydajności”) i spróbuj ponownie.",confirmDelete:"Na pewno usunąć?",
+receipt:"Zdjęcie paragonu / faktury",note:"Notatka",save:"Zapisz",cancel:"Anuluj",delete:"Usuń",remove:"Usuń zdjęcie",choosePhoto:"Wybierz / zrób zdjęcie",photoLoading:"Wczytywanie zdjęcia…",photoOffline:"Do pierwszego wczytania zdjęcia HEIC potrzebny jest internet. Połącz się i spróbuj ponownie.",photoError:"Nie udało się wczytać tego zdjęcia. Spróbuj innego pliku lub zrób zdjęcie jeszcze raz.",photoHeic:"Ta przeglądarka nie obsługuje zdjęć w formacie HEIC/HEIF. W ustawieniach aparatu zmień format na JPG (np. wyłącz „Zdjęcia o wysokiej wydajności”) i spróbuj ponownie.",confirmDelete:"Na pewno usunąć?",
 avgCons:"Średnie spalanie",lastCons:"Ostatnie spalanie",fuelCost:"Wydatki na paliwo",avgEcons:"Średnie zużycie energii",lastEcons:"Ostatnie zużycie",chargeCost:"Wydatki na ładowanie",homeShare:"Ładowanie w domu",savings:"Oszczędność vs auto spalinowe",ofEnergy:"energii",
 serviceCost:"Serwis i naprawy",otherCost:"Pozostałe koszty",thisMonth:"Ten miesiąc",costPer100:"Koszt na 100",curOdo:"Przebieg",avgPrice:"Średnia cena",
 noVehicle:"Dodaj swój pierwszy samochód, aby zacząć.",noEntries:"Brak wpisów.",noData:"Brak danych w tym okresie.",kind:"Kategoria",desc:"Opis (co zostało zrobione / za co)",where:"Gdzie (warsztat, firma)",cost:"Koszt",until:"Ważne do",untilHint:"Np. koniec polisy OC lub ważności przeglądu. Aplikacja sama doda przypomnienie.",renewal:"odnowienie",validUntil:"ważne do",
 remTitle:"Co trzeba zrobić (np. wymiana oleju)",dueDate:"Termin (data)",dueOdo:"Termin (przy przebiegu)",
-overdue:"Po terminie",soon:"Wkrótce",upcoming:"Zaplanowane",completed:"Wykonane",markDone:"✓ Zrobione",undo:"Przywróć",all:"Wszystkie",
+overdue:"Po terminie",soon:"Wkrótce",upcoming:"Zaplanowane",completed:"Wykonane",markDone:"Zrobione",undo:"Przywróć",all:"Wszystkie",
 language:"Język",currency:"Waluta",units:"Jednostki",backup:"Kopia zapasowa",export:"Eksportuj dane (JSON)",exportCsv:"Eksportuj wszystko (CSV)",import:"Importuj dane",importOk:"Dane zaimportowane.",importErr:"Nieprawidłowy plik.",
 consChart:"Spalanie w czasie",econsChart:"Zużycie energii w czasie",needTwoFull:"Potrzebne są co najmniej dwa tankowania do pełna, aby obliczyć spalanie.",needTwoCharges:"Podaj poziom baterii przed i po ładowaniu, aby zobaczyć zużycie po każdym ładowaniu.",
 tankWarn:"Zatankowana ilość jest większa niż pojemność baku",odoWarn:"Stan licznika jest niższy niż w poprzednim wpisie",
@@ -205,31 +394,31 @@ saleReport:"Raport do sprzedaży auta (PDF)",saleReportHint:"Historia serwisowa 
 vehicleHistory:"Historia pojazdu",generated:"Wygenerowano",trackedSince:"Dane prowadzone od",serviceHistory:"Historia serwisowa",summary:"Podsumowanie",attachments:"Faktury i paragony",entries:"Liczba wpisów serwisowych",trackedDist:"Udokumentowany przebieg",
 privacy:"Polityka prywatności",textSize:"Powiększenie (lupa)",normal:"normalny",textSizeHint:"Powiększa całą aplikację: tekst, przyciski i wykresy. Przycisk 🔍 na górze ekranu szybko przełącza powiększenie. Zdjęcie paragonu powiększysz, stukając w nie.",
 sinceFill:"Od poprzedniego tankowania",sinceCharge:"Od poprzedniego ładowania",timeline:"Oś czasu",fillUp:"Tankowanie",charging:"Ładowanie",time:"Godzina",grade:"Rodzaj paliwa",lastValue:"Ostatnia wartość",calcHint:"Wpisz dowolne dwie z trzech wartości (ilość, cena, koszt) — trzecia wyliczy się sama.",
-nearby:"📍 Stacje w pobliżu",locating:"Ustalam lokalizację…",noStations:"Nie znaleziono stacji w promieniu 3 km.",gpsError:"Nie udało się ustalić lokalizacji. Zezwól aplikacji na dostęp do lokalizacji i włącz GPS.",stationsError:"Nie udało się pobrać listy stacji. Sprawdź połączenie z internetem.",
+nearby:"Stacje w pobliżu",locating:"Ustalam lokalizację…",noStations:"Nie znaleziono stacji w promieniu 3 km.",gpsError:"Nie udało się ustalić lokalizacji. Zezwól aplikacji na dostęp do lokalizacji i włącz GPS.",stationsError:"Nie udało się pobrać listy stacji. Sprawdź połączenie z internetem.",
 fuelCard:"Paliwo",lastPrice:"Ostatnia cena",today:"dziś",daysAgo:"dni temu",prevMonth:"W poprzednim miesiącu",energyCosts:"Paliwo / prąd",trends:"Trendy",recent:"Ostatnie wpisy",
 fuelUse:"Zużycie paliwa",energyUse:"Zużycie energii",fuelPrices:"Ceny paliwa",chargePrices:"Ceny ładowania",monthlyFuel:"Miesięczne wydatki (paliwo)",costsWithFuel:"Koszty z paliwem",last:"Ostatnie",avg:"Śr.",change:"Zmiana",
 grades:{pb95:"Pb95",pb98:"Pb98",on:"ON",onp:"ON Premium",lpg:"LPG",cng:"CNG",e85:"E85",other:"Inne"},
-app:"Aplikacja",install:"📲 Zainstaluj aplikację",installIos:"Na iPhonie: w Safari stuknij Udostępnij, a potem „Do ekranu początkowego”.",installed:"Aplikacja jest zainstalowana.",
-notifications:"Powiadomienia o terminach",notifOn:"🔔 Włącz powiadomienia",notifOff:"Wyłącz",notifEnabled:"Powiadomienia są włączone.",notifDenied:"Powiadomienia są zablokowane. Zezwól na nie w ustawieniach przeglądarki lub telefonu.",notifUnsupported:"Ta przeglądarka nie obsługuje powiadomień.",
+app:"Aplikacja",install:"Zainstaluj aplikację",installIos:"Na iPhonie: w Safari stuknij Udostępnij, a potem „Do ekranu początkowego”.",installed:"Aplikacja jest zainstalowana.",
+notifications:"Powiadomienia o terminach",notifOn:"Włącz powiadomienia",notifOff:"Wyłącz",notifEnabled:"Powiadomienia są włączone.",notifDenied:"Powiadomienia są zablokowane. Zezwól na nie w ustawieniach przeglądarki lub telefonu.",notifUnsupported:"Ta przeglądarka nie obsługuje powiadomień.",
 notifHint:"Przypomnienie przyjdzie 7 dni lub 500 km przed terminem i gdy termin minie. Gdy aplikacja jest zamknięta, działa to tylko w zainstalowanej aplikacji na Androidzie.",
 lastBackup:"Ostatnia kopia",never:"nigdy",backupNag:"Nie robiłeś kopii zapasowej od ponad 30 dni. Dane są tylko na tym urządzeniu.",backupNow:"Zrób kopię",
 fuelTypes:{petrol:"Benzyna",diesel:"Diesel",lpg:"LPG",hybrid:"Hybryda (HEV)",phev:"Hybryda plug-in (PHEV)",ev:"Elektryczny (EV)",other:"Inne"},
 ct:{home:"Dom",work:"Praca",ac:"Publiczna AC",dc:"Szybka DC"},
 kinds:{service:"Serwis",repair:"Naprawa",tyres:"Opony",inspection:"Przegląd techniczny",insurance:"Ubezpieczenie",tax:"Podatki i opłaty",leasing:"Leasing / rata",parking:"Parking",tolls:"Autostrady",wash:"Myjnia",fines:"Mandaty",accessories:"Akcesoria",other:"Inne"},
 grp:{fuel:"Paliwo",charge:"Ładowanie",svc:"Serwis i naprawy",fix:"Ubezpieczenie, opłaty, leasing",oth:"Inne"}},
-en:{dashboard:"Dashboard",fuelTab:"Fill-ups",chargeTab:"Charging",energyTab:"Fuel & power",costs:"Costs",reminders:"Reminders",reports:"Reports",settings:"Settings",
+en:{avgAll:"over all records",avgPerUnit:"weighted by amount",avgMonthNote:"over {n} months",avgTooShort:"needs at least 4 weeks of data",dashboard:"Dashboard",fuelTab:"Fill-ups",chargeTab:"Charging",energyTab:"Fuel & power",costs:"Costs",reminders:"Reminders",reports:"Reports",settings:"Settings",
 addFuel:"Add fill-up",editFuel:"Edit fill-up",addCharge:"Add charge",editCharge:"Edit charge",addCost:"Add cost",editCost:"Edit cost",addReminder:"Schedule service",editReminder:"Edit scheduled service",addVehicle:"Add car",editVehicle:"Edit car",
 vehicles:"Cars",name:"Name (e.g. Toyota Corolla)",plate:"Licence plate",year:"Year",vin:"VIN",tankCap:"Tank capacity",battery:"Battery capacity (kWh)",batteryShort:"Battery",carPhoto:"Car photo",fuelType:"Powertrain",
 refCons:"Comparable combustion car consumption",refPrice:"Fuel price for comparison",refHint:"Used to calculate how much you save by driving electric.",
 date:"Date",place:"Place (station, city)",odometer:"Odometer",quantity:"Amount filled",pricePerUnit:"Price per",total:"Total",fullTank:"Full tank",fullTankHint:"Consumption is calculated between two full-tank fill-ups.",
 energy:"Energy charged (kWh)",pricePerKwh:"Price per kWh",chargeType:"Charging type",socFrom:"Battery before (%)",socTo:"Battery after (%)",duration:"Charging time (min)",socHint:"Optional. Lets the app calculate energy use after each charge.",
 chargeWarn:"Energy charged is much larger than the battery capacity",socWarn:"Battery level must be between 0 and 100%",
-receipt:"Receipt / invoice photo",note:"Note",save:"Save",cancel:"Cancel",delete:"Delete",remove:"Remove photo",choosePhoto:"📷 Choose / take photo",photoLoading:"Loading photo…",photoOffline:"Loading a HEIC photo for the first time needs an internet connection. Connect and try again.",photoError:"Couldn't load this photo. Try another file or take the photo again.",photoHeic:"This browser can't read HEIC/HEIF photos. Switch the camera format to JPG (e.g. turn off “High efficiency pictures”) and try again.",confirmDelete:"Delete this entry?",
+receipt:"Receipt / invoice photo",note:"Note",save:"Save",cancel:"Cancel",delete:"Delete",remove:"Remove photo",choosePhoto:"Choose / take photo",photoLoading:"Loading photo…",photoOffline:"Loading a HEIC photo for the first time needs an internet connection. Connect and try again.",photoError:"Couldn't load this photo. Try another file or take the photo again.",photoHeic:"This browser can't read HEIC/HEIF photos. Switch the camera format to JPG (e.g. turn off “High efficiency pictures”) and try again.",confirmDelete:"Delete this entry?",
 avgCons:"Average consumption",lastCons:"Last consumption",fuelCost:"Fuel spending",avgEcons:"Average energy use",lastEcons:"Last energy use",chargeCost:"Charging spending",homeShare:"Charged at home",savings:"Savings vs combustion car",ofEnergy:"of energy",
 serviceCost:"Service & repairs",otherCost:"Other costs",thisMonth:"This month",costPer100:"Cost per 100",curOdo:"Odometer",avgPrice:"Average price",
 noVehicle:"Add your first car to get started.",noEntries:"No entries yet.",noData:"No data for this period.",kind:"Category",desc:"Description (what was done / what for)",where:"Where (workshop, company)",cost:"Cost",until:"Valid until",untilHint:"E.g. insurance policy end or inspection expiry. A reminder is added automatically.",renewal:"renewal",validUntil:"valid until",
 remTitle:"What needs doing (e.g. oil change)",dueDate:"Due date",dueOdo:"Due at odometer",
-overdue:"Overdue",soon:"Soon",upcoming:"Scheduled",completed:"Completed",markDone:"✓ Done",undo:"Restore",all:"All",
+overdue:"Overdue",soon:"Soon",upcoming:"Scheduled",completed:"Completed",markDone:"Done",undo:"Restore",all:"All",
 language:"Language",currency:"Currency",units:"Units",backup:"Backup",export:"Export data (JSON)",exportCsv:"Export everything (CSV)",import:"Import data",importOk:"Data imported.",importErr:"Invalid file.",
 consChart:"Consumption over time",econsChart:"Energy use over time",needTwoFull:"At least two full-tank fill-ups are needed to calculate consumption.",needTwoCharges:"Enter battery level before and after charging to see energy use per charge.",
 tankWarn:"Amount filled is larger than the tank capacity",odoWarn:"Odometer is lower than in the previous entry",
@@ -240,12 +429,12 @@ saleReport:"Vehicle history report (PDF)",saleReportHint:"Service history ready 
 vehicleHistory:"Vehicle history",generated:"Generated",trackedSince:"Records kept since",serviceHistory:"Service history",summary:"Summary",attachments:"Invoices and receipts",entries:"Service entries",trackedDist:"Documented distance",
 privacy:"Privacy policy",textSize:"Magnifier (text size)",normal:"normal",textSizeHint:"Enlarges the whole app: text, buttons and charts. The 🔍 button at the top switches the size quickly. Tap a receipt photo to magnify it.",
 sinceFill:"Since previous fill-up",sinceCharge:"Since previous charge",timeline:"Timeline",fillUp:"Fill-up",charging:"Charging",time:"Time",grade:"Fuel grade",lastValue:"Last value",calcHint:"Enter any two of amount, price and cost — the third is calculated.",
-nearby:"📍 Nearby stations",locating:"Finding your location…",noStations:"No stations found within 3 km.",gpsError:"Couldn't get your location. Allow location access for the app and turn on GPS.",stationsError:"Couldn't load the station list. Check your internet connection.",
+nearby:"Nearby stations",locating:"Finding your location…",noStations:"No stations found within 3 km.",gpsError:"Couldn't get your location. Allow location access for the app and turn on GPS.",stationsError:"Couldn't load the station list. Check your internet connection.",
 fuelCard:"Fuel",lastPrice:"Last price",today:"today",daysAgo:"days ago",prevMonth:"Last month",energyCosts:"Fuel / power",trends:"Trends",recent:"Recent entries",
 fuelUse:"Fuel consumption",energyUse:"Energy use",fuelPrices:"Fuel prices",chargePrices:"Charging prices",monthlyFuel:"Monthly fuel spending",costsWithFuel:"Costs incl. fuel",last:"Last",avg:"Avg",change:"Change",
 grades:{pb95:"Petrol 95",pb98:"Petrol 98",on:"Diesel",onp:"Premium diesel",lpg:"LPG",cng:"CNG",e85:"E85",other:"Other"},
-app:"App",install:"📲 Install app",installIos:"On iPhone: in Safari tap Share, then “Add to Home Screen”.",installed:"The app is installed.",
-notifications:"Due date notifications",notifOn:"🔔 Turn on notifications",notifOff:"Turn off",notifEnabled:"Notifications are on.",notifDenied:"Notifications are blocked. Allow them in your browser or phone settings.",notifUnsupported:"This browser does not support notifications.",
+app:"App",install:"Install app",installIos:"On iPhone: in Safari tap Share, then “Add to Home Screen”.",installed:"The app is installed.",
+notifications:"Due date notifications",notifOn:"Turn on notifications",notifOff:"Turn off",notifEnabled:"Notifications are on.",notifDenied:"Notifications are blocked. Allow them in your browser or phone settings.",notifUnsupported:"This browser does not support notifications.",
 notifHint:"You get a reminder 7 days or 500 km before the due date and again when it is overdue. While the app is closed this works only in the installed app on Android.",
 lastBackup:"Last backup",never:"never",backupNag:"You haven't made a backup in over 30 days. Your data lives only on this device.",backupNow:"Back up now",
 fuelTypes:{petrol:"Petrol",diesel:"Diesel",lpg:"LPG",hybrid:"Hybrid (HEV)",phev:"Plug-in hybrid (PHEV)",ev:"Electric (EV)",other:"Other"},
@@ -272,7 +461,10 @@ const loadLang=code=>I18N[code]||!LANGS[code]?Promise.resolve():new Promise(res=
  const s=document.createElement("script");s.src=`lang/${code}.js`;s.onload=res;s.onerror=()=>{console.warn("missing language",code);res()};document.head.appendChild(s);
 });
 const GROUP={service:"svc",repair:"svc",tyres:"svc",inspection:"svc",insurance:"fix",tax:"fix",leasing:"fix",parking:"oth",tolls:"oth",wash:"oth",fines:"oth",accessories:"oth",other:"oth"};
-const KIND_IC={service:"🔧",repair:"🛠️",tyres:"🛞",inspection:"📋",insurance:"🛡️",tax:"🏛️",leasing:"💳",parking:"🅿️",tolls:"🛣️",wash:"🧽",fines:"🚓",accessories:"🧰",other:"📦"};
+const KIND_IC={service:"wrench",repair:"hammer",tyres:"tyre",inspection:"inspect",insurance:"shield",tax:"tax",leasing:"key",parking:"parking",tolls:"gate",wash:"wash",fines:"ticket",accessories:"toolbox",other:"dots"};
+/* icon from the sprite in the page; its accent detail takes --ic-a (amber, or a category colour) */
+const ic=(n,cls="")=>`<svg class="i ${cls}" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const tile=(n,color)=>`<div class="kic" style="--ic-a:${color}">${ic(n)}</div>`;
 const HIST=["service","repair","tyres","inspection"];
 const CT=["home","work","ac","dc"];
 const GROUPS=["fuel","charge","svc","fix","oth"];
@@ -399,6 +591,18 @@ function evStats(){
  const savings=V.fuelType==="ev"&&V.refCons&&V.refPrice&&dist>0?u.used(+V.refCons,dist)*V.refPrice-tracked:null;
  return{map,list,avg:dist>0&&totE>0?u.econs(totE,dist):null,series:list.filter(c=>map[c.id]!=null).map(c=>map[c.id]),cost,kwh,avgPrice:kwh?cost/kwh:null,homeShare:kwh?home/kwh:null,dist,costPer100:dist?tracked/dist*100:null,savings};
 }
+/* Averages shown anywhere in the app come from these helpers, so the same number never differs between screens.
+   Consumption: distance-weighted (consumption()/evStats() .avg). Price: volume-weighted, i.e. what a litre / kWh really cost. */
+const weightedPrice=(list,qtyOf,costOf)=>{const q=sum(list,qtyOf);return q?sum(list,costOf)/q:null};
+/* Monthly average: total ÷ days actually covered × 30.44. The window runs from the first record (or the period start, if later)
+   to today (or the period end), so months before the first record and the unfinished current month don't distort it.
+   With less than 4 weeks of data there is no honest monthly figure yet, so it returns null. */
+function monthlyAvg(items,from,to){
+ if(!items.length)return null;
+ const first=items.map(x=>x.date).sort()[0],start=from&&from>first?from:first,end=to&&to<today()?to:today();
+ const days=(new Date(end+"T12:00")-new Date(start+"T12:00"))/864e5+1;
+ return days<28?null:{value:sum(items,x=>x.amount)/days*30.44,months:days/30.44};
+}
 const allCosts=()=>[
  ...mine(S.fuel).map(f=>({date:f.date,amount:fuelTotal(f),kind:"fuel",group:"fuel"})),
  ...mine(S.charges).map(c=>({date:c.date,amount:chargeTotal(c),kind:"charge",group:"charge"})),
@@ -408,7 +612,7 @@ const allCosts=()=>[
 function fieldHtml(f,v){
  const id="f_"+f.k;
  if(f.type==="checkbox")return`<div class="field"><label class="chk"><input type="checkbox" id="${id}" ${v?"checked":""}> ${esc(f.label)}</label>${f.hint?`<small>${esc(f.hint)}</small>`:""}</div>`;
- if(f.type==="photo")return`<div class="field"><span>${esc(f.label)}</span><div class="photo" id="${id}_pv">${v?`<img src="${v}">`:""}</div><div class="row"><label class="btn">${t("choosePhoto")}<input type="file" accept="image/*" id="${id}" hidden></label><button type="button" class="ghost" id="${id}_rm" ${v?"":"hidden"}>${t("remove")}</button></div></div>`;
+ if(f.type==="photo")return`<div class="field"><span>${esc(f.label)}</span><div class="photo" id="${id}_pv">${v?`<img src="${v}">`:""}</div><div class="row"><label class="btn">${ic("camera")}${t("choosePhoto")}<input type="file" accept="image/*" id="${id}" hidden></label><button type="button" class="ghost" id="${id}_rm" ${v?"":"hidden"}>${t("remove")}</button></div></div>`;
  if(f.type==="select")return`<label class="field"><span>${esc(f.label)}</span><select id="${id}">${f.options.map(([val,lab])=>`<option value="${esc(val)}" ${val==v?"selected":""}>${esc(lab)}</option>`).join("")}</select></label>`;
  if(f.type==="textarea")return`<label class="field"><span>${esc(f.label)}</span><textarea id="${id}">${esc(v)}</textarea></label>`;
  if(f.type==="html")return f.html;
@@ -473,7 +677,7 @@ function placesDatalist(list){
  return`<datalist id="placesDl">${Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]).slice(0,50).map(p=>`<option value="${esc(p)}">`).join("")}</datalist>`;
 }
 /* Nearby stations: the phone's location goes to the public OpenStreetMap Overpass API, only when the button is pressed. */
-const nearbyHtml=()=>`<div><button type="button" class="small" id="nearBtn">${t("nearby")}</button><div class="near" id="nearList"></div></div>`;
+const nearbyHtml=()=>`<div><button type="button" class="small" id="nearBtn">${ic("pin")}${t("nearby")}</button><div class="near" id="nearList"></div></div>`;
 const geoDist=(a,b,c,d)=>{const r=Math.PI/180,x=Math.sin((c-a)*r/2)**2+Math.cos(a*r)*Math.cos(c*r)*Math.sin((d-b)*r/2)**2;return 2*6371e3*Math.asin(Math.sqrt(x))};
 function bindNearby(kind){
  $("#nearBtn").onclick=async()=>{
@@ -572,7 +776,7 @@ function syncAutoReminder(s){
 function costForm(s,kind){
  const u=U();
  openForm(t(s?"editCost":"addCost"),[
-  {k:"kind",label:t("kind"),type:"select",options:Object.keys(GROUP).map(k=>[k,KIND_IC[k]+" "+kindLabel(k)])},
+  {k:"kind",label:t("kind"),type:"select",options:Object.keys(GROUP).map(k=>[k,kindLabel(k)])},
   {k:"title",label:t("desc")},
   [{k:"date",label:t("date"),type:"date",req:true},{k:"odo",label:`${t("odometer")} (${u.d})`,type:"number"}],
   [{k:"cost",label:`${t("cost")} (${cur()})`,type:"number"},{k:"place",label:t("where")}],
@@ -598,7 +802,7 @@ function reportForm(){
   {k:"costs",label:t("incCosts"),type:"checkbox"},
   {k:"photos",label:t("incPhotos"),type:"checkbox"}
  ],{stats:true,costs:false,photos:true},o=>setTimeout(()=>printReport(o),150));
- $("#frm .primary").textContent="📄 PDF";
+ $("#frm .primary").innerHTML=ic("doc")+"PDF";
 }
 
 /* ---------- reminders status ---------- */
@@ -615,49 +819,58 @@ const sortRem=a=>a.slice().sort((x,y)=>(x.date||"9999").localeCompare(y.date||"9
 const shortDate=s=>new Intl.DateTimeFormat(loc(),{day:"2-digit",month:"short"}).format(new Date(s+"T12:00"));
 const shortMonth=m=>new Intl.DateTimeFormat(loc(),{month:"short",year:"2-digit"}).format(new Date(m+"-15T12:00"));
 /* Small trend charts for the dashboard carousel: area line with a dashed average, and (stacked) month bars. */
-function areaLine(pts){ // pts: [{v,date}]
+function areaLine(pts,avg){ // pts: [{v,date}]; avg: the app-wide average drawn as the dashed line (same number as next to the chart)
  if(pts.length<2)return`<p class="muted" style="font-size:13px">—</p>`;
- const W=300,H=150,P=10,B=22,vals=pts.map(p=>p.v),mn=Math.min(...vals),mx=Math.max(...vals),rg=mx-mn||1,avg=vals.reduce((a,b)=>a+b)/vals.length;
+ const W=320,H=140,P=10,B=22,vals=pts.map(p=>p.v).concat(avg!=null&&isFinite(avg)?[avg]:[]),mn=Math.min(...vals),mx=Math.max(...vals),rg=mx-mn||1;
  const x=i=>P+i*(W-2*P)/(pts.length-1),y=v=>P+(H-P-B)*(1-(v-mn)/rg);
  const line=pts.map((p,i)=>`${x(i)},${y(p.v)}`).join(" ");
- return`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img"><polygon points="${x(0)},${H-B} ${line} ${x(pts.length-1)},${H-B}" fill="var(--accent)" opacity=".13"/>
- <line x1="${P}" x2="${W-P}" y1="${y(avg)}" y2="${y(avg)}" stroke="var(--accent)" stroke-dasharray="5 5" opacity=".6"/>
- <polyline fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" points="${line}"/>
- ${pts.map((p,i)=>`<circle cx="${x(i)}" cy="${y(p.v)}" r="${i===pts.length-1?5:3.5}" fill="var(--accent)"><title>${shortDate(p.date)}: ${num(p.v,2)}</title></circle>`).join("")}
+ return`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" class="chart"><polygon points="${x(0)},${H-B} ${line} ${x(pts.length-1)},${H-B}" class="area"/>
+ ${avg!=null&&isFinite(avg)?`<line x1="${P}" x2="${W-P}" y1="${y(avg)}" y2="${y(avg)}" class="avgline"><title>${t("avg")}: ${num(avg,2)}</title></line>`:""}
+ <polyline fill="none" class="trace" points="${line}"/>
+ ${pts.map((p,i)=>`<rect x="${x(i)-(i===pts.length-1?4.5:3)}" y="${y(p.v)-(i===pts.length-1?4.5:3)}" width="${i===pts.length-1?9:6}" height="${i===pts.length-1?9:6}" class="${i===pts.length-1?"pt last":"pt"}"><title>${shortDate(p.date)}: ${num(p.v,2)}</title></rect>`).join("")}
  <text x="${P}" y="${H-4}">${shortDate(pts[0].date)}</text><text x="${W-P}" y="${H-4}" text-anchor="end">${shortDate(pts.at(-1).date)}</text></svg>`;
 }
+const moneyRound=v=>v==null||!isFinite(v)?"—":new Intl.NumberFormat(loc(),{style:"currency",currency:cur(),maximumFractionDigits:0}).format(v);
+/* Value under a bar: whole currency units; with many bars the label turns vertical so every bar still gets its own amount. */
+const barValue=(x,yBase,v,many)=>many?`<text x="${x}" y="${yBase}" class="bv" transform="rotate(-90 ${x} ${yBase})" text-anchor="end" dominant-baseline="middle">${moneyRound(v)}</text>`:`<text x="${x}" y="${yBase}" class="bv" text-anchor="middle">${moneyRound(v)}</text>`;
 function monthBars(rows,keys){ // rows: [{m,parts:{key:value}}]; the current (unfinished) month is drawn dashed
- const W=300,H=150,T=10,B=22,tot=r=>keys.reduce((a,k)=>a+(r.parts[k]||0),0),max=Math.max(1,...rows.map(tot)),bw=(W-8)/rows.length,y=v=>T+(H-T-B)*(1-v/max),cm=today().slice(0,7);
- let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img">`;
+ const W=320,H=170,T=10,B=40,tot=r=>keys.reduce((a,k)=>a+(r.parts[k]||0),0),max=Math.max(1,...rows.map(tot)),bw=(W-8)/rows.length,y=v=>T+(H-T-B)*(1-v/max),cm=today().slice(0,7);
+ let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" class="chart">`;
  rows.forEach((r,i)=>{let acc=0;const x=4+i*bw+bw*.2,w=bw*.6,open=r.m===cm;
-  keys.forEach(k=>{const v=r.parts[k]||0;if(!v)return;s+=`<rect x="${x}" y="${y(acc+v)}" width="${w}" height="${Math.max(1,y(acc)-y(acc+v))}" rx="3" fill="var(--c-${k})" ${open?`fill-opacity=".3" stroke="var(--c-${k})" stroke-dasharray="4 3"`:""}><title>${shortMonth(r.m)} · ${grpLabel(k)}: ${money(v)}</title></rect>`;acc+=v});
-  if(rows.length<=6||i%2===rows.length%2)s+=`<text x="${x+w/2}" y="${H-4}" text-anchor="middle">${shortMonth(r.m)}</text>`});
+  keys.forEach(k=>{const v=r.parts[k]||0;if(!v)return;s+=`<rect x="${x}" y="${y(acc+v)}" width="${w}" height="${Math.max(1,y(acc)-y(acc+v))}" fill="var(--c-${k})" ${open?`fill-opacity=".28" stroke="var(--c-${k})" stroke-dasharray="3 2"`:""}><title>${shortMonth(r.m)} · ${grpLabel(k)}: ${money(v)}</title></rect>`;acc+=v});
+  s+=`<text x="${x+w/2}" y="${H-22}" text-anchor="middle">${shortMonth(r.m)}</text>`+barValue(x+w/2,H-6,acc,false)});
  return s+"</svg>";
 }
 function stackedBars(rows){
- const W=640,H=220,L=58,B=24,T=10,tot=r=>GROUPS.reduce((a,g)=>a+(r.parts[g]||0),0),max=Math.max(1,...rows.map(tot)),bw=(W-L-4)/rows.length,y=v=>T+(H-T-B)*(1-v/max);
+ const many=rows.length>8,W=640,B=many?96:48,H=200+B,L=58,T=10,tot=r=>GROUPS.reduce((a,g)=>a+(r.parts[g]||0),0),max=Math.max(1,...rows.map(tot)),bw=(W-L-4)/rows.length,y=v=>T+(H-T-B)*(1-v/max);
  const step=Math.ceil(rows.length/12),present=GROUPS.filter(g=>rows.some(r=>r.parts[g]));
- let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img">`;
+ let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" class="chart">`;
  [0,.5,1].forEach(f=>{const v=max*f;s+=`<line x1="${L}" x2="${W}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end">${moneyShort(v)}</text>`});
  rows.forEach((r,i)=>{let acc=0;const x=L+i*bw+bw*.15,w=Math.max(2,bw*.7);
   GROUPS.forEach(g=>{const v=r.parts[g]||0;if(!v)return;s+=`<rect x="${x}" y="${y(acc+v)}" width="${w}" height="${Math.max(1,y(acc)-y(acc+v))}" fill="var(--c-${g})"><title>${grpLabel(g)}: ${money(v)}</title></rect>`;acc+=v});
-  if(i%step===0){const d=new Date(r.m+"-15T12:00"),lab=new Intl.DateTimeFormat(loc(),{month:"short"}).format(d)+(r.m.endsWith("-01")||i===0?" "+r.m.slice(2,4):"");s+=`<text x="${x+w/2}" y="${H-6}" text-anchor="middle">${lab}</text>`}
+  if(i%step===0){const d=new Date(r.m+"-15T12:00"),lab=new Intl.DateTimeFormat(loc(),{month:"short"}).format(d)+(r.m.endsWith("-01")||i===0?" "+r.m.slice(2,4):"");s+=`<text x="${x+w/2}" y="${H-B+18}" text-anchor="middle">${lab}</text>`}
+  s+=barValue(x+w/2,many?H-B+28:H-8,acc,many);
   if(acc)s+=`<rect x="${L+i*bw}" y="${T}" width="${bw}" height="${H-T-B}" fill="transparent"><title>${r.m}: ${money(acc)}</title></rect>`});
  return s+`</svg><div class="legend">${present.map(g=>`<span><i style="background:var(--c-${g})"></i>${grpLabel(g)}</span>`).join("")}</div>`;
 }
 function hbars(rows){
  const max=Math.max(...rows.map(r=>r.val)),total=sum(rows,r=>r.val);
- return rows.map(r=>`<div class="hbr"><div>${esc(r.label)}</div><div class="hbt"><div style="width:${r.val/max*100}%;background:var(--c-${r.g})"></div></div><div class="hbv">${money(r.val)} <span class="muted">${Math.round(r.val/total*100)}%</span></div></div>`).join("");
+ return rows.map(r=>`<div class="hbr"><div style="--ic-a:var(--c-${r.g})">${r.icon?ic(r.icon):""}${esc(r.label)}</div><div class="hbt"><div style="width:${r.val/max*100}%;background:var(--c-${r.g})"></div></div><div class="hbv">${money(r.val)} <span class="muted">${Math.round(r.val/total*100)}%</span></div></div>`).join("");
 }
 
 /* ---------- views ---------- */
 const thumb=p=>p?`<img class="thumb" src="${p}" data-zoom alt="">`:"";
 const stat=(l,v,s,cls="")=>`<div class="stat"><div class="l">${l}</div><div class="v ${cls}">${v}</div>${s?`<div class="l">${s}</div>`:""}</div>`;
-function remItem(r){const st=remStatus(r);return`<div class="item"><div class="main"><div class="t">${esc(r.title)} ${st?.label?`<span class="badge ${st.cls}">${st.label}</span>`:""}</div><div class="s">${[r.date&&fdate(r.date),r.odo&&num(r.odo,0)+" "+U().d].filter(Boolean).join(" · ")}${st?.txt?` — ${esc(st.txt)}`:""}</div>${r.note?`<div class="s">${esc(r.note)}</div>`:""}</div><div class="row"><button class="small" data-act="remToggle" data-id="${r.id}">${r.done?t("undo"):t("markDone")}</button><button class="small ghost" data-act="remEdit" data-id="${r.id}">✎</button></div></div>`}
-function costItem(s){return`<div class="item">${s.photo?thumb(s.photo):`<div class="kic">${KIND_IC[s.kind]||"📦"}</div>`}<div class="main"><div class="t">${esc(s.title||kindLabel(s.kind))} <span class="badge ${s.kind==="repair"?"warn":""}">${kindLabel(s.kind)}</span></div><div class="s">${fdate(s.date)}${s.odo?` · ${num(s.odo,0)} ${U().d}`:""}${s.place?` · ${esc(s.place)}`:""}${s.until?` · ${t("validUntil")} ${fdate(s.until)}`:""}</div>${s.note?`<div class="s">${esc(s.note)}</div>`:""}</div><div class="r"><div class="t">${s.cost!=null?money(s.cost):""}</div><button class="small ghost" data-act="costEdit" data-id="${s.id}">✎</button></div></div>`}
+function remItem(r){const st=remStatus(r);return`<div class="item">${tile("bell",st?.cls==="danger"?"var(--danger)":st?.cls==="warn"?"var(--warn)":"var(--accent)")}<div class="main"><div class="t">${esc(r.title)} ${st?.label?`<span class="badge ${st.cls}">${st.label}</span>`:""}</div><div class="s">${[r.date&&fdate(r.date),r.odo&&num(r.odo,0)+" "+U().d].filter(Boolean).join(" · ")}${st?.txt?` — ${esc(st.txt)}`:""}</div>${r.note?`<div class="s">${esc(r.note)}</div>`:""}</div><div class="row"><button class="small" data-act="remToggle" data-id="${r.id}">${r.done?ic("undo")+t("undo"):ic("check")+t("markDone")}</button><button class="small ghost icon" data-act="remEdit" data-id="${r.id}" aria-label="${t("edit")}">${ic("edit")}</button></div></div>`}
+function costItem(s){return`<div class="item">${s.photo?thumb(s.photo):tile(KIND_IC[s.kind]||"dots",`var(--c-${GROUP[s.kind]||"oth"})`)}<div class="main"><div class="t">${esc(s.title||kindLabel(s.kind))} <span class="badge ${s.kind==="repair"?"warn":""}">${kindLabel(s.kind)}</span></div><div class="s">${fdate(s.date)}${s.odo?` · ${num(s.odo,0)} ${U().d}`:""}${s.place?` · ${esc(s.place)}`:""}${s.until?` · ${t("validUntil")} ${fdate(s.until)}`:""}</div>${s.note?`<div class="s">${esc(s.note)}</div>`:""}</div><div class="r">${s.cost!=null?money(s.cost):""}<button class="small ghost icon" data-act="costEdit" data-id="${s.id}" aria-label="${t("edit")}">${ic("edit")}</button></div></div>`}
+const emptyBox=(icon,text)=>`<div class="empty">${ic(icon)}${text}</div>`;
+/* mechanical odometer: one drum per digit, the last one in amber */
+const odoHtml=n=>`<span class="odo" aria-label="${num(n,0)}">${[...String(Math.round(n||0)).padStart(6,"0")].map(c=>`<b>${c}</b>`).join("")}</span>`;
+/* gauge readout: small caps label, big condensed value, optional trend mark and note */
+const ro=(label,value,unit,sub,mark="")=>`<div class="ro"><div class="rl">${label}</div><div class="rv">${mark}${value}${unit?`<span class="u">${unit}</span>`:""}</div>${sub?`<div class="rs">${sub}</div>`:""}</div>`;
 
 function viewDashboard(){
- const V=veh();if(!V)return`<div class="card empty"><p>${t("noVehicle")}</p><button class="primary" data-act="vehAdd">＋ ${t("addVehicle")}</button></div>`;
+ const V=veh();if(!V)return`<div class="card">${emptyBox("car",t("noVehicle"))}<div style="text-align:center"><button class="primary" data-act="vehAdd">${ic("plus")}${t("addVehicle")}</button></div></div>`;
  const u=U(),f=hasFuel(V)?consumption():null,e=hasCharge(V)?evStats():null;
  const rem=sortRem(mine(S.reminders).filter(r=>!r.done)).slice(0,3),recent=allEntries().slice(0,5);
  const entries=S.fuel.length+S.charges.length+S.services.length,nag=entries>=5&&(!S.lastBackup||(new Date(today())-new Date(S.lastBackup))/864e5>30);
@@ -665,100 +878,107 @@ function viewDashboard(){
  // this month vs previous month
  const mk=today().slice(0,7),pm=(()=>{let[y,m]=mk.split("-").map(Number);if(--m<1){m=12;y--}return`${y}-${pad(m)}`})(),costs=allCosts();
  const mSum=(k,en)=>sum(costs.filter(x=>x.date.startsWith(k)&&(en?x.group==="fuel"||x.group==="charge":x.group!=="fuel"&&x.group!=="charge")),x=>x.amount);
- const energyCard=(ic,title,badge,st,priceList,unit,cu)=>{
-  const s=st.series,lp=priceList.at(-1),pp=priceList.at(-2);
-  return`<div class="card"><div class="row"><h2 style="margin:0">${ic} ${title}</h2><span class="sp"></span>${badge?`<span class="sect">${esc(badge)}</span>`:""}</div>
-  ${kpi("💧",num(st.avg,2),cu,t(ic==="⚡"?"avgEcons":"avgCons"))}
-  ${kpi(trendArrow(s.at(-1),s.at(-2),lb),num(s.at(-1),2),cu,t(ic==="⚡"?"lastEcons":"lastCons"))}
-  ${lp?kpi(trendArrow(+lp.price,pp?+pp.price:null,true),money(lp.price),"/"+unit,`${t("lastPrice")}<br><small>${fdate(lp.date)} · ${ago(lp.date)}</small>`):""}
-  ${kpi("💰",money(st.costPer100),"",`${t("costPer100")} ${u.d}`)}
-  ${(()=>{const L=legs(st.list),l=st.list.map(x=>L[x.id]).filter(Boolean);return l.length?kpi("📏",num(l.at(-1),0),u.d,`${t(ic==="⚡"?"sinceCharge":"sinceFill")}<br><small>${t("avg")} ${num(l.reduce((a,b)=>a+b)/l.length,0)} ${u.d}</small>`):""})()}
-  ${ic==="⚡"&&st.homeShare!=null?kpi("🏠",Math.round(st.homeShare*100)+"%","",t("homeShare")):""}
-  ${ic==="⚡"&&st.savings!=null?kpi("💚",money(st.savings),"",t("savings")):""}</div>`;
+ const energyCard=(ev,title,badge,st,unit,cu)=>{
+  const s=st.series,lp=st.list.at(-1),pp=st.list.at(-2),L=legs(st.list),l=st.list.map(x=>L[x.id]).filter(Boolean);
+  return`<section class="card"><div class="ch">${ic(ev?"bolt":"pump")}<span>${title}</span><span class="sp"></span>${badge?`<span class="badge">${esc(badge)}</span>`:""}</div><div class="ros">
+  ${ro(t(ev?"avgEcons":"avgCons"),num(st.avg,2),cu,t("avgAll"))}
+  ${ro(t(ev?"lastEcons":"lastCons"),num(s.at(-1),2),cu,"",trendArrow(s.at(-1),s.at(-2),lb))}
+  ${lp?ro(t("lastPrice"),money(lp.price),"/"+unit,`${fdate(lp.date)} · ${ago(lp.date)}`,trendArrow(+lp.price,pp?+pp.price:null,true)):""}
+  ${ro(`${t("costPer100")} ${u.d}`,money(st.costPer100),"",t("avgAll"))}
+  ${l.length?ro(t(ev?"sinceCharge":"sinceFill"),num(l.at(-1),0),u.d,`${t("avg")} ${num(sum(l,x=>x)/l.length,0)} ${u.d}`):""}
+  ${ev&&st.homeShare!=null?ro(t("homeShare"),Math.round(st.homeShare*100)+"%","",t("ofEnergy")):""}
+  ${ev&&st.savings!=null?ro(t("savings"),money(st.savings),"",`${num(st.dist,0)} ${u.d}`):""}</div></section>`;
  };
- const slides=trendSlides(V,f,e,costs);
- return`${nag?`<div class="card warnbox row" style="border:0"><span style="flex:1">💾 ${t("backupNag")}</span><button class="small" data-act="export">${t("backupNow")}</button></div>`:""}
- <div class="card car">${V.photo?`<img src="${V.photo}" data-zoom alt="">`:`<div class="ph">${V.fuelType==="ev"?"⚡":"🚗"}</div>`}<div class="main" style="flex:1"><div class="n">${esc(V.name)}</div><div class="carbig">${num(curOdo(),0)} <span class="muted" style="font-size:14px;font-weight:400">${u.d}</span></div><div class="muted" style="font-size:13px">${[V.plate,V.year,t("fuelTypes")[V.fuelType]].filter(Boolean).map(esc).join(" · ")}</div></div><button class="small ghost" data-act="vehEdit">✎</button></div>
- ${f?energyCard("⛽",t("fuelCard"),f.list.at(-1)?.grade?gradeLabel(f.list.at(-1).grade):"",f,f.list,u.v,u.cu):""}
- ${e?energyCard("⚡",t("charging"),"",e,e.list,"kWh",u.ecu):""}
- <div class="card"><h2 style="margin:0 0 4px">💰 ${t("costs")}</h2>
-  <span class="sect">${t("thisMonth")}</span>${kpi(hasCharge(V)&&!hasFuel(V)?"⚡":"⛽",money(mSum(mk,true)),"",t("energyCosts"))}${kpi("🧾",money(mSum(mk,false)),"",t("otherCost"))}
-  <span class="sect">${t("prevMonth")}</span>${kpi(hasCharge(V)&&!hasFuel(V)?"⚡":"⛽",money(mSum(pm,true)),"",t("energyCosts"))}${kpi("🧾",money(mSum(pm,false)),"",t("otherCost"))}</div>
- ${slides.length?`<div class="row" style="margin:16px 0 8px"><h2 style="margin:0">📈 ${t("trends")}</h2><span class="sp"></span><button class="small ghost" data-act="tab" data-id="reports">→</button></div>
-  <div class="carousel" id="carousel">${slides.join("")}</div><div class="dots" id="dots">${slides.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div>`:""}
- <div class="card"><div class="row"><h2 style="margin:0">🕒 ${t("recent")}</h2><span class="sp"></span><button class="small ghost" data-act="tab" data-id="fuel">${t("seeAll")} →</button></div>${recent.length?recent.map(tlItem).join(""):`<p class="muted">${t("noEntries")}</p>`}</div>
- <div class="card"><div class="row"><h2 style="margin:0">🔔 ${t("nextDue")}</h2><span class="sp"></span><button class="small ghost" data-act="tab" data-id="reminders">${t("seeAll")} →</button></div><div class="list">${rem.length?rem.map(remItem).join(""):`<p class="muted">${t("noEntries")}</p>`}</div></div>`;
+ const slides=trendSlides(V,f,e,costs),energyIc=hasCharge(V)&&!hasFuel(V)?"bolt":"pump";
+ return`${nag?`<div class="card warnbox row">${ic("download")}<span style="flex:1">${t("backupNag")}</span><button class="small" data-act="export">${t("backupNow")}</button></div>`:""}
+ <section class="card hero">${V.photo?`<img src="${V.photo}" data-zoom alt="">`:`<div class="ph">${ic(V.fuelType==="ev"?"bolt":"car")}</div>`}<div class="main"><div class="n">${esc(V.name)}</div>${odoHtml(curOdo())}<span class="u">${u.d}</span><div class="meta">${[V.plate,V.year,t("fuelTypes")[V.fuelType]].filter(Boolean).map(esc).join(" · ")}</div></div><button class="small ghost icon" data-act="vehEdit" aria-label="${t("editVehicle")}">${ic("edit")}</button></section>
+ ${f?energyCard(false,t("fuelCard"),f.list.at(-1)?.grade?gradeLabel(f.list.at(-1).grade):"",f,u.v,u.cu):""}
+ ${e?energyCard(true,t("charging"),"",e,"kWh",u.ecu):""}
+ <section class="card"><div class="ch">${ic("coins")}<span>${t("costs")}</span></div><div class="mtab"><span></span><b>${t("thisMonth")}</b><b>${t("prevMonth")}</b>
+  <span style="--ic-a:var(--c-fuel)">${ic(energyIc)}${t("energyCosts")}</span><em data-l="${esc(t("thisMonth"))}">${money(mSum(mk,true))}</em><em class="dim" data-l="${esc(t("prevMonth"))}">${money(mSum(pm,true))}</em>
+  <span style="--ic-a:var(--c-svc)">${ic("receipt")}${t("otherCost")}</span><em data-l="${esc(t("thisMonth"))}">${money(mSum(mk,false))}</em><em class="dim" data-l="${esc(t("prevMonth"))}">${money(mSum(pm,false))}</em></div></section>
+ ${slides.length?`<h3>${ic("trend")}${t("trends")}</h3><div class="carousel" id="carousel">${slides.join("")}</div><div class="dots" id="dots">${slides.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div>`:""}
+ <section class="card"><div class="ch">${ic("timeline")}<span>${t("recent")}</span><span class="sp"></span><button class="small ghost" data-act="tab" data-id="fuel">${t("seeAll")}${ic("arrow","sm")}</button></div>${recent.length?recent.map(tlItem).join(""):emptyBox("timeline",t("noEntries"))}</section>
+ <section class="card"><div class="ch">${ic("bell")}<span>${t("nextDue")}</span><span class="sp"></span><button class="small ghost" data-act="tab" data-id="reminders">${t("seeAll")}${ic("arrow","sm")}</button></div><div class="list">${rem.length?rem.map(remItem).join(""):emptyBox("bell",t("noEntries"))}</div></section>`;
 }
-const kpi=(ic,v,unit,label)=>`<div class="kpi"><span class="trend">${ic}</span><span class="v">${v}${unit?` <span class="u">${unit}</span>`:""}</span><span class="l">${label}</span></div>`;
 function trendArrow(cur,prev,lowerBetter){
- if(cur==null||prev==null||!isFinite(cur)||!isFinite(prev))return"·";
- if(Math.abs(cur-prev)<1e-9)return`<span class="trend">→</span>`;
- const down=cur<prev;return`<span class="trend ${down===lowerBetter?"good":"bad"}">${down?"↘":"↗"}</span>`;
+ if(cur==null||prev==null||!isFinite(cur)||!isFinite(prev)||Math.abs(cur-prev)<1e-9)return"";
+ const down=cur<prev;return`<span class="trend ${down===lowerBetter?"good":"bad"}">${ic(down?"down":"up")}</span>`;
 }
 const ago=s=>{const d=Math.round((new Date(today()+"T12:00")-new Date(s+"T12:00"))/864e5);return d<=0?t("today"):`${d} ${t("daysAgo")}`};
+/* Each slide: last value, the app-wide average (same helpers as the cards and reports) and the change vs the value before. */
 function trendSlides(V,f,e,costs){
  const u=U(),lb=S.settings.units==="metric",out=[],cm=today().slice(0,7);
- const slide=(title,vals,unit,lowerBetter,chart,d=2)=>{
-  const last=vals.at(-1),prev=vals.at(-2),avg=vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:null,ch=prev?(last-prev)/prev*100:null;
-  const cls=ch==null||Math.abs(ch)<.05?"":(ch<0)===lowerBetter?"good-t":"bad-t",row=(l,v)=>`<div class="sl">${l}</div><div class="sv">${v}</div>`;
-  return`<div class="card slide"><span class="sect">${title}</span><div class="grid" style="margin-top:6px"><div>
-   ${row(t("last"),last==null?"—":`${num(last,d)} <span class="u muted">${unit}</span>`)}${row(t("avg"),avg==null?"—":`${num(avg,d)} <span class="u muted">${unit}</span>`)}
-   <div class="sl">${t("change")}</div><div class="sv ${cls}">${ch==null?"—":(ch>0?"+":"")+num(ch,1)+"%"}</div></div><div>${chart}</div></div></div>`;
+ const slide=({icon,title,unit,lowerBetter,last,prev,avg,avgNote,lastLabel,chart,d=2,fmt})=>{
+  const show=v=>v==null||!isFinite(v)?"—":fmt?fmt(v):`${num(v,d)} <span class="u">${unit}</span>`;
+  const ch=last!=null&&prev?(last-prev)/prev*100:null,cls=ch==null||Math.abs(ch)<.05?"":(ch<0)===lowerBetter?"good-t":"bad-t";
+  const row=(l,v,n)=>`<div><div class="sl">${l}</div><div class="sv">${v}</div>${n?`<div class="sn">${n}</div>`:""}</div>`;
+  return`<div class="card slide"><div class="sect">${ic(icon)}${title}</div><div class="grid"><div>
+   ${row(lastLabel||t("last"),show(last))}${row(t("avg"),show(avg),avgNote)}
+   ${row(t("change"),`<span class="${cls}">${ch==null?"—":(ch>0?"+":"")+num(ch,1)+"%"}</span>`)}</div><div>${chart}</div></div></div>`;
  };
- if(f&&f.series.length){const pts=f.list.filter(x=>f.map[x.id]!=null).map(x=>({v:f.map[x.id],date:x.date})).slice(-12);out.push(slide("💧 "+t("fuelUse"),pts.map(p=>p.v),u.cu,lb,areaLine(pts)))}
- if(e&&e.series.length){const pts=e.list.filter(x=>e.map[x.id]!=null).map(x=>({v:e.map[x.id],date:x.date})).slice(-12);out.push(slide("⚡ "+t("energyUse"),pts.map(p=>p.v),u.ecu,lb,areaLine(pts),1))}
+ if(f&&f.series.length){const pts=f.list.filter(x=>f.map[x.id]!=null).map(x=>({v:f.map[x.id],date:x.date}));
+  out.push(slide({icon:"drop",title:t("fuelUse"),unit:u.cu,lowerBetter:lb,last:pts.at(-1)?.v,prev:pts.at(-2)?.v,avg:f.avg,avgNote:t("avgAll"),chart:areaLine(pts.slice(-12),f.avg)}))}
+ if(e&&e.series.length){const pts=e.list.filter(x=>e.map[x.id]!=null).map(x=>({v:e.map[x.id],date:x.date}));
+  out.push(slide({icon:"bolt",title:t("energyUse"),unit:u.ecu,lowerBetter:lb,last:pts.at(-1)?.v,prev:pts.at(-2)?.v,avg:e.avg,avgNote:t("avgAll"),d:1,chart:areaLine(pts.slice(-12),e.avg)}))}
  if(f&&f.list.length){
   const cnt={};f.list.forEach(x=>{const g=x.grade||defGrade(V);cnt[g]=(cnt[g]||0)+1});const g=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a])[0];
-  const pts=f.list.filter(x=>(x.grade||defGrade(V))===g&&x.price).sort((a,b)=>(a.date+(a.time||"")).localeCompare(b.date+(b.time||""))).map(x=>({v:+x.price,date:x.date})).slice(-12);
-  out.push(slide(`⛽ ${t("fuelPrices")} (${gradeLabel(g)})`,pts.map(p=>p.v),`${cur()}/${u.v}`,true,areaLine(pts)));
+  const list=f.list.filter(x=>(x.grade||defGrade(V))===g&&x.price).sort((a,b)=>(a.date+(a.time||"")).localeCompare(b.date+(b.time||"")));
+  const avg=weightedPrice(list,x=>+x.qty||0,fuelTotal),pts=list.map(x=>({v:+x.price,date:x.date}));
+  out.push(slide({icon:"pump",title:`${t("fuelPrices")} · ${gradeLabel(g)}`,unit:`${cur()}/${u.v}`,lowerBetter:true,last:pts.at(-1)?.v,prev:pts.at(-2)?.v,avg,avgNote:t("avgPerUnit"),chart:areaLine(pts.slice(-12),avg)}));
  }
- if(e&&e.list.length){const pts=e.list.filter(x=>x.price!=null).map(x=>({v:+x.price,date:x.date})).slice(-12);out.push(slide("⚡ "+t("chargePrices"),pts.map(p=>p.v),`${cur()}/kWh`,true,areaLine(pts)))}
+ if(e&&e.list.length){const list=e.list.filter(x=>x.price!=null),avg=weightedPrice(list,x=>+x.kwh||0,chargeTotal),pts=list.map(x=>({v:+x.price,date:x.date}));
+  out.push(slide({icon:"bolt",title:t("chargePrices"),unit:`${cur()}/kWh`,lowerBetter:true,last:pts.at(-1)?.v,prev:pts.at(-2)?.v,avg,avgNote:t("avgPerUnit"),chart:areaLine(pts.slice(-12),avg)}))}
+ // money per month: "last" is the last finished month (the current one is still running); the bars show every month incl. the current one
  const months=monthList(null,null,costs).slice(-6),grp=k=>{const parts={};costs.filter(x=>x.date.startsWith(k)).forEach(x=>{const g=x.group==="fuel"||x.group==="charge"?x.group:"oth";parts[g]=(parts[g]||0)+x.amount});return{m:k,parts}};
- const rows=months.map(grp),done=rows.filter(r=>r.m!==cm),energyKeys=["fuel","charge"],tot=(r,ks)=>ks.reduce((a,k)=>a+(r.parts[k]||0),0);
- if(costs.some(x=>x.group==="fuel"||x.group==="charge"))out.push(slide("📅 "+t("monthlyFuel"),done.map(r=>tot(r,energyKeys)),cur(),true,monthBars(rows,energyKeys)));
- if(costs.length)out.push(slide("💰 "+t("costsWithFuel"),done.map(r=>tot(r,["fuel","charge","oth"])),cur(),true,monthBars(rows,["fuel","charge","oth"])));
+ const rows=months.map(grp),done=rows.filter(r=>r.m!==cm),tot=(r,ks)=>ks.reduce((a,k)=>a+(r.parts[k]||0),0),energyKeys=["fuel","charge"];
+ const moneySlide=(icon,title,keys,items)=>{const ma=monthlyAvg(items);out.push(slide({icon,title,lowerBetter:true,fmt:moneyRound,lastLabel:t("prevMonth"),
+  last:done.length?tot(done.at(-1),keys):null,prev:done.length>1?tot(done.at(-2),keys):null,avg:ma?.value,avgNote:ma?t("avgMonthNote").replace("{n}",num(ma.months,1)):t("avgTooShort"),chart:monthBars(rows,keys)}))};
+ const energy=costs.filter(x=>x.group==="fuel"||x.group==="charge");
+ if(energy.length)moneySlide("pump",t("monthlyFuel"),energyKeys,energy);
+ if(costs.length)moneySlide("coins",t("costsWithFuel"),["fuel","charge","oth"],costs);
  return out;
 }
 function allEntries(){
  const V=veh(),c=hasFuel(V)?consumption():null,e=hasCharge(V)?evStats():null,u=U(),lf=legs(mine(S.fuel)),lc=legs(mine(S.charges));
  return[
-  ...mine(S.fuel).map(x=>({type:"fuel",x,leg:lf[x.id],ic:"⛽",color:"var(--c-fuel)",title:t("fillUp"),amount:fuelTotal(x),act:"fuelEdit",sub:`${num(x.qty,2)} ${u.v}${x.grade?" · "+gradeLabel(x.grade):""}`,extra:c?.map[x.id]!=null?`${num(c.map[x.id],2)} ${u.cu}`:""})),
-  ...mine(S.charges).map(x=>({type:"charge",x,leg:lc[x.id],ic:"⚡",color:"var(--c-charge)",title:t("charging"),amount:chargeTotal(x),act:"chargeEdit",sub:`${num(x.kwh,1)} kWh · ${t("ct")[x.ct]||""}`,extra:e?.map[x.id]!=null?`${num(e.map[x.id],1)} ${u.ecu}`:""})),
-  ...mine(S.services).map(x=>({type:"cost",x,ic:KIND_IC[x.kind]||"📦",color:`var(--c-${GROUP[x.kind]||"oth"})`,title:x.title||kindLabel(x.kind),amount:+x.cost||0,act:"costEdit",sub:kindLabel(x.kind),extra:""}))
+  ...mine(S.fuel).map(x=>({type:"fuel",x,leg:lf[x.id],ic:"pump",color:"var(--c-fuel)",title:t("fillUp"),amount:fuelTotal(x),act:"fuelEdit",sub:`${num(x.qty,2)} ${u.v}${x.grade?" · "+gradeLabel(x.grade):""}`,extra:c?.map[x.id]!=null?`${num(c.map[x.id],2)} ${u.cu}`:""})),
+  ...mine(S.charges).map(x=>({type:"charge",x,leg:lc[x.id],ic:"bolt",color:"var(--c-charge)",title:t("charging"),amount:chargeTotal(x),act:"chargeEdit",sub:`${num(x.kwh,1)} kWh · ${t("ct")[x.ct]||""}`,extra:e?.map[x.id]!=null?`${num(e.map[x.id],1)} ${u.ecu}`:""})),
+  ...mine(S.services).map(x=>({type:"cost",x,ic:KIND_IC[x.kind]||"dots",color:`var(--c-${GROUP[x.kind]||"oth"})`,title:x.title||kindLabel(x.kind),amount:+x.cost||0,act:"costEdit",sub:kindLabel(x.kind),extra:""}))
  ].sort((a,b)=>(b.x.date+(b.x.time||"")).localeCompare(a.x.date+(a.x.time||""))||(b.x.odo||0)-(a.x.odo||0));
 }
 const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
 function tlItem(en){
  const x=en.x,day=cap(new Intl.DateTimeFormat(loc(),{weekday:"long",day:"numeric",month:"short"}).format(new Date(x.date+"T12:00")));
- return`<div class="tl-i" data-act="${en.act}" data-id="${x.id}"><div class="tl-ic" style="background:${en.color}">${en.ic}</div><div class="main">
-  <div class="t">${esc(en.title)}${x.photo?" 🧾":""}${en.type==="fuel"&&!x.full?` <span class="badge warn">${t("partial")}</span>`:""}</div>
+ return`<div class="tl-i" data-act="${en.act}" data-id="${x.id}"><div class="tl-ic" style="--ic-a:${en.color}">${ic(en.ic)}</div><div class="main">
+  <div class="t">${esc(en.title)}${x.photo?" "+ic("clip","sm"):""}${en.type==="fuel"&&!x.full?` <span class="badge warn">${t("partial")}</span>`:""}</div>
   <div class="s">${day}${x.time?" · "+x.time:""} · ${esc(en.sub)}</div>
-  ${x.odo?`<div class="s">🧭 ${num(x.odo,0)} ${U().d}${en.leg?` · <b class="leg" title="${t(en.type==="charge"?"sinceCharge":"sinceFill")}">+${num(en.leg,0)} ${U().d}</b>`:""}</div>`:""}${x.place?`<div class="s">📍 ${esc(x.place)}</div>`:""}</div>
-  <div class="r">${money(en.amount)}${en.extra?`<div class="s" style="font-weight:400">${en.extra}</div>`:""}</div></div>`;
+  ${x.odo?`<div class="s">${ic("gauge","sm")}${num(x.odo,0)} ${U().d}${en.leg?` <span class="leg" title="${t(en.type==="charge"?"sinceCharge":"sinceFill")}">+${num(en.leg,0)} ${U().d}</span>`:""}</div>`:""}${x.place?`<div class="s">${ic("pin","sm")}${esc(x.place)}</div>`:""}</div>
+  <div class="r">${money(en.amount)}${en.extra?`<div class="s">${en.extra}</div>`:""}</div></div>`;
 }
 function viewFuel(){
  const V=veh();if(!V)return viewDashboard();
- const opts=[["all",t("all")],...(hasFuel(V)?[["fuel","⛽ "+t("fuelTab")]]:[]),...(hasCharge(V)?[["charge","⚡ "+t("chargeTab")]]:[]),["cost","🧾 "+t("costs")]];
+ const opts=[["all","",t("all")],...(hasFuel(V)?[["fuel","pump",t("fuelTab")]]:[]),...(hasCharge(V)?[["charge","bolt",t("chargeTab")]]:[]),["cost","receipt",t("costs")]];
  if(!opts.some(o=>o[0]===tlFilter))tlFilter="all";
  const list=allEntries().filter(en=>tlFilter==="all"||en.type===tlFilter);
  let html="",m="";
  for(const en of list){const k=en.x.date.slice(0,7);if(k!==m){m=k;html+=`<div class="tl-m">${cap(new Intl.DateTimeFormat(loc(),{month:"long",year:"numeric"}).format(new Date(k+"-15T12:00")))}</div>`}html+=tlItem(en)}
- return`<h2>🕒 ${t("timeline")}</h2><div class="chips">${opts.map(([k,l])=>`<button class="${tlFilter===k?"on":""}" data-act="tlFilter" data-id="${k}">${l}</button>`).join("")}</div>
- <div class="card">${list.length?`<div class="tl">${html}</div>`:`<div class="empty">${t("noEntries")}</div>`}</div>`;
+ return`<h2>${ic("timeline")}${t("timeline")}</h2><div class="chips">${opts.map(([k,i,l])=>`<button class="${tlFilter===k?"on":""}" data-act="tlFilter" data-id="${k}">${i?ic(i,"sm"):""}${l}</button>`).join("")}</div>
+ <div class="card">${list.length?`<div class="tl">${html}</div>`:emptyBox("timeline",t("noEntries"))}</div>`;
 }
 function viewCosts(){
  if(!veh())return viewDashboard();
  const list=mine(S.services).filter(s=>costFilter==="all"||GROUP[s.kind]===costFilter).sort((a,b)=>b.date.localeCompare(a.date));
- return`<div class="row" style="margin-bottom:12px"><h2 style="margin:0">${t("costs")}</h2><span class="sp"></span><button class="primary" data-act="costAdd">＋ ${t("addCost")}</button></div>
+ return`<div class="row" style="margin-bottom:12px"><h2 style="margin:0">${ic("receipt")}${t("costs")}</h2><span class="sp"></span><button class="primary" data-act="costAdd">${ic("plus")}${t("addCost")}</button></div>
  <div class="chips">${["all","svc","fix","oth"].map(g=>`<button class="${costFilter===g?"on":""}" data-act="costFilter" data-id="${g}">${g==="all"?t("all"):grpLabel(g)}</button>`).join("")}</div>
- <div class="card list">${list.length?list.map(costItem).join(""):`<div class="empty">${t("noEntries")}</div>`}</div>
- ${list.length?`<p class="muted" style="text-align:right">${t("total")}: <b>${money(sum(list,s=>+s.cost||0))}</b></p>`:""}`;
+ <div class="card list">${list.length?list.map(costItem).join(""):emptyBox("receipt",t("noEntries"))}</div>
+ ${list.length?`<div class="card row"><span class="rl">${t("total")}</span><span class="sp"></span><span class="rv">${money(sum(list,s=>+s.cost||0))}</span></div>`:""}`;
 }
 function viewReminders(){
  if(!veh())return viewDashboard();
  const all=mine(S.reminders),open=sortRem(all.filter(r=>!r.done)),done=all.filter(r=>r.done);
- return`<div class="row" style="margin-bottom:12px"><h2 style="margin:0">${t("reminders")}</h2><span class="sp"></span><button class="primary" data-act="remAdd">＋ ${t("addReminder")}</button></div>
- <h3>${t("upcoming")}</h3><div class="card list">${open.length?open.map(remItem).join(""):`<div class="empty">${t("noEntries")}</div>`}</div>
+ return`<div class="row" style="margin-bottom:12px"><h2 style="margin:0">${ic("bell")}${t("reminders")}</h2><span class="sp"></span><button class="primary" data-act="remAdd">${ic("plus")}${t("addReminder")}</button></div>
+ <h3>${t("upcoming")}</h3><div class="card list">${open.length?open.map(remItem).join(""):emptyBox("bell",t("noEntries"))}</div>
  ${done.length?`<h3>${t("completed")}</h3><div class="card list">${done.map(remItem).join("")}</div>`:""}`;
 }
 function periodRange(){
@@ -780,12 +1000,12 @@ function viewReports(){
  const odos=[...mine(S.fuel),...mine(S.charges),...mine(S.services)].filter(x=>inR(x.date)&&x.odo).map(x=>+x.odo);
  const dist=odos.length>1?Math.max(...odos)-Math.min(...odos):0;
  const sel=`<select id="periodSel" style="width:auto"><option value="12m" ${period==="12m"?"selected":""}>${t("p12m")}</option>${years.map(y=>`<option ${period===y?"selected":""}>${y}</option>`).join("")}<option value="all" ${period==="all"?"selected":""}>${t("pAll")}</option></select>`;
- const head=`<div class="row" style="margin-bottom:12px"><h2 style="margin:0">${t("reports")}</h2><span class="sp"></span>${sel}</div>
- <div class="card row"><div style="flex:1;min-width:min(200px,100%)"><b>📄 ${t("saleReport")}</b><div class="muted" style="font-size:13px">${t("saleReportHint")}</div></div><button data-act="report">📄 PDF</button></div>`;
- if(!costs.length)return head+`<div class="card empty">${t("noData")}</div>`;
+ const head=`<div class="row" style="margin-bottom:12px"><h2 style="margin:0">${ic("chart")}${t("reports")}</h2><span class="sp"></span>${sel}</div>
+ <div class="card row">${tile("doc","var(--accent)")}<div style="flex:1;min-width:min(180px,100%)"><b>${t("saleReport")}</b><div class="muted" style="font-size:13px">${t("saleReportHint")}</div></div><button class="primary" data-act="report">${ic("doc")}PDF</button></div>`;
+ if(!costs.length)return head+`<div class="card">${emptyBox("chart",t("noData"))}</div>`;
  const byMonth=months.map(m=>{const parts={};costs.filter(x=>x.date.startsWith(m)).forEach(x=>parts[x.group]=(parts[x.group]||0)+x.amount);return{m,parts}});
  const byKind={};costs.forEach(x=>byKind[x.kind]=(byKind[x.kind]||0)+x.amount);
- const kindRows=Object.entries(byKind).filter(([,v])=>v>0).sort((x,y)=>y[1]-x[1]).map(([k,v])=>({label:k==="fuel"?"⛽ "+grpLabel("fuel"):k==="charge"?"⚡ "+grpLabel("charge"):KIND_IC[k]+" "+kindLabel(k),val:v,g:k==="fuel"||k==="charge"?k:GROUP[k]}));
+ const kindRows=Object.entries(byKind).filter(([,v])=>v>0).sort((x,y)=>y[1]-x[1]).map(([k,v])=>({label:k==="fuel"||k==="charge"?grpLabel(k):kindLabel(k),icon:k==="fuel"?"pump":k==="charge"?"bolt":KIND_IC[k],val:v,g:k==="fuel"||k==="charge"?k:GROUP[k]}));
  // fuel prices per station
  const st={};mine(S.fuel).filter(f=>inR(f.date)&&f.place).forEach(f=>{const k=f.place.trim().toLowerCase();(st[k]||(st[k]={name:f.place.trim(),n:0,q:0,c:0})).n++;st[k].q+=+f.qty||0;st[k].c+=fuelTotal(f)});
  const stations=Object.values(st).filter(s=>s.q).sort((x,y)=>x.c/x.q-y.c/y.q).slice(0,10);
@@ -793,32 +1013,31 @@ function viewReports(){
  const ch=mine(S.charges).filter(c=>inR(c.date)),chK=sum(ch,c=>+c.kwh||0);
  const ctRows=CT.map(k=>{const l=ch.filter(c=>c.ct===k),kwh=sum(l,c=>+c.kwh||0),cost=sum(l,chargeTotal);return{k,n:l.length,kwh,cost}}).filter(r=>r.n);
  return head+`<div class="stats">
-  ${stat(t("totalCost"),money(total),"")}${stat(t("perMonth"),money(total/months.length),`${months.length} m.`)}
+  ${(()=>{const ma=monthlyAvg(costs,a,b);return stat(t("totalCost"),money(total),"")+stat(t("perMonth"),ma?money(ma.value):"—",ma?t("avgMonthNote").replace("{n}",num(ma.months,1)):t("avgTooShort"))})()}
   ${stat(t("distance"),num(dist,0),u.d)}${stat(`${t("perKm")} ${u.d}`,dist?money(total/dist):"—","")}
  </div>
- <div class="card"><h2>${t("monthly")}</h2>${stackedBars(byMonth)}</div>
- <div class="card"><h2>${t("byCategory")}</h2>${hbars(kindRows)}</div>
- ${stations.length?`<div class="card scroll"><h2>⛽ ${t("stations")}</h2><table class="tbl"><tr><th>${t("station")}</th><th class="n">${t("visits")}</th><th class="n">${u.v}</th><th class="n">${t("avgPrice")}/${u.v}</th></tr>${stations.map((s,i)=>`<tr><td>${esc(s.name)} ${i===0&&stations.length>1?`<span class="badge">${t("cheapest")}</span>`:""}</td><td class="n">${s.n}</td><td class="n">${num(s.q,1)}</td><td class="n"><b>${money(s.c/s.q)}</b></td></tr>`).join("")}</table></div>`:""}
- ${ctRows.length?`<div class="card scroll"><h2>⚡ ${t("chargingByType")}</h2><table class="tbl"><tr><th>${t("chargeType")}</th><th class="n">kWh</th><th class="n">${t("share")}</th><th class="n">${t("avgPrice")}/kWh</th><th class="n">${t("cost")}</th></tr>${ctRows.map(r=>`<tr><td>${t("ct")[r.k]} <span class="muted">(${r.n}×)</span></td><td class="n">${num(r.kwh,0)}</td><td class="n">${chK?Math.round(r.kwh/chK*100):0}%</td><td class="n"><b>${r.kwh?money(r.cost/r.kwh):"—"}</b></td><td class="n">${money(r.cost)}</td></tr>`).join("")}</table></div>`:""}`;
+ <div class="card"><div class="ch">${ic("calendar")}<span>${t("monthly")}</span></div>${stackedBars(byMonth)}</div>
+ <div class="card"><div class="ch">${ic("chart")}<span>${t("byCategory")}</span></div>${hbars(kindRows)}</div>
+ ${stations.length?`<div class="card scroll"><div class="ch">${ic("pump")}<span>${t("stations")}</span></div><table class="tbl"><tr><th>${t("station")}</th><th class="n">${t("visits")}</th><th class="n">${u.v}</th><th class="n">${t("avgPrice")}/${u.v}</th></tr>${stations.map((s,i)=>`<tr><td>${esc(s.name)} ${i===0&&stations.length>1?`<span class="badge">${t("cheapest")}</span>`:""}</td><td class="n">${s.n}</td><td class="n">${num(s.q,1)}</td><td class="n"><b>${money(s.c/s.q)}</b></td></tr>`).join("")}</table></div>`:""}
+ ${ctRows.length?`<div class="card scroll"><div class="ch">${ic("bolt")}<span>${t("chargingByType")}</span></div><table class="tbl"><tr><th>${t("chargeType")}</th><th class="n">kWh</th><th class="n">${t("share")}</th><th class="n">${t("avgPrice")}/kWh</th><th class="n">${t("cost")}</th></tr>${ctRows.map(r=>`<tr><td>${t("ct")[r.k]} <span class="muted">(${r.n}×)</span></td><td class="n">${num(r.kwh,0)}</td><td class="n">${chK?Math.round(r.kwh/chK*100):0}%</td><td class="n"><b>${r.kwh?money(r.cost/r.kwh):"—"}</b></td><td class="n">${money(r.cost)}</td></tr>`).join("")}</table></div>`:""}`;
 }
 function viewSettings(){
- const s=S.settings;
- return`<h2>${t("settings")}</h2>
+ const s=S.settings,ok=txt=>`<div class="row">${tile("check","var(--good)")}<b>${txt}</b></div>`;
+ return`<h2>${ic("sliders")}${t("settings")}</h2>
  <div class="card"><div class="grid2">
   <label class="field"><span>${t("language")}</span><select data-set="lang">${Object.entries(LANGS).map(([k,[n]])=>`<option value="${k}" ${s.lang===k?"selected":""}>${n}</option>`).join("")}</select></label>
   <label class="field"><span>${t("currency")}</span><select data-set="currency">${CURRENCIES.map(c=>`<option ${c===s.currency?"selected":""}>${c}</option>`).join("")}</select></label>
- </div><label class="field" style="margin-top:12px"><span>🔍 ${t("textSize")}</span><select data-set="zoom">${ZOOMS.map(z=>`<option value="${z}" ${z==(s.zoom||1)?"selected":""}>${Math.round(z*100)}%${z==1?` (${t("normal")})`:""}</option>`).join("")}</select><small>${t("textSizeHint")}</small></label>
+ </div><label class="field" style="margin-top:12px"><span>${t("textSize")}</span><select data-set="zoom">${ZOOMS.map(z=>`<option value="${z}" ${z==(s.zoom||1)?"selected":""}>${Math.round(z*100)}%${z==1?` (${t("normal")})`:""}</option>`).join("")}</select><small>${t("textSizeHint")}</small></label>
  <label class="field" style="margin-top:12px"><span>${t("units")}</span><select data-set="units">${Object.entries(UNITS).map(([k,v])=>`<option value="${k}" ${k===s.units?"selected":""}>${v.label} · ${v.ecu}</option>`).join("")}</select></label></div>
- <h3>${t("vehicles")}</h3><div class="card list">${S.vehicles.map(v=>`<div class="item">${v.photo?`<img class="thumb" src="${v.photo}" alt="">`:`<div class="kic">${v.fuelType==="ev"?"⚡":"🚗"}</div>`}<div class="main"><div class="t">${esc(v.name)} ${v.id===S.active?`<span class="badge">✓</span>`:""}</div><div class="s">${[v.plate,t("fuelTypes")[v.fuelType]].filter(Boolean).map(esc).join(" · ")}</div></div><button class="small ghost" data-act="vehEditId" data-id="${v.id}">✎ ${t("edit")}</button></div>`).join("")}
-  <div class="item"><button data-act="vehAdd">＋ ${t("addVehicle")}</button></div></div>
- <h3>${t("app")} <span style="text-transform:none;font-weight:400">· ${APP_VERSION} · <a href="https://hofi9014.github.io/refuelling/privacy.html#${S.settings.lang==="pl"?"pl":"en"}" target="_blank" rel="noopener" style="color:var(--accent)">${t("privacy")}</a></span></h3><div class="card">
-  ${standalone()?`<p style="margin-top:0">✅ ${t("installed")}</p>`:installEvt?`<p style="margin-top:0"><button class="primary" data-act="install">${t("install")}</button></p>`:isIOS?`<p class="muted" style="margin-top:0">${t("installIos")}</p>`:""}
-  <b>${t("notifications")}</b><p class="muted" style="font-size:13px;margin:4px 0 10px">${t("notifHint")}</p>
-  ${!isNative&&!("Notification" in window)?`<p class="muted">${t("notifUnsupported")}</p>`:s.notify&&(isNative||Notification.permission==="granted")?`<div class="row"><span>✅ ${t("notifEnabled")}</span><button class="small" data-act="notifOff">${t("notifOff")}</button></div>`:!isNative&&Notification.permission==="denied"?`<p class="warnbox">${t("notifDenied")}</p>`:`<button data-act="notifOn">${t("notifOn")}</button>`}
+ <h3>${ic("car")}${t("vehicles")}</h3><div class="card list">${S.vehicles.map(v=>`<div class="item">${v.photo?`<img class="thumb" src="${v.photo}" alt="">`:tile(v.fuelType==="ev"?"bolt":"car","var(--accent)")}<div class="main"><div class="t">${esc(v.name)} ${v.id===S.active?`<span class="badge">${ic("check","sm")}</span>`:""}</div><div class="s">${[v.plate,t("fuelTypes")[v.fuelType]].filter(Boolean).map(esc).join(" · ")}</div></div><button class="small ghost" data-act="vehEditId" data-id="${v.id}">${ic("edit")}${t("edit")}</button></div>`).join("")}
+  <div class="item"><button data-act="vehAdd">${ic("plus")}${t("addVehicle")}</button></div></div>
+ <h3>${ic("phone")}${t("app")}<span style="text-transform:none;letter-spacing:0;font-weight:500">${APP_VERSION} · <a href="https://hofi9014.github.io/refuelling/privacy.html#${S.settings.lang==="pl"?"pl":"en"}" target="_blank" rel="noopener" style="color:var(--ink)">${t("privacy")}</a></span></h3><div class="card">
+  ${standalone()?ok(t("installed")):installEvt?`<p style="margin-top:0"><button class="primary" data-act="install">${ic("phone")}${t("install")}</button></p>`:isIOS?`<p class="muted" style="margin-top:0">${t("installIos")}</p>`:""}
+  <div class="ch" style="margin-top:14px">${ic("bell")}<span>${t("notifications")}</span></div><p class="muted" style="font-size:13.5px;margin:-4px 0 10px">${t("notifHint")}</p>
+  ${!isNative&&!("Notification" in window)?`<p class="muted">${t("notifUnsupported")}</p>`:s.notify&&(isNative||Notification.permission==="granted")?`<div class="row">${ok(t("notifEnabled"))}<span class="sp"></span><button class="small" data-act="notifOff">${t("notifOff")}</button></div>`:!isNative&&Notification.permission==="denied"?`<p class="warnbox">${t("notifDenied")}</p>`:`<button class="primary" data-act="notifOn">${ic("bell")}${t("notifOn")}</button>`}
  </div>
- <h3>${t("backup")}</h3><div class="card"><p class="muted" style="margin-top:0">${t("storageInfo")}<br>${t("lastBackup")}: <b>${S.lastBackup?fdate(S.lastBackup):t("never")}</b></p><div class="row"><button data-act="export">⬇ ${t("export")}</button><button data-act="csv">⬇ ${t("exportCsv")}</button><label class="btn">⬆ ${t("import")}<input type="file" accept="application/json,.json" id="importFile" hidden></label></div></div>`;
+ <h3>${ic("download")}${t("backup")}</h3><div class="card"><p class="muted" style="margin-top:0">${t("storageInfo")}<br>${t("lastBackup")}: <b>${S.lastBackup?fdate(S.lastBackup):t("never")}</b></p><div class="row"><button class="primary" data-act="export">${ic("download")}${t("export")}</button><button data-act="csv">${ic("download")}${t("exportCsv")}</button><label class="btn">${ic("upload")}${t("import")}<input type="file" accept="application/json,.json" id="importFile" hidden></label></div></div>`;
 }
-
 /* ---------- vehicle history report (printed to PDF by the browser) ---------- */
 function printReport(o){
  const V=veh(),u=U(),hist=mine(S.services).filter(s=>HIST.includes(s.kind)).sort((a,b)=>a.date.localeCompare(b.date));
@@ -851,12 +1070,12 @@ function printReport(o){
 function render(){
  document.documentElement.lang=S.settings.lang;
  // magnifier: CSS zoom scales the whole layout (text, buttons, charts) and reflows it, so nothing gets cut off
- const zm=+S.settings.zoom||1;document.documentElement.style.zoom=zm;document.documentElement.style.setProperty("--zoom",zm);$("#zoomBtn").hidden=!!S.demo;document.documentElement.classList.toggle("zoom-xl",zm>=1.75&&!S.demo);
- $("#zoomBtn").textContent=`🔍 ${Math.round(zm*100)}%`;$("#zoomBtn").title=$("#zoomBtn").ariaLabel=t("textSize");
+ const zm=+S.settings.zoom||1;document.documentElement.style.zoom=zm;document.documentElement.style.setProperty("--zoom",zm);$("#zoomBtn").hidden=!!S.demo;document.documentElement.classList.toggle("zoom-xl",zm>=1.75&&!S.demo);document.documentElement.classList.toggle("zoom-l",zm>=1.15&&!S.demo);
+ $("#zoomBtn").innerHTML=`${ic("search")}${Math.round(zm*100)}%`;$("#zoomBtn").title=$("#zoomBtn").ariaLabel=t("textSize");
  const V=veh(),sel=$("#vehSel");sel.hidden=S.vehicles.length<2;sel.innerHTML=S.vehicles.map(v=>`<option value="${v.id}" ${v.id===S.active?"selected":""}>${esc(v.name)}</option>`).join("");
  const due=mine(S.reminders).filter(r=>remStatus(r)?.cls==="danger").length;
- const tabs=[["dashboard","🏠",t("dashboard")],["fuel","🕒",t("timeline")],["costs","🧾",t("costs")],["reminders","🔔",t("reminders")],["reports","📊",t("reports")],["settings","⚙️",t("settings")]];
- $("#tabs").innerHTML=tabs.map(([k,ic,l])=>`<button class="${k===tab?"on":""}" data-act="tab" data-id="${k}"><span class="ic">${ic}${k==="reminders"&&due?` <span class="badge danger">${due}</span>`:""}</span><span class="lbl">${l}</span></button>`).join("");
+ const tabs=[["dashboard","home",t("dashboard")],["fuel","timeline",t("timeline")],["costs","receipt",t("costs")],["reminders","bell",t("reminders")],["reports","chart",t("reports")],["settings","sliders",t("settings")]];
+ $("#tabs").innerHTML=tabs.map(([k,n,l])=>`<button class="${k===tab?"on":""}" data-act="tab" data-id="${k}"><span class="ic">${ic(n)}${k==="reminders"&&due?`<span class="badge danger">${due}</span>`:""}</span><span class="lbl">${l}</span></button>`).join("");
  $("#app").innerHTML={dashboard:viewDashboard,fuel:viewFuel,costs:viewCosts,reminders:viewReminders,reports:viewReports,settings:viewSettings}[tab]();
  const imp=$("#importFile");if(imp)imp.onchange=importData;
  $("#fab").hidden=!V||tab==="settings";
@@ -865,8 +1084,8 @@ function render(){
 }
 function quickAdd(){
  const V=veh(),d=$("#dlg");
- const items=[hasFuel(V)&&["fuelAdd","⛽",t("fillUp")],hasCharge(V)&&["chargeAdd","⚡",t("charging")],["costAdd","🧾",t("cost")],["remAdd","🔔",t("addReminder")]].filter(Boolean);
- d.className="sheet";d.innerHTML=`<div class="sheet-list">${items.map(([a,ic,l])=>`<button data-act="${a}"><span class="ic">${ic}</span>${l}</button>`).join("")}</div>`;
+ const items=[hasFuel(V)&&["fuelAdd","pump","var(--c-fuel)",t("fillUp")],hasCharge(V)&&["chargeAdd","bolt","var(--c-charge)",t("charging")],["costAdd","receipt","var(--c-svc)",t("cost")],["remAdd","bell","var(--accent)",t("addReminder")]].filter(Boolean);
+ d.className="sheet";d.innerHTML=`<div class="sheet-list">${items.map(([a,n,c,l])=>`<button data-act="${a}">${tile(n,c)}${l}</button>`).join("")}</div>`;
  d.showModal();
 }
 const Cap=name=>window.Capacitor?.Plugins?.[name]; // native plugins of the store app
@@ -908,7 +1127,7 @@ function demoState(lang){
 }
 
 /* ---------- install & notifications ---------- */
-const APP_VERSION="v11"; // keep in sync with VERSION in sw.js
+const APP_VERSION="v13"; // keep in sync with VERSION in sw.js
 let installEvt=null;
 const isNative=!!window.Capacitor?.isNativePlatform?.(); // running as the Google Play / App Store app
 const standalone=()=>isNative||matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;

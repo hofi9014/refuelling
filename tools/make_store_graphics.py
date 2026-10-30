@@ -7,9 +7,10 @@ import sys
 from PIL import Image, ImageDraw, ImageFont
 
 sys.path.insert(0, os.path.dirname(__file__))
-from make_icons import art, TEAL  # noqa: E402  (shares the icon drawing)
+from make_icons import art, AMBER, GRAPHITE, PAPER  # noqa: E402  (shares the logo drawing)
 
 out = sys.argv[1]
+NAME = "REFUELLING"
 FONTS = "C:/Windows/Fonts/"
 TAGLINES = {
     "pl": ("Tankowania, spalanie, serwisy", "i koszty auta w jednym miejscu"),
@@ -20,18 +21,16 @@ art("full", 0.72).convert("RGB").resize((512, 512), Image.LANCZOS).save(f"{out}/
 
 for lang, (line1, line2) in TAGLINES.items():
     W, H = 1024, 500
-    img = Image.new("RGB", (W, H))
-    top, bottom = (17, 128, 119), (8, 64, 60)
-    for y in range(H):  # vertical gradient
-        t = y / H
-        ImageDraw.Draw(img).line([(0, y), (W, y)], fill=tuple(int(a + (b - a) * t) for a, b in zip(top, bottom)))
-    logo = art("rounded", 0.9, (255, 255, 255), TEAL)  # white tile, teal drop
-    logo = logo.resize((260, 260), Image.LANCZOS)
-    img.paste(logo, (90, (H - 260) // 2), logo)
+    img = Image.new("RGB", (W, H), GRAPHITE)
     d = ImageDraw.Draw(img)
-    d.text((400, 150), "Refuelling", font=ImageFont.truetype(FONTS + "segoeuib.ttf", 84), fill="white")
-    small = ImageFont.truetype(FONTS + "segoeui.ttf", 36)
-    d.text((404, 270), line1, font=small, fill=(213, 240, 236))
-    d.text((404, 318), line2, font=small, fill=(213, 240, 236))
+    d.rectangle([0, H - 10, W, H], fill=AMBER)  # the amber edge of the app's header
+    for x in range(404, W - 60, 46):  # road marking
+        d.rectangle([x, 372, x + 26, 377], fill=(70, 74, 79))
+    logo = art(None, 0.95).resize((300, 300), Image.LANCZOS)
+    img.paste(logo, (70, (H - 300) // 2 - 6), logo)
+    d.text((400, 120), NAME, font=ImageFont.truetype(FONTS + "segoeuib.ttf", 72), fill=PAPER)
+    small = ImageFont.truetype(FONTS + "segoeui.ttf", 34)
+    d.text((404, 240), line1, font=small, fill=(200, 196, 188))
+    d.text((404, 286), line2, font=small, fill=(200, 196, 188))
     img.save(f"{out}/feature-graphic-{lang}.png")
 print("ok")
