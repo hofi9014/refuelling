@@ -1,5 +1,5 @@
 ﻿// Bump VERSION on every release so phones pick up the new files.
-const VERSION = "v15";
+const VERSION = "v16";
 const CACHE = "refuelling-" + VERSION;
 // Big libraries in vendor/ are cached on first use, in a cache kept across versions (rename it when a library changes).
 const VENDOR_CACHE = "refuelling-vendor-1";

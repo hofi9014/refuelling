@@ -63,7 +63,7 @@ main{max-width:860px;margin:0 auto;padding:16px}
 
 /* bottom bar: same dark band, amber needle over the active tab */
 nav{position:fixed;bottom:0;left:0;right:0;background:var(--head);display:flex;justify-content:center;padding-bottom:var(--sab);z-index:5}
-nav button{position:relative;flex:1;max-width:150px;min-width:0;background:none;border:0;color:#8F949B;padding:10px 2px 8px;font:500 12px var(--f-num);letter-spacing:.05em;text-transform:uppercase;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;overflow:hidden;--ic-a:#8F949B}
+nav button{position:relative;flex:1;max-width:150px;min-width:0;background:none;border:0;color:#8F949B;padding:10px 2px 8px;font:500 var(--nav-fs,12px) var(--f-num);letter-spacing:var(--nav-ls,.05em);text-transform:uppercase;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;overflow:hidden;--ic-a:#8F949B}
 nav button .ic{position:relative;line-height:0}
 nav button .i{width:23px;height:23px}
 nav button.on{color:var(--head-ink);--ic-a:var(--accent)}
@@ -217,6 +217,8 @@ button.icon{padding:6px;min-height:34px;min-width:34px;justify-content:center}
 .slide .grid>div:first-child{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 12px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px dashed var(--line-2)}
 .slide .sl{font:600 11.5px var(--f-num);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2)}
 .slide .sv{font:700 21px/1.15 var(--f-num);font-variant-numeric:tabular-nums}
+.slide .sv .u{display:block;margin-left:0;white-space:nowrap}
+@media (max-width:340px){.slide .sv{font-size:17px}.mtab{gap:6px 8px}.mtab>em{font-size:16px}}
 .slide .sn{font-size:11.5px;color:var(--ink-3);line-height:1.25}
 .dots{display:flex;justify-content:center;gap:5px;margin:2px 0 16px}
 .dots i{width:14px;height:3px;background:var(--line-2)}
@@ -493,6 +495,11 @@ const defaults=()=>{
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const t=k=>I18N[S.settings.lang]?.[k]??I18N.en[k]??k;
+// Shorter words for the bottom menu, only where the full one can't fit a 60 px wide tab; screen titles keep the full word.
+const NAV_SHORT={pl:{reminders:"Terminy"},de:{reminders:"Termine",settings:"Optionen"},fr:{dashboard:"Accueil"},es:{reminders:"Avisos"},nl:{reminders:"Meldingen"},da:{settings:"Opsætning"},sv:{settings:"Alternativ"},nb:{settings:"Oppsett"},fi:{reminders:"Muistutus"},hu:{reminders:"Teendők"},bg:{timeline:"История",reminders:"Срокове",settings:"Опции"},uk:{timeline:"Історія",reminders:"Терміни",settings:"Опції"},tr:{timeline:"Geçmiş",reminders:"Uyarılar"},ja:{timeline:"履歴",reminders:"通知"}};
+// All menu labels share one size: the largest at which none of them is cut off.
+function fitNav(){const box=$("#tabs"),labels=[...box.querySelectorAll(".lbl")];for(const fs of [12,11.5,11,10.5,10,9.5,9]){box.style.setProperty("--nav-fs",fs+"px");box.style.setProperty("--nav-ls",fs<12?".01em":".05em");if(!labels.some(l=>l.scrollWidth>l.clientWidth))break}}
+addEventListener("resize",fitNav);
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 const U=()=>UNITS[S.settings.units];
 const cur=()=>S.settings.currency;
@@ -1075,8 +1082,10 @@ function render(){
  $("#zoomBtn").innerHTML=`${ic("search")}${Math.round(zm*100)}%`;$("#zoomBtn").title=$("#zoomBtn").ariaLabel=t("textSize");
  const V=veh(),sel=$("#vehSel");sel.hidden=S.vehicles.length<2;sel.innerHTML=S.vehicles.map(v=>`<option value="${v.id}" ${v.id===S.active?"selected":""}>${esc(v.name)}</option>`).join("");
  const due=mine(S.reminders).filter(r=>remStatus(r)?.cls==="danger").length;
- const tabs=[["dashboard","home",t("dashboard")],["fuel","timeline",t("timeline")],["costs","receipt",t("costs")],["reminders","bell",t("reminders")],["reports","chart",t("reports")],["settings","sliders",t("settings")]];
- $("#tabs").innerHTML=tabs.map(([k,n,l])=>`<button class="${k===tab?"on":""}" data-act="tab" data-id="${k}"><span class="ic">${ic(n)}${k==="reminders"&&due?`<span class="badge danger">${due}</span>`:""}</span><span class="lbl">${l}</span></button>`).join("");
+ const short=NAV_SHORT[S.settings.lang]||{};
+ const tabs=[["dashboard","home","dashboard"],["fuel","timeline","timeline"],["costs","receipt","costs"],["reminders","bell","reminders"],["reports","chart","reports"],["settings","sliders","settings"]];
+ $("#tabs").innerHTML=tabs.map(([k,n,l])=>`<button class="${k===tab?"on":""}" data-act="tab" data-id="${k}" aria-label="${t(l)}"><span class="ic">${ic(n)}${k==="reminders"&&due?`<span class="badge danger">${due}</span>`:""}</span><span class="lbl">${short[l]||t(l)}</span></button>`).join("");
+ document.fonts.ready.then(fitNav);
  $("#app").innerHTML={dashboard:viewDashboard,fuel:viewFuel,costs:viewCosts,reminders:viewReminders,reports:viewReports,settings:viewSettings}[tab]();
  const imp=$("#importFile");if(imp)imp.onchange=importData;
  $("#fab").hidden=!V||tab==="settings";
@@ -1128,7 +1137,7 @@ function demoState(lang){
 }
 
 /* ---------- install & notifications ---------- */
-const APP_VERSION="v15"; // keep in sync with VERSION in sw.js
+const APP_VERSION="v16"; // keep in sync with VERSION in sw.js
 let installEvt=null;
 const isNative=!!window.Capacitor?.isNativePlatform?.(); // running as the Google Play / App Store app
 const standalone=()=>isNative||matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
