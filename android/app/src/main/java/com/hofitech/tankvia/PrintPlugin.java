@@ -1,4 +1,4 @@
-package com.tankvia;
+package com.hofitech.tankvia;
 
 import android.content.Context;
 import android.print.PrintAttributes;
