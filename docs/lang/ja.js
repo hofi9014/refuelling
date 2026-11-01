@@ -1,4 +1,4 @@
-I18N.ja={avgAll:"全期間",avgPerUnit:"数量で加重",avgMonthNote:"{n}か月分",avgTooShort:"4週間以上のデータが必要です",dashboard:"ホーム",fuelTab:"給油",chargeTab:"充電",energyTab:"燃料と電気",costs:"費用",reminders:"リマインダー",reports:"レポート",settings:"設定",
+I18N.ja={theme:"テーマ",themeAuto:"自動（端末に合わせる）",themeLight:"ライト",themeDark:"ダーク",searchingStations:"スタンドを検索中…",avgAll:"全期間",avgPerUnit:"数量で加重",avgMonthNote:"{n}か月分",avgTooShort:"4週間以上のデータが必要です",dashboard:"ホーム",fuelTab:"給油",chargeTab:"充電",energyTab:"燃料と電気",costs:"費用",reminders:"リマインダー",reports:"レポート",settings:"設定",
 addFuel:"給油を追加",editFuel:"給油を編集",addCharge:"充電を追加",editCharge:"充電を編集",addCost:"費用を追加",editCost:"費用を編集",addReminder:"整備を予定",editReminder:"予定の整備を編集",addVehicle:"車を追加",editVehicle:"車を編集",
 vehicles:"車",name:"名前（例：トヨタ プリウス）",plate:"ナンバー",year:"年式",vin:"車台番号",tankCap:"タンク容量",battery:"バッテリー容量（kWh）",batteryShort:"バッテリー",carPhoto:"車の写真",fuelType:"パワートレイン",
 refCons:"同等のガソリン車の燃費",refPrice:"比較用の燃料価格",refHint:"電気で走ってどれだけ節約できたかの計算に使います。",

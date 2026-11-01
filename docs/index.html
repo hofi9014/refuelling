@@ -3,16 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#17191C">
+<meta name="theme-color" content="#2B1D14">
 <title>Tankvia</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/favicon-32.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Tankvia">
+<script>/* before the first paint, so a chosen theme doesn't flash; the database with the settings opens later */
+let themePick;try{themePick=localStorage.getItem("tankvia-theme")}catch{}
+document.documentElement.dataset.theme=themePick==="dark"||(themePick!=="light"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light";</script>
 <style>
 /* ===== Tankvia design: "logbook & instrument cluster" =====
-   Warm paper and graphite, one signal-amber accent, condensed figures like dashboard gauges, road-marking dashes. */
+   Latte paper and espresso, one caramel accent, condensed figures like dashboard gauges, road-marking dashes. */
 @font-face{font-family:"Barlow";font-weight:400;font-display:swap;src:url(fonts/barlow-latin-400-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2190-2199,U+2212,U+FEFF}
 @font-face{font-family:"Barlow";font-weight:400;font-display:swap;src:url(fonts/barlow-latin-ext-400-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1EFF,U+20A0-20AB,U+20AD-20C0,U+2C60-2C7F,U+A720-A7FF}
 @font-face{font-family:"Barlow";font-weight:500;font-display:swap;src:url(fonts/barlow-latin-500-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2190-2199,U+2212,U+FEFF}
@@ -27,18 +30,20 @@
 @font-face{font-family:"Barlow Condensed";font-weight:700;font-display:swap;src:url(fonts/barlow-condensed-latin-ext-700-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1EFF,U+20A0-20AB,U+20AD-20C0,U+2C60-2C7F,U+A720-A7FF}
 
 :root{
- --bg:#ECE8DF;--surface:#FBF9F4;--surface-2:#F2EEE5;--ink:#17191C;--ink-2:#585C63;--ink-3:#8A8D93;--line:#DCD6C9;--line-2:#C8C1B2;
- --accent:#E29A17;--accent-ink:#17191C;--accent-soft:#F7E5C0;--head:#17191C;--head-ink:#F2EEE5;--head-2:#2A2D31;
- --good:#2D7A4E;--bad:#B5392C;--warn:#A86400;--warn-soft:#F6E7CA;--danger:#B5392C;--danger-soft:#F4DAD5;
- --c-fuel:#D98A00;--c-charge:#2C6FB7;--c-svc:#A84B32;--c-fix:#2D6E6A;--c-oth:#7B7F86;
+ color-scheme:light;
+ --bg:#F1E8DB;--surface:#FCF8F1;--surface-2:#F3EADD;--ink:#2B1D14;--ink-2:#67523F;--ink-3:#7F6A56;--line:#E2D4C1;--line-2:#CFBDA5;
+ --accent:#C8843A;--accent-ink:#2B1D14;--accent-soft:#F2DFC4;--head:#2B1D14;--head-ink:#F5EBDD;--head-2:#3F2C1F;--head-line:#5A4332;--head-dim:#B7A18B;
+ --good:#3F7A4A;--bad:#A93F2E;--warn:#8F5310;--warn-soft:#F4E3C8;--danger:#A93F2E;--danger-soft:#F3DAD2;
+ --c-fuel:#B9722D;--c-charge:#3B7A8C;--c-svc:#A5492E;--c-fix:#4F7A5C;--c-oth:#8A7A6A;
  --r:6px;--f-body:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--f-num:"Barlow Condensed","Barlow",system-ui,sans-serif;
  /* names used by older markup */
  --card:var(--surface);--text:var(--ink);--muted:var(--ink-2);--on-accent:var(--accent-ink);--radius:var(--r);--ic-a:var(--accent)}
-@media (prefers-color-scheme:dark){:root{
- --bg:#0E1012;--surface:#171A1D;--surface-2:#1F2327;--ink:#ECE8E0;--ink-2:#A3A7AE;--ink-3:#71757C;--line:#2A2E33;--line-2:#3B4046;
- --accent:#F2AE2E;--accent-soft:#3B2F16;--head:#08090A;--head-ink:#ECE8E0;--head-2:#1F2327;
- --good:#5DB67F;--bad:#E66C5E;--warn:#F2AE2E;--warn-soft:#3B2F16;--danger:#E66C5E;--danger-soft:#3E1E1A;
- --c-fuel:#F2AE2E;--c-charge:#5C9DE8;--c-svc:#E07B60;--c-fix:#4FB3A9;--c-oth:#8E939B}}
+:root[data-theme=dark]{
+ color-scheme:dark;
+ --bg:#17100B;--surface:#221811;--surface-2:#2D2118;--ink:#F3E8DA;--ink-2:#C2AE9A;--ink-3:#9A8673;--line:#3A2B20;--line-2:#4F3D2F;
+ --accent:#D9A066;--accent-soft:#44311F;--head:#0F0A07;--head-ink:#F3E8DA;--head-2:#2D2118;--head-line:#4F3D2F;--head-dim:#A8937F;
+ --good:#7DB686;--bad:#E5806C;--warn:#D9A066;--warn-soft:#44311F;--danger:#E5806C;--danger-soft:#43221A;
+ --c-fuel:#D9A066;--c-charge:#6FB0C2;--c-svc:#E08A6B;--c-fix:#7DB08C;--c-oth:#A0907F}
 /* Safe areas: the Android app draws edge-to-edge and Capacitor puts the bar sizes in --safe-area-inset-*; browsers/iOS use env(). */
 :root{--sat:var(--safe-area-inset-top,env(safe-area-inset-top,0px));--sab:var(--safe-area-inset-bottom,env(safe-area-inset-bottom,0px))}
 /* with the magnifier (CSS zoom) on, viewport units are not zoomed but px are, so overlays size themselves with --vw/--vh */
@@ -51,19 +56,19 @@ body{margin:0;background:var(--bg);color:var(--ink);font:400 15.5px/1.45 var(--f
 .muted{color:var(--ink-2)}
 .u{font:500 13px var(--f-body);color:var(--ink-2);margin-left:3px;letter-spacing:0}
 
-/* header: the dark instrument band with an amber edge */
+/* header: the dark instrument band with a caramel edge */
 header{position:sticky;top:0;z-index:5;background:var(--head);color:var(--head-ink);padding:calc(10px + var(--sat)) 16px 10px;display:flex;align-items:center;gap:10px;border-bottom:3px solid var(--accent)}
 header h1{margin:0;flex:1;min-width:0;display:flex;align-items:center;gap:9px;font:700 21px/1 var(--f-num);letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;overflow:hidden}
 header h1 .logo{width:28px;height:28px;flex-shrink:0}
-header select,#zoomBtn{background:var(--head-2);color:var(--head-ink);border:1px solid #3B4046;border-radius:4px;padding:6px 8px;font:600 15px var(--f-num);max-width:45vw;width:auto}
+header select,#zoomBtn{background:var(--head-2);color:var(--head-ink);border:1px solid var(--head-line);border-radius:4px;padding:6px 8px;font:600 15px var(--f-num);max-width:45vw;width:auto}
 header select option{color:#000;background:#fff}
 #zoomBtn{display:inline-flex;align-items:center;gap:5px;cursor:pointer;white-space:nowrap}
 #zoomBtn .i{--ic-a:var(--accent)}
 main{max-width:860px;margin:0 auto;padding:16px}
 
-/* bottom bar: same dark band, amber needle over the active tab */
+/* bottom bar: same dark band, caramel needle over the active tab */
 nav{position:fixed;bottom:0;left:0;right:0;background:var(--head);display:flex;justify-content:center;padding-bottom:var(--sab);z-index:5}
-nav button{position:relative;flex:1;max-width:150px;min-width:0;background:none;border:0;color:#8F949B;padding:10px 2px 8px;font:500 var(--nav-fs,12px) var(--f-num);letter-spacing:var(--nav-ls,.05em);text-transform:uppercase;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;overflow:hidden;--ic-a:#8F949B}
+nav button{position:relative;flex:1;max-width:150px;min-width:0;background:none;border:0;color:var(--head-dim);padding:10px 2px 8px;font:500 var(--nav-fs,12px) var(--f-num);letter-spacing:var(--nav-ls,.05em);text-transform:uppercase;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;overflow:hidden;--ic-a:var(--head-dim)}
 nav button .ic{position:relative;line-height:0}
 nav button .i{width:23px;height:23px}
 nav button.on{color:var(--head-ink);--ic-a:var(--accent)}
@@ -290,13 +295,13 @@ select{max-width:100%}
 .rep{color:#000;background:#fff;font:12px/1.45 system-ui,"Segoe UI",sans-serif}
 .rep h1{font-size:22px;margin:0}
 .rep h2{font-size:16px;margin:2px 0 10px;color:#333;text-transform:none;letter-spacing:0;display:block;font-family:inherit}
-.rep h3{color:#000;border-bottom:2px solid #E29A17;padding-bottom:3px;margin:20px 0 8px;text-transform:none;font-size:14px;letter-spacing:0;display:block}
+.rep h3{color:#000;border-bottom:2px solid #C8843A;padding-bottom:3px;margin:20px 0 8px;text-transform:none;font-size:14px;letter-spacing:0;display:block}
 .rep h3::after{content:none}
 .rep-h{display:flex;gap:18px;align-items:flex-start}
 .rep-h img{width:220px;height:145px;object-fit:cover;border-radius:4px}
 .rep table{width:100%;border-collapse:collapse}
 .rep td,.rep th{text-align:left;padding:5px 6px;border-bottom:1px solid #ddd;vertical-align:top}
-.rep th{background:#F2EEE5}
+.rep th{background:#F3EADD}
 .rep .kv td:first-child{color:#555;width:42%}
 .rep .n{text-align:right;white-space:nowrap}
 .rep .att{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -316,7 +321,7 @@ select{max-width:100%}
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
 <!-- Tankvia icon set: 24px grid, 1.8 stroke, one accent detail per icon (takes --ic-a, so a category can colour it) -->
-<symbol id="logo" viewBox="0 0 32 32"><path d="M16 2.5c5.6 6.8 9.4 11.6 9.4 16.4a9.4 9.4 0 0 1-18.8 0C6.6 14.1 10.4 9.3 16 2.5z" fill="currentColor" stroke="none"/><path d="M10.6 22.2a5.8 5.8 0 0 1 10.8-3.4" fill="none" stroke="var(--head,#17191C)" stroke-width="2.2" stroke-linecap="round"/><path d="M16 21.6 20.4 15.9" fill="none" stroke="var(--accent,#E29A17)" stroke-width="2.6" stroke-linecap="round"/><circle cx="16" cy="21.8" r="1.9" fill="var(--accent,#E29A17)"/></symbol>
+<symbol id="logo" viewBox="0 0 32 32"><path d="M16 2.5c5.6 6.8 9.4 11.6 9.4 16.4a9.4 9.4 0 0 1-18.8 0C6.6 14.1 10.4 9.3 16 2.5z" fill="currentColor" stroke="none"/><path d="M10.6 22.2a5.8 5.8 0 0 1 10.8-3.4" fill="none" stroke="var(--head,#2B1D14)" stroke-width="2.2" stroke-linecap="round"/><path d="M16 21.6 20.4 15.9" fill="none" stroke="var(--accent,#C8843A)" stroke-width="2.6" stroke-linecap="round"/><circle cx="16" cy="21.8" r="1.9" fill="var(--accent,#C8843A)"/></symbol>
 <symbol id="i-home" viewBox="0 0 24 24"><path d="M3.5 11.2 12 4.5l8.5 6.7"/><path d="M5.5 9.8v9.7h13V9.8"/><rect x="10" y="13.5" width="4" height="6" style="fill:var(--ic-a);stroke:none"/></symbol>
 <symbol id="i-timeline" viewBox="0 0 24 24"><path d="M6 3.5v17" stroke-dasharray="2.2 2.6"/><rect x="3.8" y="5" width="4.4" height="4.4" style="fill:var(--ic-a);stroke:none"/><rect x="3.8" y="14.6" width="4.4" height="4.4"/><path d="M11 7.2h9M11 16.8h6.5"/></symbol>
 <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M6 3.5h12v17l-2.4-1.6-2.4 1.6-2.4-1.6-2.4 1.6L6 18.9z"/><path d="M9 8h6M9 11.5h6"/><path d="M9 15h3" style="stroke:var(--ic-a)" stroke-width="2.4"/></symbol>
@@ -373,7 +378,7 @@ select{max-width:100%}
 <script src="notify.js"></script>
 <script>
 const I18N={
-pl:{avgAll:"z całego okresu",avgPerUnit:"ważona ilością",avgMonthNote:"z {n} mies.",avgTooShort:"potrzeba min. 4 tygodni danych",dashboard:"Pulpit",fuelTab:"Tankowania",chargeTab:"Ładowania",energyTab:"Paliwo i prąd",costs:"Koszty",reminders:"Przypomnienia",reports:"Raporty",settings:"Ustawienia",
+pl:{theme:"Motyw",themeAuto:"Automatyczny (jak w telefonie)",themeLight:"Jasny",themeDark:"Ciemny",searchingStations:"Szukam stacji…",avgAll:"z całego okresu",avgPerUnit:"ważona ilością",avgMonthNote:"z {n} mies.",avgTooShort:"potrzeba min. 4 tygodni danych",dashboard:"Pulpit",fuelTab:"Tankowania",chargeTab:"Ładowania",energyTab:"Paliwo i prąd",costs:"Koszty",reminders:"Przypomnienia",reports:"Raporty",settings:"Ustawienia",
 addFuel:"Dodaj tankowanie",editFuel:"Edytuj tankowanie",addCharge:"Dodaj ładowanie",editCharge:"Edytuj ładowanie",addCost:"Dodaj koszt",editCost:"Edytuj koszt",addReminder:"Zaplanuj serwis",editReminder:"Edytuj planowany serwis",addVehicle:"Dodaj samochód",editVehicle:"Edytuj samochód",
 vehicles:"Samochody",name:"Nazwa (np. Skoda Octavia)",plate:"Nr rejestracyjny",year:"Rok produkcji",vin:"VIN",tankCap:"Pojemność baku",battery:"Pojemność baterii (kWh)",batteryShort:"Bateria",carPhoto:"Zdjęcie samochodu",fuelType:"Napęd",
 refCons:"Spalanie porównywalnego auta spalinowego",refPrice:"Cena paliwa do porównania",refHint:"Na tej podstawie aplikacja policzy, ile oszczędzasz, jeżdżąc na prądzie.",
@@ -408,7 +413,7 @@ fuelTypes:{petrol:"Benzyna",diesel:"Diesel",lpg:"LPG",hybrid:"Hybryda (HEV)",phe
 ct:{home:"Dom",work:"Praca",ac:"Publiczna AC",dc:"Szybka DC"},
 kinds:{service:"Serwis",repair:"Naprawa",tyres:"Opony",inspection:"Przegląd techniczny",insurance:"Ubezpieczenie",tax:"Podatki i opłaty",leasing:"Leasing / rata",parking:"Parking",tolls:"Autostrady",wash:"Myjnia",fines:"Mandaty",accessories:"Akcesoria",other:"Inne"},
 grp:{fuel:"Paliwo",charge:"Ładowanie",svc:"Serwis i naprawy",fix:"Ubezpieczenie, opłaty, leasing",oth:"Inne"}},
-en:{avgAll:"over all records",avgPerUnit:"weighted by amount",avgMonthNote:"over {n} months",avgTooShort:"needs at least 4 weeks of data",dashboard:"Dashboard",fuelTab:"Fill-ups",chargeTab:"Charging",energyTab:"Fuel & power",costs:"Costs",reminders:"Reminders",reports:"Reports",settings:"Settings",
+en:{theme:"Theme",themeAuto:"Automatic (follow phone)",themeLight:"Light",themeDark:"Dark",searchingStations:"Searching for stations…",avgAll:"over all records",avgPerUnit:"weighted by amount",avgMonthNote:"over {n} months",avgTooShort:"needs at least 4 weeks of data",dashboard:"Dashboard",fuelTab:"Fill-ups",chargeTab:"Charging",energyTab:"Fuel & power",costs:"Costs",reminders:"Reminders",reports:"Reports",settings:"Settings",
 addFuel:"Add fill-up",editFuel:"Edit fill-up",addCharge:"Add charge",editCharge:"Edit charge",addCost:"Add cost",editCost:"Edit cost",addReminder:"Schedule service",editReminder:"Edit scheduled service",addVehicle:"Add car",editVehicle:"Edit car",
 vehicles:"Cars",name:"Name (e.g. Toyota Corolla)",plate:"Licence plate",year:"Year",vin:"VIN",tankCap:"Tank capacity",battery:"Battery capacity (kWh)",batteryShort:"Battery",carPhoto:"Car photo",fuelType:"Powertrain",
 refCons:"Comparable combustion car consumption",refPrice:"Fuel price for comparison",refHint:"Used to calculate how much you save by driving electric.",
@@ -498,6 +503,11 @@ const t=k=>I18N[S.settings.lang]?.[k]??I18N.en[k]??k;
 // Shorter words for the bottom menu, only where the full one can't fit a 60 px wide tab; screen titles keep the full word.
 const NAV_SHORT={pl:{reminders:"Terminy"},de:{reminders:"Termine",settings:"Optionen"},fr:{dashboard:"Accueil"},es:{reminders:"Avisos"},nl:{reminders:"Meldingen"},da:{settings:"Opsætning"},sv:{settings:"Alternativ"},nb:{settings:"Oppsett"},fi:{reminders:"Muistutus"},hu:{reminders:"Teendők"},bg:{timeline:"История",reminders:"Срокове",settings:"Опции"},uk:{timeline:"Історія",reminders:"Терміни",settings:"Опції"},tr:{timeline:"Geçmiş",reminders:"Uyarılar"},ja:{timeline:"履歴",reminders:"通知"}};
 // All menu labels share one size: the largest at which none of them is cut off.
+function applyTheme(){
+ const pick=S.settings.theme||"auto";document.documentElement.dataset.theme=pick==="dark"||(pick==="auto"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light";
+ if(!S.demo)try{localStorage.setItem("tankvia-theme",pick)}catch{}
+}
+matchMedia("(prefers-color-scheme:dark)").addEventListener("change",()=>applyTheme());
 function fitNav(){const box=$("#tabs"),labels=[...box.querySelectorAll(".lbl")];for(const fs of [12,11.5,11,10.5,10,9.5,9]){box.style.setProperty("--nav-fs",fs+"px");box.style.setProperty("--nav-ls",fs<12?".01em":".05em");if(!labels.some(l=>l.scrollWidth>l.clientWidth))break}}
 addEventListener("resize",fitNav);
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
@@ -687,24 +697,47 @@ function placesDatalist(list){
 /* Nearby stations: the phone's location goes to the public OpenStreetMap Overpass API, only when the button is pressed. */
 const nearbyHtml=()=>`<div><button type="button" class="small" id="nearBtn">${ic("pin")}${t("nearby")}</button><div class="near" id="nearList"></div></div>`;
 const geoDist=(a,b,c,d)=>{const r=Math.PI/180,x=Math.sin((c-a)*r/2)**2+Math.cos(a*r)*Math.cos(c*r)*Math.sin((d-b)*r/2)**2;return 2*6371e3*Math.asin(Math.sqrt(x))};
+/* A 3 km search doesn't need satellites: a network fix or a recent position arrives at once, GPS is only the fallback. */
+function getPosition(){
+ const read=opt=>isNative?Cap("Geolocation").getCurrentPosition(opt):new Promise((res,rej)=>navigator.geolocation.getCurrentPosition(res,rej,opt));
+ return read({enableHighAccuracy:false,timeout:5000,maximumAge:600000}).catch(()=>read({enableHighAccuracy:true,timeout:15000,maximumAge:600000}));
+}
+const stationCache={};
+/* Nominatim answers in under a second, Overpass (often overloaded) is the fallback. Both give {name,city,road,lat,lon}. */
+async function nominatimStations(la,lo,am){
+ const dy=.027,dx=dy/Math.max(.3,Math.cos(la*Math.PI/180));
+ const r=await fetch(`https://nominatim.openstreetmap.org/search?amenity=${am}&format=jsonv2&limit=30&addressdetails=1&bounded=1&accept-language=${S.settings.lang}&viewbox=${(lo-dx).toFixed(3)},${(la+dy).toFixed(3)},${(lo+dx).toFixed(3)},${(la-dy).toFixed(3)}`,{signal:AbortSignal.timeout(6000)});
+ if(!r.ok)throw new Error("nominatim");
+ return(await r.json()).map(e=>{const ad=e.address||{};return{name:e.name||ad.amenity,city:ad.city||ad.town||ad.village,road:ad.road,lat:+e.lat,lon:+e.lon}});
+}
+async function overpassStations(la,lo,am){
+ const q=`[out:json][timeout:8];nwr["amenity"="${am}"](around:3000,${la.toFixed(3)},${lo.toFixed(3)});out center 40;`;
+ const r=await fetch("https://overpass-api.de/api/interpreter",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"data="+encodeURIComponent(q),signal:AbortSignal.timeout(9000)});
+ if(!r.ok)throw new Error("overpass");
+ return(await r.json()).elements.map(e=>{const tg=e.tags||{};return{name:tg.brand||tg.name||tg.operator,city:tg["addr:city"],road:tg["addr:street"],lat:e.lat??e.center?.lat,lon:e.lon??e.center?.lon}});
+}
+/* The coordinates leave the phone rounded to about 100 m. The answer is kept for 10 minutes, for the same area of about 1 km. */
+async function fetchStations(la,lo,am){
+ const key=`${am}:${la.toFixed(2)}:${lo.toFixed(2)}`,hit=stationCache[key];
+ if(hit&&Date.now()-hit.at<600000)return hit.list;
+ const rla=+la.toFixed(3),rlo=+lo.toFixed(3),list=await nominatimStations(rla,rlo,am).catch(()=>overpassStations(rla,rlo,am));
+ stationCache[key]={at:Date.now(),list};return list;
+}
 function bindNearby(kind){
  $("#nearBtn").onclick=async()=>{
   const box=$("#nearList");box.innerHTML=`<span class="muted">${t("locating")}</span>`;
   let pos;
-  const opt={enableHighAccuracy:true,timeout:15000,maximumAge:60000};
-  try{pos=isNative?await Cap("Geolocation").getCurrentPosition(opt):await new Promise((res,rej)=>navigator.geolocation.getCurrentPosition(res,rej,opt))}
+  try{pos=await getPosition()}
   catch{box.innerHTML=`<div class="warnbox">${t("gpsError")}</div>`;return}
   const{latitude:la,longitude:lo}=pos.coords,am=kind==="charge"?"charging_station":"fuel";
-  let els;
-  try{
-   const q=`[out:json][timeout:15];nwr["amenity"="${am}"](around:3000,${la},${lo});out center 40;`;
-   const r=await fetch("https://overpass-api.de/api/interpreter",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"data="+encodeURIComponent(q)});
-   els=(await r.json()).elements;
-  }catch{box.innerHTML=`<div class="warnbox">${t("stationsError")}</div>`;return}
-  const st=els.map(e=>{const tg=e.tags||{},name=tg.brand||tg.name||tg.operator||t(kind==="charge"?"charging":"fillUp"),city=tg["addr:city"];
-   return{label:city?`${city} - ${name}`:name,d:geoDist(la,lo,e.lat??e.center?.lat,e.lon??e.center?.lon)}}).sort((a,b)=>a.d-b.d).slice(0,8);
+  box.innerHTML=`<span class="muted">${t("searchingStations")}</span>`;
+  let found;
+  try{found=await fetchStations(la,lo,am)}
+  catch{box.innerHTML=`<div class="warnbox">${t("stationsError")}</div>`;return}
+  const st=found.map(e=>{const where=[e.city,e.road].filter(Boolean).join(", ");
+   return{label:[where,e.name].filter(Boolean).join(" - ")||t(kind==="charge"?"charging":"fillUp"),d:geoDist(la,lo,e.lat,e.lon)}}).filter(s=>s.d<=3500).sort((a,b)=>a.d-b.d).slice(0,8);
   if(!st.length){box.innerHTML=`<span class="muted">${t("noStations")}</span>`;return}
-  box.innerHTML=st.map((s,i)=>`<button type="button" data-i="${i}"><span>${esc(s.label)}</span><span class="muted">${s.d<1000?Math.round(s.d)+" m":num(s.d/1000,1)+" km"}</span></button>`).join("");
+  box.innerHTML=st.map((s,i)=>`<button type="button" data-i="${i}"><span>${esc(s.label)}</span><span class="muted">${s.d<1000?Math.round(s.d)+" m":num(s.d/1000,1)+" km"}</span></button>`).join("")+`<small class="muted">© OpenStreetMap</small>`;
   box.querySelectorAll("button").forEach(b=>b.onclick=()=>{$("#f_place").value=st[b.dataset.i].label;box.innerHTML=""});
  };
 }
@@ -850,7 +883,7 @@ function monthBars(rows,keys){ // rows: [{m,parts:{key:value}}]; the current (un
  return s+"</svg>";
 }
 function stackedBars(rows){
- const many=rows.length>8,W=640,B=many?96:48,H=200+B,L=58,T=10,tot=r=>GROUPS.reduce((a,g)=>a+(r.parts[g]||0),0),max=Math.max(1,...rows.map(tot)),bw=(W-L-4)/rows.length,y=v=>T+(H-T-B)*(1-v/max);
+ const many=rows.length>8,W=640,B=many?96:48,H=200+B,T=10,tot=r=>GROUPS.reduce((a,g)=>a+(r.parts[g]||0),0),max=Math.max(1,...rows.map(tot)),L=Math.min(130,Math.max(58,moneyShort(max).length*7+10)),bw=(W-L-4)/rows.length,y=v=>T+(H-T-B)*(1-v/max);
  const step=Math.ceil(rows.length/12),present=GROUPS.filter(g=>rows.some(r=>r.parts[g]));
  let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" class="chart">`;
  [0,.5,1].forEach(f=>{const v=max*f;s+=`<line x1="${L}" x2="${W}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end">${moneyShort(v)}</text>`});
@@ -858,7 +891,7 @@ function stackedBars(rows){
   GROUPS.forEach(g=>{const v=r.parts[g]||0;if(!v)return;s+=`<rect x="${x}" y="${y(acc+v)}" width="${w}" height="${Math.max(1,y(acc)-y(acc+v))}" fill="var(--c-${g})"><title>${grpLabel(g)}: ${money(v)}</title></rect>`;acc+=v});
   if(i%step===0){const d=new Date(r.m+"-15T12:00"),lab=new Intl.DateTimeFormat(loc(),{month:"short"}).format(d)+(r.m.endsWith("-01")||i===0?" "+r.m.slice(2,4):"");s+=`<text x="${x+w/2}" y="${H-B+18}" text-anchor="middle">${lab}</text>`}
   s+=barValue(x+w/2,many?H-B+28:H-8,acc,many);
-  if(acc)s+=`<rect x="${L+i*bw}" y="${T}" width="${bw}" height="${H-T-B}" fill="transparent"><title>${r.m}: ${money(acc)}</title></rect>`});
+  if(acc)s+=`<rect x="${L+i*bw}" y="${T}" width="${bw}" height="${H-T-B}" fill="transparent"><title>${new Intl.DateTimeFormat(loc(),{month:"short",year:"numeric"}).format(new Date(r.m+"-15T12:00"))}: ${money(acc)}</title></rect>`});
  return s+`</svg><div class="legend">${present.map(g=>`<span><i style="background:var(--c-${g})"></i>${grpLabel(g)}</span>`).join("")}</div>`;
 }
 function hbars(rows){
@@ -1035,7 +1068,8 @@ function viewSettings(){
  <div class="card"><div class="grid2">
   <label class="field"><span>${t("language")}</span><select data-set="lang">${Object.entries(LANGS).map(([k,[n]])=>`<option value="${k}" ${s.lang===k?"selected":""}>${n}</option>`).join("")}</select></label>
   <label class="field"><span>${t("currency")}</span><select data-set="currency">${CURRENCIES.map(c=>`<option ${c===s.currency?"selected":""}>${c}</option>`).join("")}</select></label>
- </div><label class="field" style="margin-top:12px"><span>${t("textSize")}</span><select data-set="zoom">${ZOOMS.map(z=>`<option value="${z}" ${z==(s.zoom||1)?"selected":""}>${Math.round(z*100)}%${z==1?` (${t("normal")})`:""}</option>`).join("")}</select><small>${t("textSizeHint")}</small></label>
+ </div><label class="field" style="margin-top:12px"><span>${t("theme")}</span><select data-set="theme">${["Auto","Light","Dark"].map(v=>`<option value="${v.toLowerCase()}" ${(s.theme||"auto")===v.toLowerCase()?"selected":""}>${t("theme"+v)}</option>`).join("")}</select></label>
+ <label class="field" style="margin-top:12px"><span>${t("textSize")}</span><select data-set="zoom">${ZOOMS.map(z=>`<option value="${z}" ${z==(s.zoom||1)?"selected":""}>${Math.round(z*100)}%${z==1?` (${t("normal")})`:""}</option>`).join("")}</select><small>${t("textSizeHint")}</small></label>
  <label class="field" style="margin-top:12px"><span>${t("units")}</span><select data-set="units">${Object.entries(UNITS).map(([k,v])=>`<option value="${k}" ${k===s.units?"selected":""}>${v.label} · ${v.ecu}</option>`).join("")}</select></label></div>
  <h3>${ic("car")}${t("vehicles")}</h3><div class="card list">${S.vehicles.map(v=>`<div class="item">${v.photo?`<img class="thumb" src="${v.photo}" alt="">`:tile(v.fuelType==="ev"?"bolt":"car","var(--accent)")}<div class="main"><div class="t">${esc(v.name)} ${v.id===S.active?`<span class="badge">${ic("check","sm")}</span>`:""}</div><div class="s">${[v.plate,t("fuelTypes")[v.fuelType]].filter(Boolean).map(esc).join(" · ")}</div></div><button class="small ghost" data-act="vehEditId" data-id="${v.id}">${ic("edit")}${t("edit")}</button></div>`).join("")}
   <div class="item"><button data-act="vehAdd">${ic("plus")}${t("addVehicle")}</button></div></div>
@@ -1078,6 +1112,7 @@ function printReport(o){
 function render(){
  document.documentElement.lang=S.settings.lang;
  // magnifier: CSS zoom scales the whole layout (text, buttons, charts) and reflows it, so nothing gets cut off
+ applyTheme();
  const zm=+S.settings.zoom||1;document.documentElement.style.zoom=zm;document.documentElement.style.setProperty("--zoom",zm);$("#zoomBtn").hidden=!!S.demo;document.documentElement.classList.toggle("zoom-xl",zm>=1.75&&!S.demo);document.documentElement.classList.toggle("zoom-l",zm>=1.15&&!S.demo);
  $("#zoomBtn").innerHTML=`${ic("search")}${Math.round(zm*100)}%`;$("#zoomBtn").title=$("#zoomBtn").ariaLabel=t("textSize");
  const V=veh(),sel=$("#vehSel");sel.hidden=S.vehicles.length<2;sel.innerHTML=S.vehicles.map(v=>`<option value="${v.id}" ${v.id===S.active?"selected":""}>${esc(v.name)}</option>`).join("");
@@ -1137,7 +1172,7 @@ function demoState(lang){
 }
 
 /* ---------- install & notifications ---------- */
-const APP_VERSION="v16"; // keep in sync with VERSION in sw.js
+const APP_VERSION="v17"; // keep in sync with VERSION in sw.js
 let installEvt=null;
 const isNative=!!window.Capacitor?.isNativePlatform?.(); // running as the Google Play / App Store app
 const standalone=()=>isNative||matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
@@ -1162,12 +1197,12 @@ async function scheduleNative(){
  const pending=(await LN.getPending()).notifications;
  if(pending.length)await LN.cancel({notifications:pending.map(p=>({id:p.id}))});
  if(!S.settings.notify)return;
- const pl=S.settings.lang==="pl",list=[];
+ const tx=notifyText(S),list=[];
  for(const r of S.reminders){
   const V=S.vehicles.find(v=>v.id===r.vid);if(r.done||!r.date||!V)continue;
   for(const days of [7,0]){
    const at=new Date(r.date+"T09:00");at.setDate(at.getDate()-days);if(at.getTime()<=Date.now())continue;
-   list.push({id:nid(r.id+":"+days),title:days?(pl?"Zbliża się termin":"Coming up"):(pl?"Dziś mija termin":"Due today"),body:`${V.name}: ${r.title}`,schedule:{at,allowWhileIdle:true}});
+   list.push({id:nid(r.id+":"+days),title:days?tx[0]:tx[2],body:`${V.name}: ${r.title}`,schedule:{at,allowWhileIdle:true}});
   }
  }
  if(list.length)await LN.schedule({notifications:list.slice(0,60)});
@@ -1231,7 +1266,7 @@ $("#vehSel").onchange=e=>{S.active=e.target.value;save();render()};
  if(!qs.has("demo"))try{S=await idb.get("state")}catch(e){console.error(e)}
  S=S?{...defaults(),...S}:defaults();
  await loadLang(qs.get("lang")||S.settings.lang);
- if(qs.has("demo")){S=demoState(qs.get("lang")||S.settings.lang);tab=qs.get("tab")||tab;if(qs.has("z"))S.settings.zoom=+qs.get("z")} // sample data for store screenshots; never saved
+ if(qs.has("demo")){S=demoState(qs.get("lang")||S.settings.lang);tab=qs.get("tab")||tab;if(qs.has("z"))S.settings.zoom=+qs.get("z");if(qs.has("theme"))S.settings.theme=qs.get("theme")} // sample data for store screenshots; never saved
  render();
  if(S.demo){if(qs.get("open")==="fuel")fuelForm();if(qs.get("open")==="fab")quickAdd();if(qs.get("at")==="trends")for(const el of [...$("#app").children]){if(el.nextElementSibling?.id==="carousel")break;el.hidden=true}}
  if(!S.vehicles.length)vehicleForm();

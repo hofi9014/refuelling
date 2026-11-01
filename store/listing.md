@@ -48,7 +48,7 @@ Tankvia to prosty i czytelny dziennik Twojego samochodu. Zapisuj tankowania, spr
 👓 WYGODA
 • Lupa: powiększenie całej aplikacji do 200%
 • Wiele samochodów, wiele walut, jednostki km/L lub mile/galony
-• Jasny i ciemny motyw (zgodnie z ustawieniami telefonu)
+• Jasny i ciemny motyw – do wyboru lub automatycznie
 • Kopia zapasowa i eksport do CSV (Excel)
 
 🔒 PRYWATNOŚĆ
@@ -101,7 +101,7 @@ Tankvia is a simple, clear logbook for your car. Record fill-ups, see your real 
 👓 COMFORT
 • Magnifier: enlarge the whole app up to 200%
 • Multiple cars, 20 currencies, km/L or miles/gallons
-• Light and dark theme (follows your phone)
+• Light and dark theme – your choice or automatic
 • Backup and CSV export (Excel)
 
 🔒 PRIVACY

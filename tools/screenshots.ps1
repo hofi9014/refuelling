@@ -19,7 +19,7 @@ foreach ($lang in $Langs) {
     $out = Join-Path $root "store\screenshots\$lang"
     New-Item -ItemType Directory -Force $out | Out-Null
     foreach ($name in $shots.Keys) {
-        $url = "$($Base)?demo&z=3&lang=$lang&$($shots[$name])"
+        $url = "$($Base)?demo&z=3&lang=$lang&theme=light&$($shots[$name])"
         Start-Process $chrome -Wait -WindowStyle Hidden -ArgumentList @("--headless=new", "--disable-gpu", "--hide-scrollbars",
             "--user-data-dir=`"$profileDir`"", "--window-size=1080,1920", "--virtual-time-budget=5000",
             "--blink-settings=preferredColorScheme=1", "--screenshot=`"$out\$name.png`"", "`"$url`"")
