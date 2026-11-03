@@ -11,7 +11,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Tankvia">
 <script>/* before the first paint, so a chosen theme doesn't flash; the database with the settings opens later */
-let themePick;try{themePick=localStorage.getItem("tankvia-theme")}catch{}
+let themePick,palPick;try{themePick=localStorage.getItem("tankvia-theme");palPick=localStorage.getItem("tankvia-palette")}catch{}
+document.documentElement.dataset.palette=palPick||"coffee";document.documentElement.style.zoom=.9;
 document.documentElement.dataset.theme=themePick==="dark"||(themePick!=="light"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light";</script>
 <style>
 /* ===== Tankvia design: "logbook & instrument cluster" =====
@@ -44,6 +45,19 @@ document.documentElement.dataset.theme=themePick==="dark"||(themePick!=="light"&
  --accent:#D9A066;--accent-soft:#44311F;--head:#0F0A07;--head-ink:#F3E8DA;--head-2:#2D2118;--head-line:#4F3D2F;--head-dim:#A8937F;
  --good:#7DB686;--bad:#E5806C;--warn:#D9A066;--warn-soft:#44311F;--danger:#E5806C;--danger-soft:#43221A;
  --c-fuel:#D9A066;--c-charge:#6FB0C2;--c-svc:#E08A6B;--c-fix:#7DB08C;--c-oth:#A0907F}
+/* the other colour sets; coffee (above) is the default. Each sets every token, for light and for dark. */
+:root[data-palette=graphite]{
+ --bg:#ECE8DF;--surface:#FBF9F4;--surface-2:#F2EEE5;--ink:#17191C;--ink-2:#585C63;--ink-3:#62666D;--line:#DCD6C9;--line-2:#C8C1B2;--accent:#E29A17;--accent-ink:#17191C;--accent-soft:#F7E5C0;--head:#17191C;--head-ink:#F2EEE5;--head-2:#2A2D31;--head-line:#3B4046;--head-dim:#9EA3AA;--good:#2D7A4E;--bad:#B5392C;--warn:#8F5500;--warn-soft:#F6E7CA;--danger:#B5392C;--danger-soft:#F4DAD5;--c-fuel:#D98A00;--c-charge:#2C6FB7;--c-svc:#A84B32;--c-fix:#2D6E6A;--c-oth:#7B7F86}
+:root[data-palette=graphite][data-theme=dark]{
+ --bg:#0E1012;--surface:#171A1D;--surface-2:#1F2327;--ink:#ECE8E0;--ink-2:#A3A7AE;--ink-3:#8A8E95;--line:#2A2E33;--line-2:#3B4046;--accent:#F2AE2E;--accent-ink:#17191C;--accent-soft:#3B2F16;--head:#08090A;--head-ink:#ECE8E0;--head-2:#1F2327;--head-line:#3B4046;--head-dim:#8F949B;--good:#5DB67F;--bad:#E66C5E;--warn:#F2AE2E;--warn-soft:#3B2F16;--danger:#E66C5E;--danger-soft:#3E1E1A;--c-fuel:#F2AE2E;--c-charge:#5C9DE8;--c-svc:#E07B60;--c-fix:#4FB3A9;--c-oth:#8E939B}
+:root[data-palette=forest]{
+ --bg:#E8ECE3;--surface:#F8FAF5;--surface-2:#EEF2E8;--ink:#17231A;--ink-2:#4C5B50;--ink-3:#5A685E;--line:#D3DCCD;--line-2:#BCC8B5;--accent:#8DB04A;--accent-ink:#17231A;--accent-soft:#E0EACB;--head:#1C2A20;--head-ink:#EEF2E8;--head-2:#2B3A2F;--head-line:#45584A;--head-dim:#A7B5AA;--good:#2F7A45;--bad:#B0402F;--warn:#7A5800;--warn-soft:#F2E7C4;--danger:#B0402F;--danger-soft:#F3DAD3;--c-fuel:#6B8E2A;--c-charge:#2C6FB7;--c-svc:#A84B32;--c-fix:#2D6E6A;--c-oth:#77806F}
+:root[data-palette=forest][data-theme=dark]{
+ --bg:#0D120E;--surface:#151C17;--surface-2:#1C251F;--ink:#E6EDE5;--ink-2:#A5B2A7;--ink-3:#86938A;--line:#26312A;--line-2:#36433A;--accent:#A8C96A;--accent-ink:#17231A;--accent-soft:#2A3520;--head:#080B09;--head-ink:#E6EDE5;--head-2:#1C251F;--head-line:#36433A;--head-dim:#8E9B91;--good:#6FC08A;--bad:#E5806C;--warn:#E2B54E;--warn-soft:#3A3118;--danger:#E5806C;--danger-soft:#43221A;--c-fuel:#A8C96A;--c-charge:#5C9DE8;--c-svc:#E08A6B;--c-fix:#4FB3A9;--c-oth:#9AA39C}
+:root[data-palette=ocean]{
+ --bg:#E7EBF0;--surface:#F8FAFC;--surface-2:#EDF1F5;--ink:#132033;--ink-2:#4B596C;--ink-3:#58657A;--line:#D4DBE4;--line-2:#BEC8D4;--accent:#E07A5F;--accent-ink:#132033;--accent-soft:#F7DCD3;--head:#14233A;--head-ink:#EDF1F5;--head-2:#22344F;--head-line:#3A4D69;--head-dim:#A3B0C2;--good:#2D7A4E;--bad:#B5392C;--warn:#8A5000;--warn-soft:#F6E7CA;--danger:#B5392C;--danger-soft:#F4DAD5;--c-fuel:#CC5E3F;--c-charge:#2C6FB7;--c-svc:#7A5AA6;--c-fix:#2D6E6A;--c-oth:#77808F}
+:root[data-palette=ocean][data-theme=dark]{
+ --bg:#0B111A;--surface:#121A26;--surface-2:#192331;--ink:#E6ECF3;--ink-2:#A3AFBF;--ink-3:#8693A4;--line:#243042;--line-2:#344257;--accent:#F08C70;--accent-ink:#132033;--accent-soft:#3D2620;--head:#070B11;--head-ink:#E6ECF3;--head-2:#192331;--head-line:#344257;--head-dim:#8C99AB;--good:#5DB67F;--bad:#E66C5E;--warn:#F0B44C;--warn-soft:#3B2F16;--danger:#E66C5E;--danger-soft:#3E1E1A;--c-fuel:#F08C70;--c-charge:#5C9DE8;--c-svc:#A98AD6;--c-fix:#4FB3A9;--c-oth:#8E97A6}
 /* Safe areas: the Android app draws edge-to-edge and Capacitor puts the bar sizes in --safe-area-inset-*; browsers/iOS use env(). */
 :root{--sat:var(--safe-area-inset-top,env(safe-area-inset-top,0px));--sab:var(--safe-area-inset-bottom,env(safe-area-inset-bottom,0px))}
 /* with the magnifier (CSS zoom) on, viewport units are not zoomed but px are, so overlays size themselves with --vw/--vh */
@@ -223,6 +237,17 @@ button.icon{padding:6px;min-height:34px;min-width:34px;justify-content:center}
 .slide .sl{font:600 11.5px var(--f-num);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2)}
 .slide .sv{font:700 21px/1.15 var(--f-num);font-variant-numeric:tabular-nums}
 .slide .sv .u{display:block;margin-left:0;white-space:nowrap}
+.cal-head{justify-content:space-between;margin:-4px 0 8px}
+.cal-head b{font:700 17px var(--f-num);letter-spacing:.06em;text-transform:uppercase}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.cal .wd{font:600 11px var(--f-num);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);text-align:center;padding:2px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cal button{min-height:42px;padding:4px 0;flex-direction:column;justify-content:center;gap:3px;border-color:transparent;background:var(--surface-2);font:600 15px var(--f-num);border-radius:4px}
+.cal button.today{border-color:var(--accent)}
+.cal button.sel{background:var(--ink);color:var(--surface)}
+.cal .dots{display:flex;gap:2px;height:5px}
+.cal .dots i{width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.cal .dots i.warn{background:var(--warn)}.cal .dots i.danger{background:var(--danger)}.cal .dots i.done{background:var(--ink-3)}
+.cal-day{margin-top:12px;padding-top:10px;border-top:1px dashed var(--line-2)}
 @media (max-width:340px){.slide .sv{font-size:17px}.mtab{gap:6px 8px}.mtab>em{font-size:16px}}
 .slide .sn{font-size:11.5px;color:var(--ink-3);line-height:1.25}
 .dots{display:flex;justify-content:center;gap:5px;margin:2px 0 16px}
@@ -378,7 +403,7 @@ select{max-width:100%}
 <script src="notify.js"></script>
 <script>
 const I18N={
-pl:{theme:"Motyw",themeAuto:"Automatyczny (jak w telefonie)",themeLight:"Jasny",themeDark:"Ciemny",searchingStations:"Szukam stacji…",avgAll:"z całego okresu",avgPerUnit:"ważona ilością",avgMonthNote:"z {n} mies.",avgTooShort:"potrzeba min. 4 tygodni danych",dashboard:"Pulpit",fuelTab:"Tankowania",chargeTab:"Ładowania",energyTab:"Paliwo i prąd",costs:"Koszty",reminders:"Przypomnienia",reports:"Raporty",settings:"Ustawienia",
+pl:{addEvent:"Dodaj wydarzenie",palette:"Kolorystyka",palCoffee:"Kawa",palGraphite:"Grafit",palForest:"Las",palOcean:"Ocean",calendar:"Kalendarz",noRemDay:"Brak terminów w tym dniu.",prevMonth:"Poprzedni miesiąc",nextMonth:"Następny miesiąc",theme:"Motyw",themeAuto:"Automatyczny (jak w telefonie)",themeLight:"Jasny",themeDark:"Ciemny",searchingStations:"Szukam stacji…",avgAll:"z całego okresu",avgPerUnit:"ważona ilością",avgMonthNote:"z {n} mies.",avgTooShort:"potrzeba min. 4 tygodni danych",dashboard:"Pulpit",fuelTab:"Tankowania",chargeTab:"Ładowania",energyTab:"Paliwo i prąd",costs:"Koszty",reminders:"Przypomnienia",reports:"Raporty",settings:"Ustawienia",
 addFuel:"Dodaj tankowanie",editFuel:"Edytuj tankowanie",addCharge:"Dodaj ładowanie",editCharge:"Edytuj ładowanie",addCost:"Dodaj koszt",editCost:"Edytuj koszt",addReminder:"Zaplanuj serwis",editReminder:"Edytuj planowany serwis",addVehicle:"Dodaj samochód",editVehicle:"Edytuj samochód",
 vehicles:"Samochody",name:"Nazwa (np. Skoda Octavia)",plate:"Nr rejestracyjny",year:"Rok produkcji",vin:"VIN",tankCap:"Pojemność baku",battery:"Pojemność baterii (kWh)",batteryShort:"Bateria",carPhoto:"Zdjęcie samochodu",fuelType:"Napęd",
 refCons:"Spalanie porównywalnego auta spalinowego",refPrice:"Cena paliwa do porównania",refHint:"Na tej podstawie aplikacja policzy, ile oszczędzasz, jeżdżąc na prądzie.",
@@ -413,7 +438,7 @@ fuelTypes:{petrol:"Benzyna",diesel:"Diesel",lpg:"LPG",hybrid:"Hybryda (HEV)",phe
 ct:{home:"Dom",work:"Praca",ac:"Publiczna AC",dc:"Szybka DC"},
 kinds:{service:"Serwis",repair:"Naprawa",tyres:"Opony",inspection:"Przegląd techniczny",insurance:"Ubezpieczenie",tax:"Podatki i opłaty",leasing:"Leasing / rata",parking:"Parking",tolls:"Autostrady",wash:"Myjnia",fines:"Mandaty",accessories:"Akcesoria",other:"Inne"},
 grp:{fuel:"Paliwo",charge:"Ładowanie",svc:"Serwis i naprawy",fix:"Ubezpieczenie, opłaty, leasing",oth:"Inne"}},
-en:{theme:"Theme",themeAuto:"Automatic (follow phone)",themeLight:"Light",themeDark:"Dark",searchingStations:"Searching for stations…",avgAll:"over all records",avgPerUnit:"weighted by amount",avgMonthNote:"over {n} months",avgTooShort:"needs at least 4 weeks of data",dashboard:"Dashboard",fuelTab:"Fill-ups",chargeTab:"Charging",energyTab:"Fuel & power",costs:"Costs",reminders:"Reminders",reports:"Reports",settings:"Settings",
+en:{addEvent:"Add event",palette:"Colours",palCoffee:"Coffee",palGraphite:"Graphite",palForest:"Forest",palOcean:"Ocean",calendar:"Calendar",noRemDay:"Nothing scheduled on this day.",prevMonth:"Previous month",nextMonth:"Next month",theme:"Theme",themeAuto:"Automatic (follow phone)",themeLight:"Light",themeDark:"Dark",searchingStations:"Searching for stations…",avgAll:"over all records",avgPerUnit:"weighted by amount",avgMonthNote:"over {n} months",avgTooShort:"needs at least 4 weeks of data",dashboard:"Dashboard",fuelTab:"Fill-ups",chargeTab:"Charging",energyTab:"Fuel & power",costs:"Costs",reminders:"Reminders",reports:"Reports",settings:"Settings",
 addFuel:"Add fill-up",editFuel:"Edit fill-up",addCharge:"Add charge",editCharge:"Edit charge",addCost:"Add cost",editCost:"Edit cost",addReminder:"Schedule service",editReminder:"Edit scheduled service",addVehicle:"Add car",editVehicle:"Edit car",
 vehicles:"Cars",name:"Name (e.g. Toyota Corolla)",plate:"Licence plate",year:"Year",vin:"VIN",tankCap:"Tank capacity",battery:"Battery capacity (kWh)",batteryShort:"Battery",carPhoto:"Car photo",fuelType:"Powertrain",
 refCons:"Comparable combustion car consumption",refPrice:"Fuel price for comparison",refHint:"Used to calculate how much you save by driving electric.",
@@ -455,7 +480,7 @@ const UNITS={
  us:{label:"mi · gal (US) · mpg",d:"mi",v:"gal",cons:(q,d)=>d/q,cu:"mpg",econs:(e,d)=>d/e,ecu:"mi/kWh",used:(c,d)=>d/c},
  uk:{label:"mi · gal (UK) · mpg",d:"mi",v:"gal",cons:(q,d)=>d/q,cu:"mpg",econs:(e,d)=>d/e,ecu:"mi/kWh",used:(c,d)=>d/c}
 };
-const ZOOMS=[1,1.15,1.3,1.5,1.75,2];
+const ZOOMS=[1,1.15,1.3,1.5,1.75,2],UI_SCALE=.9; // everything is drawn at 90%: testers found the 2026 layout too big
 const CURRENCIES=["PLN","EUR","USD","GBP","CHF","CZK","SEK","NOK","DKK","ISK","HUF","RON","UAH","CAD","AUD","JPY","INR","BRL","MXN","TRY","ZAR"];
 /* Polish and English are built in; the other languages live in lang/<code>.js and load when chosen.
    [native name, Intl locale, default currency for a first start in that language] */
@@ -505,7 +530,9 @@ const NAV_SHORT={pl:{reminders:"Terminy"},de:{reminders:"Termine",settings:"Opti
 // All menu labels share one size: the largest at which none of them is cut off.
 function applyTheme(){
  const pick=S.settings.theme||"auto";document.documentElement.dataset.theme=pick==="dark"||(pick==="auto"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light";
- if(!S.demo)try{localStorage.setItem("tankvia-theme",pick)}catch{}
+ document.documentElement.dataset.palette=S.settings.palette||"coffee";
+ $('meta[name="theme-color"]').content=getComputedStyle(document.documentElement).getPropertyValue("--head").trim();
+ if(!S.demo)try{localStorage.setItem("tankvia-theme",pick);localStorage.setItem("tankvia-palette",S.settings.palette||"coffee")}catch{}
 }
 matchMedia("(prefers-color-scheme:dark)").addEventListener("change",()=>applyTheme());
 function fitNav(){const box=$("#tabs"),labels=[...box.querySelectorAll(".lbl")];for(const fs of [12,11.5,11,10.5,10,9.5,9]){box.style.setProperty("--nav-fs",fs+"px");box.style.setProperty("--nav-ls",fs<12?".01em":".05em");if(!labels.some(l=>l.scrollWidth>l.clientWidth))break}}
@@ -827,13 +854,13 @@ function costForm(s,kind){
  ],s||{kind:kind||"service",date:today(),odo:curOdo()||null},o=>{let x=s;if(s)Object.assign(s,o);else{x={id:uid(),vid:S.active,...o};S.services.push(x)}syncAutoReminder(x)},
  s&&(()=>{S.services=S.services.filter(x=>x!==s);S.reminders=S.reminders.filter(r=>!(r.src===s.id&&!r.done))}));
 }
-function reminderForm(r){
+function reminderForm(r,date){
  const u=U();
  openForm(t(r?"editReminder":"addReminder"),[
   {k:"title",label:t("remTitle"),req:true},
   [{k:"date",label:t("dueDate"),type:"date"},{k:"odo",label:`${t("dueOdo")} (${u.d})`,type:"number"}],
   {k:"note",label:t("note"),type:"textarea"}
- ],r||{},o=>{if(r)Object.assign(r,o);else S.reminders.push({id:uid(),vid:S.active,done:false,...o})},
+ ],r||(date?{date}:{}),o=>{if(r)Object.assign(r,o);else S.reminders.push({id:uid(),vid:S.active,done:false,...o})},
  r&&(()=>{S.reminders=S.reminders.filter(x=>x!==r)}));
 }
 function reportForm(){
@@ -1015,10 +1042,25 @@ function viewCosts(){
  <div class="card list">${list.length?list.map(costItem).join(""):emptyBox("receipt",t("noEntries"))}</div>
  ${list.length?`<div class="card row"><span class="rl">${t("total")}</span><span class="sp"></span><span class="rv">${money(sum(list,s=>+s.cost||0))}</span></div>`:""}`;
 }
+/* Month calendar of reminders: dots on days with something due, a tap shows that day and lets you add a reminder for it. */
+let calMonth=null,calDay=null;
+function calendarCard(){
+ const m=calMonth||today().slice(0,7),[y,mo]=m.split("-").map(Number),days=new Date(y,mo,0).getDate();
+ const li=new Intl.Locale(loc()),fd=((li.getWeekInfo?.()||li.weekInfo)?.firstDay??1)%7,lead=(new Date(y,mo-1,1).getDay()-fd+7)%7;
+ const ev={};mine(S.reminders).filter(r=>r.date?.startsWith(m)).forEach(r=>(ev[r.date]=ev[r.date]||[]).push(r));
+ const wd=[...Array(7)].map((_,i)=>`<span class="wd">${new Intl.DateTimeFormat(loc(),{weekday:"short"}).format(new Date(2024,0,7+(fd+i)%7))}</span>`).join("");
+ const cells=[...Array(lead)].map(()=>"<span></span>").join("")+[...Array(days)].map((_,i)=>{const k=`${m}-${pad(i+1)}`,list=ev[k]||[];
+  return`<button type="button" class="${k===today()?"today":""} ${k===calDay?"sel":""}" data-act="calDay" data-id="${k}"><span>${i+1}</span><span class="dots">${list.slice(0,3).map(r=>`<i class="${r.done?"done":remStatus(r)?.cls||""}"></i>`).join("")}</span></button>`}).join("");
+ const sel=calDay?.startsWith(m)?calDay:null,selList=sel?ev[sel]||[]:[];
+ return`<h3>${ic("calendar")}${t("calendar")}</h3><div class="card"><div class="row cal-head"><button type="button" class="small ghost icon" data-act="calMove" data-id="-1" aria-label="${t("prevMonth")}"><span style="display:inline-flex;transform:scaleX(-1)">${ic("arrow")}</span></button><b>${new Intl.DateTimeFormat(loc(),{month:"long",year:"numeric"}).format(new Date(y,mo-1,15))}</b><button type="button" class="small ghost icon" data-act="calMove" data-id="1" aria-label="${t("nextMonth")}">${ic("arrow")}</button></div>
+ <div class="cal">${wd}${cells}</div>
+ ${sel?`<div class="cal-day"><div class="row"><b>${fdate(sel)}</b><span class="sp"></span><button type="button" class="small" data-act="calAdd" data-id="${sel}">${ic("plus")}${t("addEvent")}</button></div>${selList.length?`<div class="list">${selList.map(remItem).join("")}</div>`:`<p class="muted" style="margin:6px 0 0">${t("noRemDay")}</p>`}</div>`:""}</div>`;
+}
 function viewReminders(){
  if(!veh())return viewDashboard();
  const all=mine(S.reminders),open=sortRem(all.filter(r=>!r.done)),done=all.filter(r=>r.done);
  return`<div class="row" style="margin-bottom:12px"><h2 style="margin:0">${ic("bell")}${t("reminders")}</h2><span class="sp"></span><button class="primary" data-act="remAdd">${ic("plus")}${t("addReminder")}</button></div>
+ ${calendarCard()}
  <h3>${t("upcoming")}</h3><div class="card list">${open.length?open.map(remItem).join(""):emptyBox("bell",t("noEntries"))}</div>
  ${done.length?`<h3>${t("completed")}</h3><div class="card list">${done.map(remItem).join("")}</div>`:""}`;
 }
@@ -1068,7 +1110,8 @@ function viewSettings(){
  <div class="card"><div class="grid2">
   <label class="field"><span>${t("language")}</span><select data-set="lang">${Object.entries(LANGS).map(([k,[n]])=>`<option value="${k}" ${s.lang===k?"selected":""}>${n}</option>`).join("")}</select></label>
   <label class="field"><span>${t("currency")}</span><select data-set="currency">${CURRENCIES.map(c=>`<option ${c===s.currency?"selected":""}>${c}</option>`).join("")}</select></label>
- </div><label class="field" style="margin-top:12px"><span>${t("theme")}</span><select data-set="theme">${["Auto","Light","Dark"].map(v=>`<option value="${v.toLowerCase()}" ${(s.theme||"auto")===v.toLowerCase()?"selected":""}>${t("theme"+v)}</option>`).join("")}</select></label>
+ </div><label class="field" style="margin-top:12px"><span>${t("palette")}</span><select data-set="palette">${["Coffee","Graphite","Forest","Ocean"].map(v=>`<option value="${v.toLowerCase()}" ${(s.palette||"coffee")===v.toLowerCase()?"selected":""}>${t("pal"+v)}</option>`).join("")}</select></label>
+ <label class="field" style="margin-top:12px"><span>${t("theme")}</span><select data-set="theme">${["Auto","Light","Dark"].map(v=>`<option value="${v.toLowerCase()}" ${(s.theme||"auto")===v.toLowerCase()?"selected":""}>${t("theme"+v)}</option>`).join("")}</select></label>
  <label class="field" style="margin-top:12px"><span>${t("textSize")}</span><select data-set="zoom">${ZOOMS.map(z=>`<option value="${z}" ${z==(s.zoom||1)?"selected":""}>${Math.round(z*100)}%${z==1?` (${t("normal")})`:""}</option>`).join("")}</select><small>${t("textSizeHint")}</small></label>
  <label class="field" style="margin-top:12px"><span>${t("units")}</span><select data-set="units">${Object.entries(UNITS).map(([k,v])=>`<option value="${k}" ${k===s.units?"selected":""}>${v.label} · ${v.ecu}</option>`).join("")}</select></label></div>
  <h3>${ic("car")}${t("vehicles")}</h3><div class="card list">${S.vehicles.map(v=>`<div class="item">${v.photo?`<img class="thumb" src="${v.photo}" alt="">`:tile(v.fuelType==="ev"?"bolt":"car","var(--accent)")}<div class="main"><div class="t">${esc(v.name)} ${v.id===S.active?`<span class="badge">${ic("check","sm")}</span>`:""}</div><div class="s">${[v.plate,t("fuelTypes")[v.fuelType]].filter(Boolean).map(esc).join(" · ")}</div></div><button class="small ghost" data-act="vehEditId" data-id="${v.id}">${ic("edit")}${t("edit")}</button></div>`).join("")}
@@ -1113,7 +1156,7 @@ function render(){
  document.documentElement.lang=S.settings.lang;
  // magnifier: CSS zoom scales the whole layout (text, buttons, charts) and reflows it, so nothing gets cut off
  applyTheme();
- const zm=+S.settings.zoom||1;document.documentElement.style.zoom=zm;document.documentElement.style.setProperty("--zoom",zm);$("#zoomBtn").hidden=!!S.demo;document.documentElement.classList.toggle("zoom-xl",zm>=1.75&&!S.demo);document.documentElement.classList.toggle("zoom-l",zm>=1.15&&!S.demo);
+ const zm=+S.settings.zoom||1,ez=zm*UI_SCALE;document.documentElement.style.zoom=ez;document.documentElement.style.setProperty("--zoom",ez);$("#zoomBtn").hidden=!!S.demo;document.documentElement.classList.toggle("zoom-xl",zm>=1.75&&!S.demo);document.documentElement.classList.toggle("zoom-l",zm>=1.15&&!S.demo);
  $("#zoomBtn").innerHTML=`${ic("search")}${Math.round(zm*100)}%`;$("#zoomBtn").title=$("#zoomBtn").ariaLabel=t("textSize");
  const V=veh(),sel=$("#vehSel");sel.hidden=S.vehicles.length<2;sel.innerHTML=S.vehicles.map(v=>`<option value="${v.id}" ${v.id===S.active?"selected":""}>${esc(v.name)}</option>`).join("");
  const due=mine(S.reminders).filter(r=>remStatus(r)?.cls==="danger").length;
@@ -1172,7 +1215,7 @@ function demoState(lang){
 }
 
 /* ---------- install & notifications ---------- */
-const APP_VERSION="v17"; // keep in sync with VERSION in sw.js
+const APP_VERSION="v18"; // keep in sync with VERSION in sw.js
 let installEvt=null;
 const isNative=!!window.Capacitor?.isNativePlatform?.(); // running as the Google Play / App Store app
 const standalone=()=>isNative||matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
@@ -1242,7 +1285,10 @@ document.addEventListener("click",e=>{
   fuelAdd:()=>fuelForm(),fuelEdit:()=>fuelForm(S.fuel.find(x=>x.id===id)),
   chargeAdd:()=>chargeForm(),chargeEdit:()=>chargeForm(S.charges.find(x=>x.id===id)),
   costAdd:()=>costForm(null,costFilter==="fix"?"insurance":costFilter==="oth"?"parking":"service"),costEdit:()=>costForm(S.services.find(x=>x.id===id)),
-  remAdd:()=>reminderForm(),remEdit:()=>reminderForm(S.reminders.find(x=>x.id===id)),
+  remAdd:()=>reminderForm(),
+  calMove:()=>{const[y,m]=(calMonth||today().slice(0,7)).split("-").map(Number),d=new Date(y,m-1+(+id),15);calMonth=`${d.getFullYear()}-${pad(d.getMonth()+1)}`;render()},
+  calDay:()=>{calDay=calDay===id?null:id;render()},
+  calAdd:()=>reminderForm(null,id),remEdit:()=>reminderForm(S.reminders.find(x=>x.id===id)),
   remToggle:()=>{const r=S.reminders.find(x=>x.id===id);r.done=!r.done;r.doneDate=r.done?today():null;save();render()},
   tlFilter:()=>{tlFilter=id;render()},costFilter:()=>{costFilter=id;render()},fab:quickAdd,
   zoom:()=>{const i=ZOOMS.indexOf(+S.settings.zoom||1);S.settings.zoom=ZOOMS[(i+1)%ZOOMS.length];save();render()},
@@ -1266,7 +1312,7 @@ $("#vehSel").onchange=e=>{S.active=e.target.value;save();render()};
  if(!qs.has("demo"))try{S=await idb.get("state")}catch(e){console.error(e)}
  S=S?{...defaults(),...S}:defaults();
  await loadLang(qs.get("lang")||S.settings.lang);
- if(qs.has("demo")){S=demoState(qs.get("lang")||S.settings.lang);tab=qs.get("tab")||tab;if(qs.has("z"))S.settings.zoom=+qs.get("z");if(qs.has("theme"))S.settings.theme=qs.get("theme")} // sample data for store screenshots; never saved
+ if(qs.has("demo")){S=demoState(qs.get("lang")||S.settings.lang);tab=qs.get("tab")||tab;if(qs.has("z"))S.settings.zoom=+qs.get("z");if(qs.has("theme"))S.settings.theme=qs.get("theme");if(qs.has("palette"))S.settings.palette=qs.get("palette")} // sample data for store screenshots; never saved
  render();
  if(S.demo){if(qs.get("open")==="fuel")fuelForm();if(qs.get("open")==="fab")quickAdd();if(qs.get("at")==="trends")for(const el of [...$("#app").children]){if(el.nextElementSibling?.id==="carousel")break;el.hidden=true}}
  if(!S.vehicles.length)vehicleForm();
