@@ -22,6 +22,8 @@ Plików `.apk` nie wgrywaj – są tylko do instalacji na własnym telefonie.
    Krótki opis zmian.
    </pl-PL>
    ```
+   Komunikat **„Kod wersji X jest już w użyciu”** oznacza, że plik z tym numerem był już kiedyś wgrany
+   (numer zostaje zajęty na zawsze, nawet po odrzuceniu wersji) – trzeba zbudować plik z wyższym numerem.
 7. Kliknij **Dalej**. Ostrzeżenie o „pliku do odczytywania zaciemnionego kodu” jest normalne – zignoruj je.
    Jeśli jest **błąd** (czerwony), zatrzymaj się.
 8. Kliknij **Zapisz**.
