@@ -248,6 +248,9 @@ button.icon{padding:6px;min-height:34px;min-width:34px;justify-content:center}
 .cal .dots i{width:5px;height:5px;border-radius:50%;background:var(--accent)}
 .cal .dots i.warn{background:var(--warn)}.cal .dots i.danger{background:var(--danger)}.cal .dots i.done{background:var(--ink-3)}
 .cal-day{margin-top:12px;padding-top:10px;border-top:1px dashed var(--line-2)}
+#tr_map{height:260px;margin-top:12px;border-radius:var(--r);border:1px solid var(--line-2)}
+#tr_out .ros{margin-top:6px}
+.trip-card .kic .i{width:26px;height:26px}
 @media (max-width:340px){.slide .sv{font-size:17px}.mtab{gap:6px 8px}.mtab>em{font-size:16px}}
 .slide .sn{font-size:11.5px;color:var(--ink-3);line-height:1.25}
 .dots{display:flex;justify-content:center;gap:5px;margin:2px 0 16px}
@@ -403,7 +406,7 @@ select{max-width:100%}
 <script src="notify.js"></script>
 <script>
 const I18N={
-pl:{addEvent:"Dodaj wydarzenie",palette:"Kolorystyka",palCoffee:"Kawa",palGraphite:"Grafit",palForest:"Las",palOcean:"Ocean",calendar:"Kalendarz",noRemDay:"Brak terminów w tym dniu.",prevMonth:"Poprzedni miesiąc",nextMonth:"Następny miesiąc",theme:"Motyw",themeAuto:"Automatyczny (jak w telefonie)",themeLight:"Jasny",themeDark:"Ciemny",searchingStations:"Szukam stacji…",avgAll:"z całego okresu",avgPerUnit:"ważona ilością",avgMonthNote:"z {n} mies.",avgTooShort:"potrzeba min. 4 tygodni danych",dashboard:"Pulpit",fuelTab:"Tankowania",chargeTab:"Ładowania",energyTab:"Paliwo i prąd",costs:"Koszty",reminders:"Przypomnienia",reports:"Raporty",settings:"Ustawienia",
+pl:{trip:"Koszt podróży",tripHint:"Wyznacz trasę na mapie. Koszt policzymy ze średniego spalania i ceny z ostatniego tankowania – obie wartości możesz zmienić.",tripFrom:"Skąd",tripTo:"Dokąd",myLocation:"Moja lokalizacja",roundTrip:"W obie strony",people:"Liczba osób",calcRoute:"Oblicz trasę",calculating:"Wyznaczam trasę…",tripDistance:"Dystans",driveTime:"Czas jazdy",fuelNeeded:"Paliwo na trasę",energyNeeded:"Energia na trasę",perPerson:"Na osobę",tripOffline:"Kalkulator podróży działa tylko z internetem.",tripNotFound:"Nie znaleziono miejsca: {q}",routeError:"Nie udało się wyznaczyć trasy. Spróbuj ponownie za chwilę.",addEvent:"Dodaj wydarzenie",palette:"Kolorystyka",palCoffee:"Kawa",palGraphite:"Grafit",palForest:"Las",palOcean:"Ocean",calendar:"Kalendarz",noRemDay:"Brak terminów w tym dniu.",prevMonth:"Poprzedni miesiąc",nextMonth:"Następny miesiąc",theme:"Motyw",themeAuto:"Automatyczny (jak w telefonie)",themeLight:"Jasny",themeDark:"Ciemny",searchingStations:"Szukam stacji…",avgAll:"z całego okresu",avgPerUnit:"ważona ilością",avgMonthNote:"z {n} mies.",avgTooShort:"potrzeba min. 4 tygodni danych",dashboard:"Pulpit",fuelTab:"Tankowania",chargeTab:"Ładowania",energyTab:"Paliwo i prąd",costs:"Koszty",reminders:"Przypomnienia",reports:"Raporty",settings:"Ustawienia",
 addFuel:"Dodaj tankowanie",editFuel:"Edytuj tankowanie",addCharge:"Dodaj ładowanie",editCharge:"Edytuj ładowanie",addCost:"Dodaj koszt",editCost:"Edytuj koszt",addReminder:"Zaplanuj serwis",editReminder:"Edytuj planowany serwis",addVehicle:"Dodaj samochód",editVehicle:"Edytuj samochód",
 vehicles:"Samochody",name:"Nazwa (np. Skoda Octavia)",plate:"Nr rejestracyjny",year:"Rok produkcji",vin:"VIN",tankCap:"Pojemność baku",battery:"Pojemność baterii (kWh)",batteryShort:"Bateria",carPhoto:"Zdjęcie samochodu",fuelType:"Napęd",
 refCons:"Spalanie porównywalnego auta spalinowego",refPrice:"Cena paliwa do porównania",refHint:"Na tej podstawie aplikacja policzy, ile oszczędzasz, jeżdżąc na prądzie.",
@@ -438,7 +441,7 @@ fuelTypes:{petrol:"Benzyna",diesel:"Diesel",lpg:"LPG",hybrid:"Hybryda (HEV)",phe
 ct:{home:"Dom",work:"Praca",ac:"Publiczna AC",dc:"Szybka DC"},
 kinds:{service:"Serwis",repair:"Naprawa",tyres:"Opony",inspection:"Przegląd techniczny",insurance:"Ubezpieczenie",tax:"Podatki i opłaty",leasing:"Leasing / rata",parking:"Parking",tolls:"Autostrady",wash:"Myjnia",fines:"Mandaty",accessories:"Akcesoria",other:"Inne"},
 grp:{fuel:"Paliwo",charge:"Ładowanie",svc:"Serwis i naprawy",fix:"Ubezpieczenie, opłaty, leasing",oth:"Inne"}},
-en:{addEvent:"Add event",palette:"Colours",palCoffee:"Coffee",palGraphite:"Graphite",palForest:"Forest",palOcean:"Ocean",calendar:"Calendar",noRemDay:"Nothing scheduled on this day.",prevMonth:"Previous month",nextMonth:"Next month",theme:"Theme",themeAuto:"Automatic (follow phone)",themeLight:"Light",themeDark:"Dark",searchingStations:"Searching for stations…",avgAll:"over all records",avgPerUnit:"weighted by amount",avgMonthNote:"over {n} months",avgTooShort:"needs at least 4 weeks of data",dashboard:"Dashboard",fuelTab:"Fill-ups",chargeTab:"Charging",energyTab:"Fuel & power",costs:"Costs",reminders:"Reminders",reports:"Reports",settings:"Settings",
+en:{trip:"Trip cost",tripHint:"Plan the route on the map. The cost uses your average consumption and the price from your last fill-up – you can change both.",tripFrom:"From",tripTo:"To",myLocation:"My location",roundTrip:"Round trip",people:"People",calcRoute:"Calculate route",calculating:"Finding the route…",tripDistance:"Distance",driveTime:"Driving time",fuelNeeded:"Fuel needed",energyNeeded:"Energy needed",perPerson:"Per person",tripOffline:"The trip calculator needs an internet connection.",tripNotFound:"Place not found: {q}",routeError:"Couldn't find a route. Try again in a moment.",addEvent:"Add event",palette:"Colours",palCoffee:"Coffee",palGraphite:"Graphite",palForest:"Forest",palOcean:"Ocean",calendar:"Calendar",noRemDay:"Nothing scheduled on this day.",prevMonth:"Previous month",nextMonth:"Next month",theme:"Theme",themeAuto:"Automatic (follow phone)",themeLight:"Light",themeDark:"Dark",searchingStations:"Searching for stations…",avgAll:"over all records",avgPerUnit:"weighted by amount",avgMonthNote:"over {n} months",avgTooShort:"needs at least 4 weeks of data",dashboard:"Dashboard",fuelTab:"Fill-ups",chargeTab:"Charging",energyTab:"Fuel & power",costs:"Costs",reminders:"Reminders",reports:"Reports",settings:"Settings",
 addFuel:"Add fill-up",editFuel:"Edit fill-up",addCharge:"Add charge",editCharge:"Edit charge",addCost:"Add cost",editCost:"Edit cost",addReminder:"Schedule service",editReminder:"Edit scheduled service",addVehicle:"Add car",editVehicle:"Edit car",
 vehicles:"Cars",name:"Name (e.g. Toyota Corolla)",plate:"Licence plate",year:"Year",vin:"VIN",tankCap:"Tank capacity",battery:"Battery capacity (kWh)",batteryShort:"Battery",carPhoto:"Car photo",fuelType:"Powertrain",
 refCons:"Comparable combustion car consumption",refPrice:"Fuel price for comparison",refHint:"Used to calculate how much you save by driving electric.",
@@ -750,6 +753,71 @@ async function fetchStations(la,lo,am){
  const rla=+la.toFixed(3),rlo=+lo.toFixed(3),list=await nominatimStations(rla,rlo,am).catch(()=>overpassStations(rla,rlo,am));
  stationCache[key]={at:Date.now(),list};return list;
 }
+/* Trip cost: places found by Nominatim, the road route by OSRM, the map from OpenStreetMap tiles (all online only).
+   Cost = route distance × average consumption × price; both are prefilled from the car's records and can be changed. */
+let tripMap=null,tripHere=null;
+const loadCss=href=>document.querySelector(`link[href="${href}"]`)||document.head.appendChild(Object.assign(document.createElement("link"),{rel:"stylesheet",href}));
+async function geocode(q){
+ const r=await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=jsonv2&limit=1&accept-language=${S.settings.lang}`,{signal:AbortSignal.timeout(8000)});
+ if(!r.ok)throw new Error("route");
+ const[hit]=await r.json();if(!hit)throw new Error("notfound:"+q);
+ return{lat:+hit.lat,lon:+hit.lon,name:hit.display_name.split(",").slice(0,2).join(",")};
+}
+function tripForm(){
+ const V=veh(),u=U(),ev=!hasFuel(V),st=ev?evStats():consumption(),last=st.list.at(-1);
+ const d=$("#dlg");if(d.open)d.close();d.className="trip";tripMap=null;tripHere=null;
+ d.innerHTML=`<form id="frm"><h2>${ic("road")}${t("trip")}</h2><p class="muted" style="margin:0 0 12px;font-size:13.5px">${t("tripHint")}</p>
+  <label class="field"><span>${t("tripFrom")}</span><input id="tr_from" autocomplete="off" required></label>
+  <button type="button" class="small" id="tr_here" style="margin:6px 0 10px">${ic("pin")}${t("myLocation")}</button>
+  <label class="field"><span>${t("tripTo")}</span><input id="tr_to" autocomplete="off" required></label>
+  <label class="chk" style="margin:10px 0"><input type="checkbox" id="tr_back"> ${t("roundTrip")}</label>
+  <div class="grid2"><label class="field"><span>${t(ev?"avgEcons":"avgCons")} (${ev?u.ecu:u.cu})</span><input id="tr_cons" type="number" step="any" inputmode="decimal" value="${st.avg?+st.avg.toFixed(2):""}" required></label>
+  <label class="field"><span>${t("pricePerUnit")} ${ev?"kWh":u.v}</span><input id="tr_price" type="number" step="any" inputmode="decimal" value="${last?.price??""}" required></label></div>
+  <label class="field" style="margin-top:10px"><span>${t("people")}</span><input id="tr_people" type="number" min="1" step="1" inputmode="numeric" value="1"></label>
+  <div id="tr_msg"></div><div id="tr_map" hidden></div><div id="tr_out"></div>
+  <div class="row" style="margin-top:12px"><span class="sp"></span><button type="button" id="fcancel">${t("cancel")}</button><button class="primary" id="tr_go">${ic("road")}${t("calcRoute")}</button></div></form>`;
+ const msg=h=>$("#tr_msg").innerHTML=h;
+ $("#fcancel").onclick=()=>d.close();
+ $("#tr_here").onclick=async()=>{msg(`<p class="muted">${t("locating")}</p>`);
+  try{const p=await getPosition();tripHere={lat:p.coords.latitude,lon:p.coords.longitude,name:t("myLocation")};$("#tr_from").value=t("myLocation");msg("")}
+  catch{msg(`<div class="warnbox">${t("gpsError")}</div>`)}};
+ $("#tr_from").oninput=()=>{tripHere=null};
+ $("#frm").onsubmit=async e=>{
+  e.preventDefault();
+  if(!navigator.onLine)return msg(`<div class="warnbox">${t("tripOffline")}</div>`);
+  const go=$("#tr_go");go.disabled=true;msg(`<p class="muted">${t("calculating")}</p>`);
+  try{
+   const a=tripHere||await geocode($("#tr_from").value.trim());
+   if(!tripHere)await new Promise(r=>setTimeout(r,1100)); // Nominatim allows one request per second
+   const b=await geocode($("#tr_to").value.trim());
+   const r=await fetch(`https://router.project-osrm.org/route/v1/driving/${a.lon},${a.lat};${b.lon},${b.lat}?overview=full&geometries=geojson`,{signal:AbortSignal.timeout(12000)});
+   const route=r.ok&&(await r.json()).routes?.[0];if(!route)throw new Error("route");
+   const k=$("#tr_back").checked?2:1,dist=route.distance/(u.d==="mi"?1609.344:1000)*k,mins=Math.round(route.duration/60)*k;
+   const used=u.used(parseNum($("#tr_cons").value),dist),cost=used*parseNum($("#tr_price").value),people=Math.max(1,Math.round(parseNum($("#tr_people").value)||1));
+   msg("");
+   $("#tr_out").innerHTML=`<p class="muted" style="margin:10px 0 4px">${esc(a.name)} → ${esc(b.name)}${k>1?` · ${t("roundTrip")}`:""}</p><div class="ros">
+    ${ro(t("tripDistance"),num(dist,0),u.d)}${ro(t("driveTime"),`${Math.floor(mins/60)}:${pad(mins%60)}`,"h")}
+    ${ro(t(ev?"energyNeeded":"fuelNeeded"),num(used,1),ev?"kWh":u.v)}${ro(t("trip"),money(cost))}
+    ${people>1?ro(t("perPerson"),money(cost/people)):""}</div>`;
+   await drawTripMap(route.geometry.coordinates.map(([x,y])=>[y,x]),a,b);
+  }catch(err){msg(`<div class="warnbox">${String(err.message).startsWith("notfound:")?esc(t("tripNotFound").replace("{q}",err.message.slice(9))):t("routeError")}</div>`)}
+  finally{go.disabled=false}
+ };
+ d.showModal();
+}
+async function drawTripMap(line,a,b){
+ loadCss("vendor/leaflet/leaflet.css");const L=await loadScript("vendor/leaflet/leaflet.js","L");
+ const box=$("#tr_map");box.hidden=false;
+ // Leaflet reads pointer positions in real pixels, so the map undoes the app-wide CSS zoom (UI scale and magnifier)
+ box.style.zoom=1/(+document.documentElement.style.zoom||1);
+ if(tripMap)tripMap.remove();
+ tripMap=L.map(box,{attributionControl:true});
+ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · OSRM'}).addTo(tripMap);
+ const css=getComputedStyle(document.documentElement),acc=css.getPropertyValue("--accent").trim(),ink=css.getPropertyValue("--ink").trim();
+ const path=L.polyline(line,{color:acc,weight:5,opacity:.9}).addTo(tripMap);
+ for(const p of[a,b])L.circleMarker([p.lat,p.lon],{radius:7,color:ink,weight:3,fillColor:acc,fillOpacity:1}).addTo(tripMap);
+ tripMap.fitBounds(path.getBounds(),{padding:[20,20]});
+}
 function bindNearby(kind){
  $("#nearBtn").onclick=async()=>{
   const box=$("#nearList");box.innerHTML=`<span class="muted">${t("locating")}</span>`;
@@ -965,6 +1033,7 @@ function viewDashboard(){
  <section class="card"><div class="ch">${ic("coins")}<span>${t("costs")}</span></div><div class="mtab"><span></span><b>${t("thisMonth")}</b><b>${t("prevMonth")}</b>
   <span style="--ic-a:var(--c-fuel)">${ic(energyIc)}${t("energyCosts")}</span><em data-l="${esc(t("thisMonth"))}">${money(mSum(mk,true))}</em><em class="dim" data-l="${esc(t("prevMonth"))}">${money(mSum(pm,true))}</em>
   <span style="--ic-a:var(--c-svc)">${ic("receipt")}${t("otherCost")}</span><em data-l="${esc(t("thisMonth"))}">${money(mSum(mk,false))}</em><em class="dim" data-l="${esc(t("prevMonth"))}">${money(mSum(pm,false))}</em></div></section>
+ <section class="card row trip-card"><span class="kic">${ic("road")}</span><div style="flex:1;min-width:0"><b>${t("trip")}</b><div class="muted" style="font-size:13px">${t("tripFrom")} → ${t("tripTo")}</div></div><button class="primary small" data-act="trip">${t("calcRoute")}</button></section>
  ${slides.length?`<h3>${ic("trend")}${t("trends")}</h3><div class="carousel" id="carousel">${slides.join("")}</div><div class="dots" id="dots">${slides.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div>`:""}
  <section class="card"><div class="ch">${ic("timeline")}<span>${t("recent")}</span><span class="sp"></span><button class="small ghost" data-act="tab" data-id="fuel">${t("seeAll")}${ic("arrow","sm")}</button></div>${recent.length?recent.map(tlItem).join(""):emptyBox("timeline",t("noEntries"))}</section>
  <section class="card"><div class="ch">${ic("bell")}<span>${t("nextDue")}</span><span class="sp"></span><button class="small ghost" data-act="tab" data-id="reminders">${t("seeAll")}${ic("arrow","sm")}</button></div><div class="list">${rem.length?rem.map(remItem).join(""):emptyBox("bell",t("noEntries"))}</div></section>`;
@@ -1215,7 +1284,7 @@ function demoState(lang){
 }
 
 /* ---------- install & notifications ---------- */
-const APP_VERSION="v18"; // keep in sync with VERSION in sw.js
+const APP_VERSION="v19"; // keep in sync with VERSION in sw.js
 let installEvt=null;
 const isNative=!!window.Capacitor?.isNativePlatform?.(); // running as the Google Play / App Store app
 const standalone=()=>isNative||matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
@@ -1290,6 +1359,7 @@ document.addEventListener("click",e=>{
   calDay:()=>{calDay=calDay===id?null:id;render()},
   calAdd:()=>reminderForm(null,id),remEdit:()=>reminderForm(S.reminders.find(x=>x.id===id)),
   remToggle:()=>{const r=S.reminders.find(x=>x.id===id);r.done=!r.done;r.doneDate=r.done?today():null;save();render()},
+  trip:()=>tripForm(),
   tlFilter:()=>{tlFilter=id;render()},costFilter:()=>{costFilter=id;render()},fab:quickAdd,
   zoom:()=>{const i=ZOOMS.indexOf(+S.settings.zoom||1);S.settings.zoom=ZOOMS[(i+1)%ZOOMS.length];save();render()},
   report:()=>reportForm(),
