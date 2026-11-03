@@ -1123,12 +1123,12 @@ function calendarCard(){
  const sel=calDay?.startsWith(m)?calDay:null,selList=sel?ev[sel]||[]:[];
  return`<h3>${ic("calendar")}${t("calendar")}</h3><div class="card"><div class="row cal-head"><button type="button" class="small ghost icon" data-act="calMove" data-id="-1" aria-label="${t("prevMonth")}"><span style="display:inline-flex;transform:scaleX(-1)">${ic("arrow")}</span></button><b>${new Intl.DateTimeFormat(loc(),{month:"long",year:"numeric"}).format(new Date(y,mo-1,15))}</b><button type="button" class="small ghost icon" data-act="calMove" data-id="1" aria-label="${t("nextMonth")}">${ic("arrow")}</button></div>
  <div class="cal">${wd}${cells}</div>
- ${sel?`<div class="cal-day"><div class="row"><b>${fdate(sel)}</b><span class="sp"></span><button type="button" class="small" data-act="calAdd" data-id="${sel}">${ic("plus")}${t("addEvent")}</button></div>${selList.length?`<div class="list">${selList.map(remItem).join("")}</div>`:`<p class="muted" style="margin:6px 0 0">${t("noRemDay")}</p>`}</div>`:""}</div>`;
+ ${sel?`<div class="cal-day"><b>${fdate(sel)}</b>${selList.length?`<div class="list">${selList.map(remItem).join("")}</div>`:`<p class="muted" style="margin:6px 0 0">${t("noRemDay")}</p>`}</div>`:""}</div>`;
 }
 function viewReminders(){
  if(!veh())return viewDashboard();
  const all=mine(S.reminders),open=sortRem(all.filter(r=>!r.done)),done=all.filter(r=>r.done);
- return`<div class="row" style="margin-bottom:12px"><h2 style="margin:0">${ic("bell")}${t("reminders")}</h2><span class="sp"></span><button class="primary" data-act="remAdd">${ic("plus")}${t("addReminder")}</button></div>
+ return`<div class="row" style="margin-bottom:12px"><h2 style="margin:0">${ic("bell")}${t("reminders")}</h2></div>
  ${calendarCard()}
  <h3>${t("upcoming")}</h3><div class="card list">${open.length?open.map(remItem).join(""):emptyBox("bell",t("noEntries"))}</div>
  ${done.length?`<h3>${t("completed")}</h3><div class="card list">${done.map(remItem).join("")}</div>`:""}`;
@@ -1284,7 +1284,7 @@ function demoState(lang){
 }
 
 /* ---------- install & notifications ---------- */
-const APP_VERSION="v19"; // keep in sync with VERSION in sw.js
+const APP_VERSION="v20"; // keep in sync with VERSION in sw.js
 let installEvt=null;
 const isNative=!!window.Capacitor?.isNativePlatform?.(); // running as the Google Play / App Store app
 const standalone=()=>isNative||matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
@@ -1356,11 +1356,12 @@ document.addEventListener("click",e=>{
   costAdd:()=>costForm(null,costFilter==="fix"?"insurance":costFilter==="oth"?"parking":"service"),costEdit:()=>costForm(S.services.find(x=>x.id===id)),
   remAdd:()=>reminderForm(),
   calMove:()=>{const[y,m]=(calMonth||today().slice(0,7)).split("-").map(Number),d=new Date(y,m-1+(+id),15);calMonth=`${d.getFullYear()}-${pad(d.getMonth()+1)}`;render()},
-  calDay:()=>{calDay=calDay===id?null:id;render()},
-  calAdd:()=>reminderForm(null,id),remEdit:()=>reminderForm(S.reminders.find(x=>x.id===id)),
+  calDay:()=>{calDay=calDay===id?null:id;render();if(calDay&&!mine(S.reminders).some(r=>r.date===id))reminderForm(null,id)},
+  remEdit:()=>reminderForm(S.reminders.find(x=>x.id===id)),
   remToggle:()=>{const r=S.reminders.find(x=>x.id===id);r.done=!r.done;r.doneDate=r.done?today():null;save();render()},
   trip:()=>tripForm(),
-  tlFilter:()=>{tlFilter=id;render()},costFilter:()=>{costFilter=id;render()},fab:quickAdd,
+  tlFilter:()=>{tlFilter=id;render()},costFilter:()=>{costFilter=id;render()},fab:()=>tab==="reminders"?reminderForm(null,calDay||today()):quickAdd(), // on the reminders tab + adds an event for the day picked in the calendar (today if none)
+  
   zoom:()=>{const i=ZOOMS.indexOf(+S.settings.zoom||1);S.settings.zoom=ZOOMS[(i+1)%ZOOMS.length];save();render()},
   report:()=>reportForm(),
   export:exportJson,
