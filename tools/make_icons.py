@@ -8,12 +8,12 @@ import sys
 from PIL import Image, ImageDraw
 
 S = 1024  # draw large, downscale for smooth edges
-ESPRESSO = (43, 29, 20)
-CREAM = (245, 235, 221)
-CARAMEL = (200, 132, 58)
+NAVY = (20, 35, 58)
+MIST = (238, 242, 246)
+GOLD = (224, 176, 79)
 
 
-def art(bg="rounded", k=0.9, bg_color=ESPRESSO, fg=CREAM):
+def art(bg="rounded", k=0.9, bg_color=NAVY, fg=MIST):
     """bg: "rounded" tile, "full" square, or None (transparent, gauge cut out of the drop). fg: colour of the drop."""
     im = Image.new("RGBA", (S, S), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
@@ -45,9 +45,9 @@ def art(bg="rounded", k=0.9, bg_color=ESPRESSO, fg=CREAM):
         ay = 65.1 + 17.4 * math.sin(math.radians(a))
         disc(ax, ay, 3.3, cut)
     # needle and hub
-    d.line([P(48, 64.8), P(61.2, 47.7)], fill=CARAMEL, width=int(7.8 * u))
-    disc(61.2, 47.7, 3.9, CARAMEL)
-    disc(48, 65.4, 5.7, CARAMEL)
+    d.line([P(48, 64.8), P(61.2, 47.7)], fill=GOLD, width=int(7.8 * u))
+    disc(61.2, 47.7, 3.9, GOLD)
+    disc(48, 65.4, 5.7, GOLD)
     return im
 
 
@@ -70,7 +70,7 @@ if __name__ == "__main__":
         out = sys.argv[2]
         art("full", 0.72).save(f"{out}/icon-only.png")
         art(None, 0.6).save(f"{out}/icon-foreground.png")  # Android adaptive icons crop to the middle ~66%
-        Image.new("RGBA", (S, S), ESPRESSO).save(f"{out}/icon-background.png")
-        splash(ESPRESSO).save(f"{out}/splash.png")
-        splash(ESPRESSO).save(f"{out}/splash-dark.png")
+        Image.new("RGBA", (S, S), NAVY).save(f"{out}/icon-background.png")
+        splash(NAVY).save(f"{out}/splash.png")
+        splash(NAVY).save(f"{out}/splash-dark.png")
     print("ok")

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#2B1D14">
+<meta name="theme-color" content="#14233A">
 <title>Tankvia</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/favicon-32.png">
@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-title" content="Tankvia">
 <script>/* before the first paint, so a chosen theme doesn't flash; the database with the settings opens later */
 let themePick,palPick;try{themePick=localStorage.getItem("tankvia-theme");palPick=localStorage.getItem("tankvia-palette")}catch{}
-document.documentElement.dataset.palette=palPick||"coffee";document.documentElement.style.zoom=.9;
+document.documentElement.dataset.palette=palPick||"ocean";document.documentElement.style.zoom=.9;
 document.documentElement.dataset.theme=themePick==="dark"||(themePick!=="light"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light";</script>
 <style>
 /* ===== Tankvia design: "logbook & instrument cluster" =====
@@ -45,7 +45,7 @@ document.documentElement.dataset.theme=themePick==="dark"||(themePick!=="light"&
  --accent:#D9A066;--accent-soft:#44311F;--head:#0F0A07;--head-ink:#F3E8DA;--head-2:#2D2118;--head-line:#4F3D2F;--head-dim:#A8937F;
  --good:#7DB686;--bad:#E5806C;--warn:#D9A066;--warn-soft:#44311F;--danger:#E5806C;--danger-soft:#43221A;
  --c-fuel:#D9A066;--c-charge:#6FB0C2;--c-svc:#E08A6B;--c-fix:#7DB08C;--c-oth:#A0907F}
-/* the other colour sets; coffee (above) is the default. Each sets every token, for light and for dark. */
+/* the colour sets the user can pick; Ocean is the default (see applyTheme), coffee is the fallback in :root above. Each sets every token, for light and for dark. */
 :root[data-palette=graphite]{
  --bg:#ECE8DF;--surface:#FBF9F4;--surface-2:#F2EEE5;--ink:#17191C;--ink-2:#585C63;--ink-3:#62666D;--line:#DCD6C9;--line-2:#C8C1B2;--accent:#E29A17;--accent-ink:#17191C;--accent-soft:#F7E5C0;--head:#17191C;--head-ink:#F2EEE5;--head-2:#2A2D31;--head-line:#3B4046;--head-dim:#9EA3AA;--good:#2D7A4E;--bad:#B5392C;--warn:#8F5500;--warn-soft:#F6E7CA;--danger:#B5392C;--danger-soft:#F4DAD5;--c-fuel:#D98A00;--c-charge:#2C6FB7;--c-svc:#A84B32;--c-fix:#2D6E6A;--c-oth:#7B7F86}
 :root[data-palette=graphite][data-theme=dark]{
@@ -55,9 +55,9 @@ document.documentElement.dataset.theme=themePick==="dark"||(themePick!=="light"&
 :root[data-palette=forest][data-theme=dark]{
  --bg:#0D120E;--surface:#151C17;--surface-2:#1C251F;--ink:#E6EDE5;--ink-2:#A5B2A7;--ink-3:#86938A;--line:#26312A;--line-2:#36433A;--accent:#A8C96A;--accent-ink:#17231A;--accent-soft:#2A3520;--head:#080B09;--head-ink:#E6EDE5;--head-2:#1C251F;--head-line:#36433A;--head-dim:#8E9B91;--good:#6FC08A;--bad:#E5806C;--warn:#E2B54E;--warn-soft:#3A3118;--danger:#E5806C;--danger-soft:#43221A;--c-fuel:#A8C96A;--c-charge:#5C9DE8;--c-svc:#E08A6B;--c-fix:#4FB3A9;--c-oth:#9AA39C}
 :root[data-palette=ocean]{
- --bg:#E7EBF0;--surface:#F8FAFC;--surface-2:#EDF1F5;--ink:#132033;--ink-2:#4B596C;--ink-3:#58657A;--line:#D4DBE4;--line-2:#BEC8D4;--accent:#E07A5F;--accent-ink:#132033;--accent-soft:#F7DCD3;--head:#14233A;--head-ink:#EDF1F5;--head-2:#22344F;--head-line:#3A4D69;--head-dim:#A3B0C2;--good:#2D7A4E;--bad:#B5392C;--warn:#8A5000;--warn-soft:#F6E7CA;--danger:#B5392C;--danger-soft:#F4DAD5;--c-fuel:#CC5E3F;--c-charge:#2C6FB7;--c-svc:#7A5AA6;--c-fix:#2D6E6A;--c-oth:#77808F}
+ --bg:#E7EBF0;--surface:#F8FAFC;--surface-2:#EDF1F5;--ink:#132033;--ink-2:#4B596C;--ink-3:#58657A;--line:#D4DBE4;--line-2:#BEC8D4;--accent:#E0B04F;--accent-ink:#132033;--accent-soft:#F5E8C8;--head:#14233A;--head-ink:#EDF1F5;--head-2:#22344F;--head-line:#3A4D69;--head-dim:#A3B0C2;--good:#2D7A4E;--bad:#B5392C;--warn:#8A5000;--warn-soft:#F6E7CA;--danger:#B5392C;--danger-soft:#F4DAD5;--c-fuel:#B98A22;--c-charge:#2C6FB7;--c-svc:#7A5AA6;--c-fix:#2D6E6A;--c-oth:#77808F}
 :root[data-palette=ocean][data-theme=dark]{
- --bg:#0B111A;--surface:#121A26;--surface-2:#192331;--ink:#E6ECF3;--ink-2:#A3AFBF;--ink-3:#8693A4;--line:#243042;--line-2:#344257;--accent:#F08C70;--accent-ink:#132033;--accent-soft:#3D2620;--head:#070B11;--head-ink:#E6ECF3;--head-2:#192331;--head-line:#344257;--head-dim:#8C99AB;--good:#5DB67F;--bad:#E66C5E;--warn:#F0B44C;--warn-soft:#3B2F16;--danger:#E66C5E;--danger-soft:#3E1E1A;--c-fuel:#F08C70;--c-charge:#5C9DE8;--c-svc:#A98AD6;--c-fix:#4FB3A9;--c-oth:#8E97A6}
+ --bg:#0B111A;--surface:#121A26;--surface-2:#192331;--ink:#E6ECF3;--ink-2:#A3AFBF;--ink-3:#8693A4;--line:#243042;--line-2:#344257;--accent:#EBC063;--accent-ink:#132033;--accent-soft:#3B3120;--head:#070B11;--head-ink:#E6ECF3;--head-2:#192331;--head-line:#344257;--head-dim:#8C99AB;--good:#5DB67F;--bad:#E66C5E;--warn:#F2994A;--warn-soft:#3B2716;--danger:#E66C5E;--danger-soft:#3E1E1A;--c-fuel:#EBC063;--c-charge:#5C9DE8;--c-svc:#A98AD6;--c-fix:#4FB3A9;--c-oth:#8E97A6}
 /* Safe areas: the Android app draws edge-to-edge and Capacitor puts the bar sizes in --safe-area-inset-*; browsers/iOS use env(). */
 :root{--sat:var(--safe-area-inset-top,env(safe-area-inset-top,0px));--sab:var(--safe-area-inset-bottom,env(safe-area-inset-bottom,0px))}
 /* with the magnifier (CSS zoom) on, viewport units are not zoomed but px are, so overlays size themselves with --vw/--vh */
@@ -323,13 +323,13 @@ select{max-width:100%}
 .rep{color:#000;background:#fff;font:12px/1.45 system-ui,"Segoe UI",sans-serif}
 .rep h1{font-size:22px;margin:0}
 .rep h2{font-size:16px;margin:2px 0 10px;color:#333;text-transform:none;letter-spacing:0;display:block;font-family:inherit}
-.rep h3{color:#000;border-bottom:2px solid #C8843A;padding-bottom:3px;margin:20px 0 8px;text-transform:none;font-size:14px;letter-spacing:0;display:block}
+.rep h3{color:#000;border-bottom:2px solid #E0B04F;padding-bottom:3px;margin:20px 0 8px;text-transform:none;font-size:14px;letter-spacing:0;display:block}
 .rep h3::after{content:none}
 .rep-h{display:flex;gap:18px;align-items:flex-start}
 .rep-h img{width:220px;height:145px;object-fit:cover;border-radius:4px}
 .rep table{width:100%;border-collapse:collapse}
 .rep td,.rep th{text-align:left;padding:5px 6px;border-bottom:1px solid #ddd;vertical-align:top}
-.rep th{background:#F3EADD}
+.rep th{background:#EDF1F5}
 .rep .kv td:first-child{color:#555;width:42%}
 .rep .n{text-align:right;white-space:nowrap}
 .rep .att{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -349,7 +349,7 @@ select{max-width:100%}
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
 <!-- Tankvia icon set: 24px grid, 1.8 stroke, one accent detail per icon (takes --ic-a, so a category can colour it) -->
-<symbol id="logo" viewBox="0 0 32 32"><path d="M16 2.5c5.6 6.8 9.4 11.6 9.4 16.4a9.4 9.4 0 0 1-18.8 0C6.6 14.1 10.4 9.3 16 2.5z" fill="currentColor" stroke="none"/><path d="M10.6 22.2a5.8 5.8 0 0 1 10.8-3.4" fill="none" stroke="var(--head,#2B1D14)" stroke-width="2.2" stroke-linecap="round"/><path d="M16 21.6 20.4 15.9" fill="none" stroke="var(--accent,#C8843A)" stroke-width="2.6" stroke-linecap="round"/><circle cx="16" cy="21.8" r="1.9" fill="var(--accent,#C8843A)"/></symbol>
+<symbol id="logo" viewBox="0 0 32 32"><path d="M16 2.5c5.6 6.8 9.4 11.6 9.4 16.4a9.4 9.4 0 0 1-18.8 0C6.6 14.1 10.4 9.3 16 2.5z" fill="currentColor" stroke="none"/><path d="M10.6 22.2a5.8 5.8 0 0 1 10.8-3.4" fill="none" stroke="var(--head,#14233A)" stroke-width="2.2" stroke-linecap="round"/><path d="M16 21.6 20.4 15.9" fill="none" stroke="var(--accent,#E0B04F)" stroke-width="2.6" stroke-linecap="round"/><circle cx="16" cy="21.8" r="1.9" fill="var(--accent,#E0B04F)"/></symbol>
 <symbol id="i-home" viewBox="0 0 24 24"><path d="M3.5 11.2 12 4.5l8.5 6.7"/><path d="M5.5 9.8v9.7h13V9.8"/><rect x="10" y="13.5" width="4" height="6" style="fill:var(--ic-a);stroke:none"/></symbol>
 <symbol id="i-timeline" viewBox="0 0 24 24"><path d="M6 3.5v17" stroke-dasharray="2.2 2.6"/><rect x="3.8" y="5" width="4.4" height="4.4" style="fill:var(--ic-a);stroke:none"/><rect x="3.8" y="14.6" width="4.4" height="4.4"/><path d="M11 7.2h9M11 16.8h6.5"/></symbol>
 <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M6 3.5h12v17l-2.4-1.6-2.4 1.6-2.4-1.6-2.4 1.6L6 18.9z"/><path d="M9 8h6M9 11.5h6"/><path d="M9 15h3" style="stroke:var(--ic-a)" stroke-width="2.4"/></symbol>
@@ -533,9 +533,9 @@ const NAV_SHORT={pl:{reminders:"Terminy"},de:{reminders:"Termine",settings:"Opti
 // All menu labels share one size: the largest at which none of them is cut off.
 function applyTheme(){
  const pick=S.settings.theme||"auto";document.documentElement.dataset.theme=pick==="dark"||(pick==="auto"&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light";
- document.documentElement.dataset.palette=S.settings.palette||"coffee";
+ document.documentElement.dataset.palette=S.settings.palette||"ocean";
  $('meta[name="theme-color"]').content=getComputedStyle(document.documentElement).getPropertyValue("--head").trim();
- if(!S.demo)try{localStorage.setItem("tankvia-theme",pick);localStorage.setItem("tankvia-palette",S.settings.palette||"coffee")}catch{}
+ if(!S.demo)try{localStorage.setItem("tankvia-theme",pick);localStorage.setItem("tankvia-palette",S.settings.palette||"ocean")}catch{}
 }
 matchMedia("(prefers-color-scheme:dark)").addEventListener("change",()=>applyTheme());
 function fitNav(){const box=$("#tabs"),labels=[...box.querySelectorAll(".lbl")];for(const fs of [12,11.5,11,10.5,10,9.5,9]){box.style.setProperty("--nav-fs",fs+"px");box.style.setProperty("--nav-ls",fs<12?".01em":".05em");if(!labels.some(l=>l.scrollWidth>l.clientWidth))break}}
@@ -800,6 +800,7 @@ function tripForm(){
     ${ro(t(ev?"energyNeeded":"fuelNeeded"),num(used,1),ev?"kWh":u.v)}${ro(t("trip"),money(cost))}
     ${people>1?ro(t("perPerson"),money(cost/people)):""}</div>`;
    await drawTripMap(route.geometry.coordinates.map(([x,y])=>[y,x]),a,b);
+   $("#tr_map").scrollIntoView({block:"start",behavior:S.demo?"instant":"smooth"}); // on a phone the result is below the form
   }catch(err){msg(`<div class="warnbox">${String(err.message).startsWith("notfound:")?esc(t("tripNotFound").replace("{q}",err.message.slice(9))):t("routeError")}</div>`)}
   finally{go.disabled=false}
  };
@@ -1179,7 +1180,7 @@ function viewSettings(){
  <div class="card"><div class="grid2">
   <label class="field"><span>${t("language")}</span><select data-set="lang">${Object.entries(LANGS).map(([k,[n]])=>`<option value="${k}" ${s.lang===k?"selected":""}>${n}</option>`).join("")}</select></label>
   <label class="field"><span>${t("currency")}</span><select data-set="currency">${CURRENCIES.map(c=>`<option ${c===s.currency?"selected":""}>${c}</option>`).join("")}</select></label>
- </div><label class="field" style="margin-top:12px"><span>${t("palette")}</span><select data-set="palette">${["Coffee","Graphite","Forest","Ocean"].map(v=>`<option value="${v.toLowerCase()}" ${(s.palette||"coffee")===v.toLowerCase()?"selected":""}>${t("pal"+v)}</option>`).join("")}</select></label>
+ </div><label class="field" style="margin-top:12px"><span>${t("palette")}</span><select data-set="palette">${["Ocean","Coffee","Graphite","Forest"].map(v=>`<option value="${v.toLowerCase()}" ${(s.palette||"ocean")===v.toLowerCase()?"selected":""}>${t("pal"+v)}</option>`).join("")}</select></label>
  <label class="field" style="margin-top:12px"><span>${t("theme")}</span><select data-set="theme">${["Auto","Light","Dark"].map(v=>`<option value="${v.toLowerCase()}" ${(s.theme||"auto")===v.toLowerCase()?"selected":""}>${t("theme"+v)}</option>`).join("")}</select></label>
  <label class="field" style="margin-top:12px"><span>${t("textSize")}</span><select data-set="zoom">${ZOOMS.map(z=>`<option value="${z}" ${z==(s.zoom||1)?"selected":""}>${Math.round(z*100)}%${z==1?` (${t("normal")})`:""}</option>`).join("")}</select><small>${t("textSizeHint")}</small></label>
  <label class="field" style="margin-top:12px"><span>${t("units")}</span><select data-set="units">${Object.entries(UNITS).map(([k,v])=>`<option value="${k}" ${k===s.units?"selected":""}>${v.label} · ${v.ecu}</option>`).join("")}</select></label></div>
@@ -1284,7 +1285,7 @@ function demoState(lang){
 }
 
 /* ---------- install & notifications ---------- */
-const APP_VERSION="v20"; // keep in sync with VERSION in sw.js
+const APP_VERSION="v21"; // keep in sync with VERSION in sw.js
 let installEvt=null;
 const isNative=!!window.Capacitor?.isNativePlatform?.(); // running as the Google Play / App Store app
 const standalone=()=>isNative||matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
@@ -1385,7 +1386,7 @@ $("#vehSel").onchange=e=>{S.active=e.target.value;save();render()};
  await loadLang(qs.get("lang")||S.settings.lang);
  if(qs.has("demo")){S=demoState(qs.get("lang")||S.settings.lang);tab=qs.get("tab")||tab;if(qs.has("z"))S.settings.zoom=+qs.get("z");if(qs.has("theme"))S.settings.theme=qs.get("theme");if(qs.has("palette"))S.settings.palette=qs.get("palette")} // sample data for store screenshots; never saved
  render();
- if(S.demo){if(qs.get("open")==="fuel")fuelForm();if(qs.get("open")==="fab")quickAdd();if(qs.get("at")==="trends")for(const el of [...$("#app").children]){if(el.nextElementSibling?.id==="carousel")break;el.hidden=true}}
+ if(S.demo){if(qs.get("open")==="fuel")fuelForm();if(qs.get("open")==="fab")quickAdd();if(qs.get("open")==="trip"){tripForm();$("#tr_from").value=qs.get("from")||"Bydgoszcz";$("#tr_to").value=qs.get("to")||"Gdańsk";$("#frm").requestSubmit()}if(qs.get("at")==="trends")for(const el of [...$("#app").children]){if(el.nextElementSibling?.id==="carousel")break;el.hidden=true}}
  if(!S.vehicles.length)vehicleForm();
  if("serviceWorker" in navigator&&location.protocol.startsWith("http")&&!isNative){ // the store app ships its files inside the app, so no service worker there
   const had=!!navigator.serviceWorker.controller;let reloaded=false;

@@ -7,7 +7,7 @@ import sys
 from PIL import Image, ImageDraw, ImageFont
 
 sys.path.insert(0, os.path.dirname(__file__))
-from make_icons import art, CARAMEL, ESPRESSO, CREAM  # noqa: E402  (shares the logo drawing)
+from make_icons import art, GOLD, NAVY, MIST  # noqa: E402  (shares the logo drawing)
 
 out = sys.argv[1]
 NAME = "TANKVIA"
@@ -21,16 +21,16 @@ art("full", 0.72).convert("RGB").resize((512, 512), Image.LANCZOS).save(f"{out}/
 
 for lang, (line1, line2) in TAGLINES.items():
     W, H = 1024, 500
-    img = Image.new("RGB", (W, H), ESPRESSO)
+    img = Image.new("RGB", (W, H), NAVY)
     d = ImageDraw.Draw(img)
-    d.rectangle([0, H - 10, W, H], fill=CARAMEL)  # the caramel edge of the app's header
+    d.rectangle([0, H - 10, W, H], fill=GOLD)  # the gold edge of the app's header
     for x in range(404, W - 60, 46):  # road marking
-        d.rectangle([x, 372, x + 26, 377], fill=(92, 70, 52))
+        d.rectangle([x, 372, x + 26, 377], fill=(58, 77, 105))
     logo = art(None, 0.95).resize((300, 300), Image.LANCZOS)
     img.paste(logo, (70, (H - 300) // 2 - 6), logo)
-    d.text((400, 120), NAME, font=ImageFont.truetype(FONTS + "segoeuib.ttf", 72), fill=CREAM)
+    d.text((400, 120), NAME, font=ImageFont.truetype(FONTS + "segoeuib.ttf", 72), fill=MIST)
     small = ImageFont.truetype(FONTS + "segoeui.ttf", 34)
-    d.text((404, 240), line1, font=small, fill=(214, 196, 176))
-    d.text((404, 286), line2, font=small, fill=(214, 196, 176))
+    d.text((404, 240), line1, font=small, fill=(196, 206, 220))
+    d.text((404, 286), line2, font=small, fill=(196, 206, 220))
     img.save(f"{out}/feature-graphic-{lang}.png")
 print("ok")
