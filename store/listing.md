@@ -25,6 +25,7 @@ Tankvia to prosty i czytelny dziennik Twojego samochodu. Zapisuj tankowania, spr
 • Dokładne spalanie metodą „do pełna” – po każdym tankowaniu i średnio
 • Ile kilometrów przejechałeś od poprzedniego tankowania
 • Stacje w pobliżu jednym przyciskiem (GPS)
+• Zdjęcie dystrybutora: kwota, litry i cena wpisują się same
 • Zdjęcia paragonów i faktur – także w formacie HEIC
 
 ⚡ AUTA ELEKTRYCZNE I HYBRYDY PLUG-IN
@@ -78,6 +79,7 @@ Tankvia is a simple, clear logbook for your car. Record fill-ups, see your real 
 • Accurate full-to-full consumption – per fill-up and on average
 • Distance driven since the previous fill-up
 • Nearby stations with one tap (GPS)
+• Photo of the pump: amount, litres and price filled in for you
 • Photos of receipts and invoices – including HEIC
 
 ⚡ ELECTRIC CARS AND PLUG-IN HYBRIDS

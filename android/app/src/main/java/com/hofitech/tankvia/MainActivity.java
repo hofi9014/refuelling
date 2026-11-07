@@ -7,6 +7,7 @@ public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         registerPlugin(PrintPlugin.class); // app-local plugins must be registered before super.onCreate
+        registerPlugin(TextReaderPlugin.class);
         super.onCreate(savedInstanceState);
     }
 }
