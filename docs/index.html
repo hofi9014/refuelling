@@ -406,7 +406,7 @@ select{max-width:100%}
 <script src="notify.js"></script>
 <script>
 const I18N={
-pl:{trip:"Koszt podróży",tripHint:"Wyznacz trasę na mapie. Koszt policzymy ze średniego spalania i ceny z ostatniego tankowania – obie wartości możesz zmienić.",tripFrom:"Skąd",tripTo:"Dokąd",myLocation:"Moja lokalizacja",roundTrip:"W obie strony",people:"Liczba osób",calcRoute:"Oblicz trasę",calculating:"Wyznaczam trasę…",tripDistance:"Dystans",driveTime:"Czas jazdy",fuelNeeded:"Paliwo na trasę",energyNeeded:"Energia na trasę",perPerson:"Na osobę",tripOffline:"Kalkulator podróży działa tylko z internetem.",tripNotFound:"Nie znaleziono miejsca: {q}",routeError:"Nie udało się wyznaczyć trasy. Spróbuj ponownie za chwilę.",addEvent:"Dodaj wydarzenie",palette:"Kolorystyka",palCoffee:"Kawa",palGraphite:"Grafit",palForest:"Las",palOcean:"Ocean",calendar:"Kalendarz",noRemDay:"Brak terminów w tym dniu.",prevMonth:"Poprzedni miesiąc",nextMonth:"Następny miesiąc",theme:"Motyw",themeAuto:"Automatyczny (jak w telefonie)",themeLight:"Jasny",themeDark:"Ciemny",searchingStations:"Szukam stacji…",avgAll:"z całego okresu",avgPerUnit:"ważona ilością",avgMonthNote:"z {n} mies.",avgTooShort:"potrzeba min. 4 tygodni danych",dashboard:"Pulpit",fuelTab:"Tankowania",chargeTab:"Ładowania",energyTab:"Paliwo i prąd",costs:"Koszty",reminders:"Przypomnienia",reports:"Raporty",settings:"Ustawienia",
+pl:{bothFuels:"Oba paliwa razem",dualNote:"Spalanie każdego paliwa jest liczone na cały przejechany dystans (metoda „do pełna”, osobno dla każdego paliwa).",trip:"Koszt podróży",tripHint:"Wyznacz trasę na mapie. Koszt policzymy ze średniego spalania i ceny z ostatniego tankowania – obie wartości możesz zmienić.",tripFrom:"Skąd",tripTo:"Dokąd",myLocation:"Moja lokalizacja",roundTrip:"W obie strony",people:"Liczba osób",calcRoute:"Oblicz trasę",calculating:"Wyznaczam trasę…",tripDistance:"Dystans",driveTime:"Czas jazdy",fuelNeeded:"Paliwo na trasę",energyNeeded:"Energia na trasę",perPerson:"Na osobę",tripOffline:"Kalkulator podróży działa tylko z internetem.",tripNotFound:"Nie znaleziono miejsca: {q}",routeError:"Nie udało się wyznaczyć trasy. Spróbuj ponownie za chwilę.",addEvent:"Dodaj wydarzenie",palette:"Kolorystyka",palCoffee:"Kawa",palGraphite:"Grafit",palForest:"Las",palOcean:"Ocean",calendar:"Kalendarz",noRemDay:"Brak terminów w tym dniu.",prevMonth:"Poprzedni miesiąc",nextMonth:"Następny miesiąc",theme:"Motyw",themeAuto:"Automatyczny (jak w telefonie)",themeLight:"Jasny",themeDark:"Ciemny",searchingStations:"Szukam stacji…",avgAll:"z całego okresu",avgPerUnit:"ważona ilością",avgMonthNote:"z {n} mies.",avgTooShort:"potrzeba min. 4 tygodni danych",dashboard:"Pulpit",fuelTab:"Tankowania",chargeTab:"Ładowania",energyTab:"Paliwo i prąd",costs:"Koszty",reminders:"Przypomnienia",reports:"Raporty",settings:"Ustawienia",
 addFuel:"Dodaj tankowanie",editFuel:"Edytuj tankowanie",addCharge:"Dodaj ładowanie",editCharge:"Edytuj ładowanie",addCost:"Dodaj koszt",editCost:"Edytuj koszt",addReminder:"Zaplanuj serwis",editReminder:"Edytuj planowany serwis",addVehicle:"Dodaj samochód",editVehicle:"Edytuj samochód",
 vehicles:"Samochody",name:"Nazwa (np. Skoda Octavia)",plate:"Nr rejestracyjny",year:"Rok produkcji",vin:"VIN",tankCap:"Pojemność baku",battery:"Pojemność baterii (kWh)",batteryShort:"Bateria",carPhoto:"Zdjęcie samochodu",fuelType:"Napęd",
 refCons:"Spalanie porównywalnego auta spalinowego",refPrice:"Cena paliwa do porównania",refHint:"Na tej podstawie aplikacja policzy, ile oszczędzasz, jeżdżąc na prądzie.",
@@ -437,11 +437,11 @@ app:"Aplikacja",install:"Zainstaluj aplikację",installIos:"Na iPhonie: w Safari
 notifications:"Powiadomienia o terminach",notifOn:"Włącz powiadomienia",notifOff:"Wyłącz",notifEnabled:"Powiadomienia są włączone.",notifDenied:"Powiadomienia są zablokowane. Zezwól na nie w ustawieniach przeglądarki lub telefonu.",notifUnsupported:"Ta przeglądarka nie obsługuje powiadomień.",
 notifHint:"Przypomnienie przyjdzie 7 dni lub 500 km przed terminem i gdy termin minie. Gdy aplikacja jest zamknięta, działa to tylko w zainstalowanej aplikacji na Androidzie.",
 lastBackup:"Ostatnia kopia",never:"nigdy",backupNag:"Nie robiłeś kopii zapasowej od ponad 30 dni. Dane są tylko na tym urządzeniu.",backupNow:"Zrób kopię",
-fuelTypes:{petrol:"Benzyna",diesel:"Diesel",lpg:"LPG",hybrid:"Hybryda (HEV)",phev:"Hybryda plug-in (PHEV)",ev:"Elektryczny (EV)",other:"Inne"},
+fuelTypes:{petrol:"Benzyna",diesel:"Diesel",lpg:"LPG + benzyna",hybrid:"Hybryda (HEV)",phev:"Hybryda plug-in (PHEV)",ev:"Elektryczny (EV)",other:"Inne"},
 ct:{home:"Dom",work:"Praca",ac:"Publiczna AC",dc:"Szybka DC"},
 kinds:{service:"Serwis",repair:"Naprawa",tyres:"Opony",inspection:"Przegląd techniczny",insurance:"Ubezpieczenie",tax:"Podatki i opłaty",leasing:"Leasing / rata",parking:"Parking",tolls:"Autostrady",wash:"Myjnia",fines:"Mandaty",accessories:"Akcesoria",other:"Inne"},
 grp:{fuel:"Paliwo",charge:"Ładowanie",svc:"Serwis i naprawy",fix:"Ubezpieczenie, opłaty, leasing",oth:"Inne"}},
-en:{trip:"Trip cost",tripHint:"Plan the route on the map. The cost uses your average consumption and the price from your last fill-up – you can change both.",tripFrom:"From",tripTo:"To",myLocation:"My location",roundTrip:"Round trip",people:"People",calcRoute:"Calculate route",calculating:"Finding the route…",tripDistance:"Distance",driveTime:"Driving time",fuelNeeded:"Fuel needed",energyNeeded:"Energy needed",perPerson:"Per person",tripOffline:"The trip calculator needs an internet connection.",tripNotFound:"Place not found: {q}",routeError:"Couldn't find a route. Try again in a moment.",addEvent:"Add event",palette:"Colours",palCoffee:"Coffee",palGraphite:"Graphite",palForest:"Forest",palOcean:"Ocean",calendar:"Calendar",noRemDay:"Nothing scheduled on this day.",prevMonth:"Previous month",nextMonth:"Next month",theme:"Theme",themeAuto:"Automatic (follow phone)",themeLight:"Light",themeDark:"Dark",searchingStations:"Searching for stations…",avgAll:"over all records",avgPerUnit:"weighted by amount",avgMonthNote:"over {n} months",avgTooShort:"needs at least 4 weeks of data",dashboard:"Dashboard",fuelTab:"Fill-ups",chargeTab:"Charging",energyTab:"Fuel & power",costs:"Costs",reminders:"Reminders",reports:"Reports",settings:"Settings",
+en:{bothFuels:"Both fuels together",dualNote:"Each fuel's consumption is measured over the whole distance driven (full-to-full, separately for each fuel).",trip:"Trip cost",tripHint:"Plan the route on the map. The cost uses your average consumption and the price from your last fill-up – you can change both.",tripFrom:"From",tripTo:"To",myLocation:"My location",roundTrip:"Round trip",people:"People",calcRoute:"Calculate route",calculating:"Finding the route…",tripDistance:"Distance",driveTime:"Driving time",fuelNeeded:"Fuel needed",energyNeeded:"Energy needed",perPerson:"Per person",tripOffline:"The trip calculator needs an internet connection.",tripNotFound:"Place not found: {q}",routeError:"Couldn't find a route. Try again in a moment.",addEvent:"Add event",palette:"Colours",palCoffee:"Coffee",palGraphite:"Graphite",palForest:"Forest",palOcean:"Ocean",calendar:"Calendar",noRemDay:"Nothing scheduled on this day.",prevMonth:"Previous month",nextMonth:"Next month",theme:"Theme",themeAuto:"Automatic (follow phone)",themeLight:"Light",themeDark:"Dark",searchingStations:"Searching for stations…",avgAll:"over all records",avgPerUnit:"weighted by amount",avgMonthNote:"over {n} months",avgTooShort:"needs at least 4 weeks of data",dashboard:"Dashboard",fuelTab:"Fill-ups",chargeTab:"Charging",energyTab:"Fuel & power",costs:"Costs",reminders:"Reminders",reports:"Reports",settings:"Settings",
 addFuel:"Add fill-up",editFuel:"Edit fill-up",addCharge:"Add charge",editCharge:"Edit charge",addCost:"Add cost",editCost:"Edit cost",addReminder:"Schedule service",editReminder:"Edit scheduled service",addVehicle:"Add car",editVehicle:"Edit car",
 vehicles:"Cars",name:"Name (e.g. Toyota Corolla)",plate:"Licence plate",year:"Year",vin:"VIN",tankCap:"Tank capacity",battery:"Battery capacity (kWh)",batteryShort:"Battery",carPhoto:"Car photo",fuelType:"Powertrain",
 refCons:"Comparable combustion car consumption",refPrice:"Fuel price for comparison",refHint:"Used to calculate how much you save by driving electric.",
@@ -472,7 +472,7 @@ app:"App",install:"Install app",installIos:"On iPhone: in Safari tap Share, then
 notifications:"Due date notifications",notifOn:"Turn on notifications",notifOff:"Turn off",notifEnabled:"Notifications are on.",notifDenied:"Notifications are blocked. Allow them in your browser or phone settings.",notifUnsupported:"This browser does not support notifications.",
 notifHint:"You get a reminder 7 days or 500 km before the due date and again when it is overdue. While the app is closed this works only in the installed app on Android.",
 lastBackup:"Last backup",never:"never",backupNag:"You haven't made a backup in over 30 days. Your data lives only on this device.",backupNow:"Back up now",
-fuelTypes:{petrol:"Petrol",diesel:"Diesel",lpg:"LPG",hybrid:"Hybrid (HEV)",phev:"Plug-in hybrid (PHEV)",ev:"Electric (EV)",other:"Other"},
+fuelTypes:{petrol:"Petrol",diesel:"Diesel",lpg:"LPG + petrol",hybrid:"Hybrid (HEV)",phev:"Plug-in hybrid (PHEV)",ev:"Electric (EV)",other:"Other"},
 ct:{home:"Home",work:"Workplace",ac:"Public AC",dc:"DC fast"},
 kinds:{service:"Service",repair:"Repair",tyres:"Tyres",inspection:"Roadworthiness test",insurance:"Insurance",tax:"Tax & fees",leasing:"Lease / loan",parking:"Parking",tolls:"Tolls",wash:"Car wash",fines:"Fines",accessories:"Accessories",other:"Other"},
 grp:{fuel:"Fuel",charge:"Charging",svc:"Service & repairs",fix:"Insurance, fees, lease",oth:"Other"}}
@@ -611,9 +611,18 @@ async function compress(file,max=1600,q=.75){
  return out;
 }
 
-/* Fuel consumption: full-to-full method. Fuel from partial fill-ups between two full ones is added to the next full one. */
-function consumption(){
- const list=mine(S.fuel).slice().sort(byOdo);
+/* Fuel consumption: full-to-full method. Fuel from partial fill-ups between two full ones is added to the next full one.
+   cls limits it to one fuel of an LPG + petrol car ("lpg" or "main"); each fuel is then measured over the whole distance driven. */
+const fuelCls=x=>x.grade==="lpg"?"lpg":"main";
+const dualFuel=V=>!!V&&hasFuel(V)&&(V.fuelType==="lpg"||new Set(S.fuel.filter(x=>x.vid===V.id).map(fuelCls)).size>1);
+// one entry per fuel to show: [{label,st}] – a single unlabelled one, or LPG and petrol for a dual-fuel car
+function fuelStats(V){
+ if(!hasFuel(V))return[];
+ if(!dualFuel(V))return[{label:"",st:consumption()}];
+ return[{label:t("grades").lpg,st:consumption("lpg")},{label:t("fuelTypes").petrol,st:consumption("main")}].filter(x=>x.st.list.length);
+}
+function consumption(cls){
+ const list=mine(S.fuel).filter(x=>!cls||fuelCls(x)===cls).sort(byOdo);
  const map={};let last=null,acc=0,totQ=0,totD=0;
  for(const f of list){
   if(last)acc+=+f.qty;
@@ -764,15 +773,15 @@ async function geocode(q){
  return{lat:+hit.lat,lon:+hit.lon,name:hit.display_name.split(",").slice(0,2).join(",")};
 }
 function tripForm(){
- const V=veh(),u=U(),ev=!hasFuel(V),st=ev?evStats():consumption(),last=st.list.at(-1);
+ const V=veh(),u=U(),ev=!hasFuel(V),rows=ev?[{label:"",st:evStats()}]:fuelStats(V);
  const d=$("#dlg");if(d.open)d.close();d.className="trip";tripMap=null;tripHere=null;
  d.innerHTML=`<form id="frm"><h2>${ic("road")}${t("trip")}</h2><p class="muted" style="margin:0 0 12px;font-size:13.5px">${t("tripHint")}</p>
   <label class="field"><span>${t("tripFrom")}</span><input id="tr_from" autocomplete="off" required></label>
   <button type="button" class="small" id="tr_here" style="margin:6px 0 10px">${ic("pin")}${t("myLocation")}</button>
   <label class="field"><span>${t("tripTo")}</span><input id="tr_to" autocomplete="off" required></label>
   <label class="chk" style="margin:10px 0"><input type="checkbox" id="tr_back"> ${t("roundTrip")}</label>
-  <div class="grid2"><label class="field"><span>${t(ev?"avgEcons":"avgCons")} (${ev?u.ecu:u.cu})</span><input id="tr_cons" type="number" step="any" inputmode="decimal" value="${st.avg?+st.avg.toFixed(2):""}" required></label>
-  <label class="field"><span>${t("pricePerUnit")} ${ev?"kWh":u.v}</span><input id="tr_price" type="number" step="any" inputmode="decimal" value="${last?.price??""}" required></label></div>
+  ${rows.map(({label,st},i)=>`<div class="grid2" style="margin-top:${i?10:0}px"><label class="field"><span>${t(ev?"avgEcons":"avgCons")}${label?" · "+label:""} (${ev?u.ecu:u.cu})</span><input id="tr_cons${i}" type="number" step="any" inputmode="decimal" value="${st.avg?+st.avg.toFixed(2):""}" required></label>
+  <label class="field"><span>${t("pricePerUnit")} ${ev?"kWh":u.v}${label?" · "+label:""}</span><input id="tr_price${i}" type="number" step="any" inputmode="decimal" value="${st.list.at(-1)?.price??""}" required></label></div>`).join("")}
   <label class="field" style="margin-top:10px"><span>${t("people")}</span><input id="tr_people" type="number" min="1" step="1" inputmode="numeric" value="1"></label>
   <div id="tr_msg"></div><div id="tr_map" hidden></div><div id="tr_out"></div>
   <div class="row" style="margin-top:12px"><span class="sp"></span><button type="button" id="fcancel">${t("cancel")}</button><button class="primary" id="tr_go">${ic("road")}${t("calcRoute")}</button></div></form>`;
@@ -793,11 +802,11 @@ function tripForm(){
    const r=await fetch(`https://router.project-osrm.org/route/v1/driving/${a.lon},${a.lat};${b.lon},${b.lat}?overview=full&geometries=geojson`,{signal:AbortSignal.timeout(12000)});
    const route=r.ok&&(await r.json()).routes?.[0];if(!route)throw new Error("route");
    const k=$("#tr_back").checked?2:1,dist=route.distance/(u.d==="mi"?1609.344:1000)*k,mins=Math.round(route.duration/60)*k;
-   const used=u.used(parseNum($("#tr_cons").value),dist),cost=used*parseNum($("#tr_price").value),people=Math.max(1,Math.round(parseNum($("#tr_people").value)||1));
+   const used=rows.map((_,i)=>u.used(parseNum($("#tr_cons"+i).value),dist)),cost=sum(rows.map((_,i)=>used[i]*parseNum($("#tr_price"+i).value)),x=>x),people=Math.max(1,Math.round(parseNum($("#tr_people").value)||1));
    msg("");
    $("#tr_out").innerHTML=`<p class="muted" style="margin:10px 0 4px">${esc(a.name)} → ${esc(b.name)}${k>1?` · ${t("roundTrip")}`:""}</p><div class="ros">
     ${ro(t("tripDistance"),num(dist,0),u.d)}${ro(t("driveTime"),`${Math.floor(mins/60)}:${pad(mins%60)}`,"h")}
-    ${ro(t(ev?"energyNeeded":"fuelNeeded"),num(used,1),ev?"kWh":u.v)}${ro(t("trip"),money(cost))}
+    ${rows.map(({label},i)=>ro(t(ev?"energyNeeded":"fuelNeeded")+(label?" · "+label:""),num(used[i],1),ev?"kWh":u.v)).join("")}${ro(t("trip"),money(cost))}
     ${people>1?ro(t("perPerson"),money(cost/people)):""}</div>`;
    await drawTripMap(route.geometry.coordinates.map(([x,y])=>[y,x]),a,b);
    $("#tr_map").scrollIntoView({block:"start",behavior:S.demo?"instant":"smooth"}); // on a phone the result is below the form
@@ -1008,7 +1017,7 @@ const ro=(label,value,unit,sub,mark="")=>`<div class="ro"><div class="rl">${labe
 
 function viewDashboard(){
  const V=veh();if(!V)return`<div class="card">${emptyBox("car",t("noVehicle"))}<div style="text-align:center"><button class="primary" data-act="vehAdd">${ic("plus")}${t("addVehicle")}</button></div></div>`;
- const u=U(),f=hasFuel(V)?consumption():null,e=hasCharge(V)?evStats():null;
+ const u=U(),f=hasFuel(V)?consumption():null,e=hasCharge(V)?evStats():null,fs=fuelStats(V);
  const rem=sortRem(mine(S.reminders).filter(r=>!r.done)).slice(0,3),recent=allEntries().slice(0,5);
  const entries=S.fuel.length+S.charges.length+S.services.length,nag=entries>=5&&(!S.lastBackup||(new Date(today())-new Date(S.lastBackup))/864e5>30);
  const lb=S.settings.units==="metric"; // L/100 km: lower is better; km/L and mpg: higher is better
@@ -1029,7 +1038,8 @@ function viewDashboard(){
  const slides=trendSlides(V,f,e,costs),energyIc=hasCharge(V)&&!hasFuel(V)?"bolt":"pump";
  return`${nag?`<div class="card warnbox row">${ic("download")}<span style="flex:1">${t("backupNag")}</span><button class="small" data-act="export">${t("backupNow")}</button></div>`:""}
  <section class="card hero">${V.photo?`<img src="${V.photo}" data-zoom alt="">`:`<div class="ph">${ic(V.fuelType==="ev"?"bolt":"car")}</div>`}<div class="main"><div class="n">${esc(V.name)}</div>${odoHtml(curOdo())}<span class="u">${u.d}</span><div class="meta">${[V.plate,V.year,t("fuelTypes")[V.fuelType]].filter(Boolean).map(esc).join(" · ")}</div></div><button class="small ghost icon" data-act="vehEdit" aria-label="${t("editVehicle")}">${ic("edit")}</button></section>
- ${f?energyCard(false,t("fuelCard"),f.list.at(-1)?.grade?gradeLabel(f.list.at(-1).grade):"",f,u.v,u.cu):""}
+ ${fs.map(({label,st})=>energyCard(false,label?`${t("fuelCard")} · ${label}`:t("fuelCard"),!label&&st.list.at(-1)?.grade?gradeLabel(st.list.at(-1).grade):"",st,u.v,u.cu)).join("")}
+ ${fs.length>1?`<section class="card"><div class="ch">${ic("coins")}<span>${t("bothFuels")}</span></div><div class="ros">${ro(`${t("costPer100")} ${u.d}`,money(fs.every(x=>x.st.costPer100!=null)?sum(fs,x=>x.st.costPer100):f.costPer100),"",t("avgAll"))}</div><p class="muted" style="margin:6px 0 0;font-size:13px">${t("dualNote")}</p></section>`:""}
  ${e?energyCard(true,t("charging"),"",e,"kWh",u.ecu):""}
  <section class="card"><div class="ch">${ic("coins")}<span>${t("costs")}</span></div><div class="mtab"><span></span><b>${t("thisMonth")}</b><b>${t("prevMonth")}</b>
   <span style="--ic-a:var(--c-fuel)">${ic(energyIc)}${t("energyCosts")}</span><em data-l="${esc(t("thisMonth"))}">${money(mSum(mk,true))}</em><em class="dim" data-l="${esc(t("prevMonth"))}">${money(mSum(pm,true))}</em>
@@ -1055,11 +1065,12 @@ function trendSlides(V,f,e,costs){
    ${row(lastLabel||t("last"),show(last))}${row(t("avg"),show(avg),avgNote)}
    ${row(t("change"),`<span class="${cls}">${ch==null?"—":(ch>0?"+":"")+num(ch,1)+"%"}</span>`)}</div><div>${chart}</div></div></div>`;
  };
- if(f&&f.series.length){const pts=f.list.filter(x=>f.map[x.id]!=null).map(x=>({v:f.map[x.id],date:x.date}));
-  out.push(slide({icon:"drop",title:t("fuelUse"),unit:u.cu,lowerBetter:lb,last:pts.at(-1)?.v,prev:pts.at(-2)?.v,avg:f.avg,avgNote:t("avgAll"),chart:areaLine(pts.slice(-12),f.avg)}))}
+ const fs=fuelStats(V);
+ for(const{label,st}of fs)if(st.series.length){const pts=st.list.filter(x=>st.map[x.id]!=null).map(x=>({v:st.map[x.id],date:x.date}));
+  out.push(slide({icon:"drop",title:label?`${t("fuelUse")} · ${label}`:t("fuelUse"),unit:u.cu,lowerBetter:lb,last:pts.at(-1)?.v,prev:pts.at(-2)?.v,avg:st.avg,avgNote:t("avgAll"),chart:areaLine(pts.slice(-12),st.avg)}))}
  if(e&&e.series.length){const pts=e.list.filter(x=>e.map[x.id]!=null).map(x=>({v:e.map[x.id],date:x.date}));
   out.push(slide({icon:"bolt",title:t("energyUse"),unit:u.ecu,lowerBetter:lb,last:pts.at(-1)?.v,prev:pts.at(-2)?.v,avg:e.avg,avgNote:t("avgAll"),d:1,chart:areaLine(pts.slice(-12),e.avg)}))}
- if(f&&f.list.length){
+ for(const{st:f}of fs)if(f.list.length){
   const cnt={};f.list.forEach(x=>{const g=x.grade||defGrade(V);cnt[g]=(cnt[g]||0)+1});const g=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a])[0];
   const list=f.list.filter(x=>(x.grade||defGrade(V))===g&&x.price).sort((a,b)=>(a.date+(a.time||"")).localeCompare(b.date+(b.time||"")));
   const avg=weightedPrice(list,x=>+x.qty||0,fuelTotal),pts=list.map(x=>({v:+x.price,date:x.date}));
@@ -1078,9 +1089,9 @@ function trendSlides(V,f,e,costs){
  return out;
 }
 function allEntries(){
- const V=veh(),c=hasFuel(V)?consumption():null,e=hasCharge(V)?evStats():null,u=U(),lf=legs(mine(S.fuel)),lc=legs(mine(S.charges));
+ const V=veh(),fs=fuelStats(V),cm=Object.assign({},...fs.map(x=>x.st.map)),e=hasCharge(V)?evStats():null,u=U(),lf=Object.assign({},...fs.map(x=>legs(x.st.list))),lc=legs(mine(S.charges));
  return[
-  ...mine(S.fuel).map(x=>({type:"fuel",x,leg:lf[x.id],ic:"pump",color:"var(--c-fuel)",title:t("fillUp"),amount:fuelTotal(x),act:"fuelEdit",sub:`${num(x.qty,2)} ${u.v}${x.grade?" · "+gradeLabel(x.grade):""}`,extra:c?.map[x.id]!=null?`${num(c.map[x.id],2)} ${u.cu}`:""})),
+  ...mine(S.fuel).map(x=>({type:"fuel",x,leg:lf[x.id],ic:"pump",color:"var(--c-fuel)",title:t("fillUp"),amount:fuelTotal(x),act:"fuelEdit",sub:`${num(x.qty,2)} ${u.v}${x.grade?" · "+gradeLabel(x.grade):""}`,extra:cm[x.id]!=null?`${num(cm[x.id],2)} ${u.cu}`:""})),
   ...mine(S.charges).map(x=>({type:"charge",x,leg:lc[x.id],ic:"bolt",color:"var(--c-charge)",title:t("charging"),amount:chargeTotal(x),act:"chargeEdit",sub:`${num(x.kwh,1)} kWh · ${t("ct")[x.ct]||""}`,extra:e?.map[x.id]!=null?`${num(e.map[x.id],1)} ${u.ecu}`:""})),
   ...mine(S.services).map(x=>({type:"cost",x,ic:KIND_IC[x.kind]||"dots",color:`var(--c-${GROUP[x.kind]||"oth"})`,title:x.title||kindLabel(x.kind),amount:+x.cost||0,act:"costEdit",sub:kindLabel(x.kind),extra:""}))
  ].sort((a,b)=>(b.x.date+(b.x.time||"")).localeCompare(a.x.date+(a.x.time||""))||(b.x.odo||0)-(a.x.odo||0));
@@ -1206,7 +1217,7 @@ function printReport(o){
  ${kv([[t("plate"),V.plate],[t("vin"),V.vin],[t("year"),V.year],[t("fuelType"),t("fuelTypes")[V.fuelType]],[t("curOdo"),`${num(curOdo(),0)} ${u.d}`],[t("trackedSince"),fdate(first)],[t("generated"),fdate(today())]])}</div></div>
  <h3>${t("summary")}</h3>
  ${kv([[t("entries"),String(hist.length)],[t("trackedDist"),dist?`${num(dist,0)} ${u.d}`:null],
-   ...(o.stats&&f?[[t("avgCons"),f.avg!=null?`${num(f.avg,2)} ${u.cu}`:null]]:[]),
+   ...(o.stats?fuelStats(V).map(({label,st})=>[label?`${t("avgCons")} · ${label}`:t("avgCons"),st.avg!=null?`${num(st.avg,2)} ${u.cu}`:null]):[]),
    ...(o.stats&&e?[[t("avgEcons"),e.avg!=null?`${num(e.avg,1)} ${u.ecu}`:null]]:[]),
    ...(o.costs?[[t("serviceCost"),money(sum(hist,s=>+s.cost||0))]]:[])])}
  <h3>${t("serviceHistory")}</h3>
@@ -1285,7 +1296,7 @@ function demoState(lang){
 }
 
 /* ---------- install & notifications ---------- */
-const APP_VERSION="v21"; // keep in sync with VERSION in sw.js
+const APP_VERSION="v22"; // keep in sync with VERSION in sw.js
 let installEvt=null;
 const isNative=!!window.Capacitor?.isNativePlatform?.(); // running as the Google Play / App Store app
 const standalone=()=>isNative||matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
