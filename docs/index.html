@@ -2,6 +2,8 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8">
+<!-- only our own files and the OpenStreetMap services from the privacy policy; heic2any needs eval and blob workers -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; connect-src 'self' https://nominatim.openstreetmap.org https://overpass-api.de https://router.project-osrm.org; font-src 'self'; media-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#14233A">
 <title>Tankvia</title>
@@ -511,14 +513,28 @@ const idb={
  db:null,
  open(){return this.db?Promise.resolve(this.db):new Promise((res,rej)=>{const r=indexedDB.open("refuelling",1);r.onupgradeneeded=()=>r.result.createObjectStore("kv");r.onsuccess=()=>res(this.db=r.result);r.onerror=()=>rej(r.error)})},
  async get(k){const db=await this.open();return new Promise((res,rej)=>{const q=db.transaction("kv").objectStore("kv").get(k);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)})},
- async set(k,v){const db=await this.open();return new Promise((res,rej)=>{const tx=db.transaction("kv","readwrite");tx.objectStore("kv").put(v,k);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})}
+ async set(k,v){const db=await this.open();return new Promise((res,rej)=>{const tx=db.transaction("kv","readwrite");tx.objectStore("kv").put(v,k);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})},
+ async batch(puts,dels=[]){const db=await this.open();return new Promise((res,rej)=>{const tx=db.transaction("kv","readwrite"),st=tx.objectStore("kv");puts.forEach(([k,v])=>st.put(v,k));dels.forEach(k=>st.delete(k));tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})}
 };
 let S,tab="dashboard",tlFilter="all",costFilter="all",period="12m";
+/* Photos live under their own keys ("photo:<list>:<id>"), the data only marks them with photo:true. A save then writes the small data
+   and just the photos that changed, in one transaction, instead of every photo every time – that kept getting slower as receipts piled up.
+   In memory the records hold the photos as before, so the rest of the app (and the JSON backup) doesn't change. */
+const PHOTO_LISTS=["vehicles","fuel","charges","services"],savedPhotos=new Map();
 const save=()=>{
  if(S.demo)return Promise.resolve(); // demo data must never overwrite the user's own
  if(window.Capacitor?.isNativePlatform?.()){clearTimeout(save.t);save.t=setTimeout(()=>scheduleNative().catch(console.warn),1500)} // keep Android reminders in step
- return idb.set("state",S).catch(e=>alert(e));
+ const slim={...S},puts=[],seen=new Set();
+ for(const l of PHOTO_LISTS)slim[l]=(S[l]||[]).map(x=>{
+  if(typeof x.photo!=="string"||!x.photo.startsWith("data:"))return x;
+  const k=`photo:${l}:${x.id}`;seen.add(k);if(savedPhotos.get(k)!==x.photo)puts.push([k,x.photo]);return{...x,photo:true}});
+ const dels=[...savedPhotos.keys()].filter(k=>!seen.has(k));
+ return idb.batch([...puts,["state",slim]],dels).then(()=>{puts.forEach(([k,v])=>savedPhotos.set(k,v));dels.forEach(k=>savedPhotos.delete(k))}).catch(e=>alert(e));
 };
+async function loadPhotos(){
+ await Promise.all(PHOTO_LISTS.flatMap(l=>(S[l]||[]).filter(x=>x.photo===true).map(async x=>{
+  const k=`photo:${l}:${x.id}`;x.photo=await idb.get(k)||null;if(x.photo)savedPhotos.set(k,x.photo)})));
+}
 const defaults=()=>{
  const nav=(navigator.language||"en").toLowerCase(),code=nav.split("-")[0]==="no"||nav.split("-")[0]==="nn"?"nb":nav.split("-")[0],lang=LANGS[code]?code:"en";
  const currency=nav==="en-us"?"USD":nav==="en-gb"?"GBP":nav==="pt-br"?"BRL":LANGS[lang][2];
@@ -560,7 +576,7 @@ const curOdo=()=>Math.max(0,...[...mine(S.fuel),...mine(S.charges),...mine(S.ser
 const fuelTotal=f=>f.cost!=null&&f.cost!==""?+f.cost:(+f.qty||0)*(+f.price||0); // cost: the amount actually paid, when known
 const chargeTotal=c=>(+c.kwh||0)*(+c.price||0);
 const sum=(a,f)=>a.reduce((s,x)=>s+f(x),0);
-const kindLabel=k=>t("kinds")[k]||k;
+const kindLabel=k=>t("kinds")[k]||esc(k);
 const grpLabel=g=>t("grp")[g];
 const dur=m=>`${Math.floor(m/60)}:${pad(Math.round(m%60))} h`;
 const parseNum=v=>+String(v).replace(",",".");
@@ -730,7 +746,7 @@ function vehicleForm(v){
  ()=>{const sel=$("#f_fuelType"),upd=()=>{const ft=sel.value;showField("tank",ft!=="ev");showField("battery",ft==="ev"||ft==="phev");showField("refCons",ft==="ev");showField("refPrice",ft==="ev");$("#refHint").hidden=ft!=="ev"};sel.onchange=upd;upd()});
 }
 const GRADES=["pb95","pb98","on","onp","lpg","cng","e85","other"];
-const gradeLabel=g=>t("grades")[g]||g||"";
+const gradeLabel=g=>t("grades")[g]||esc(g||"");
 const defGrade=V=>V.fuelType==="diesel"?"on":V.fuelType==="lpg"?"lpg":"pb95";
 const nowTime=()=>{const d=new Date();return`${pad(d.getHours())}:${pad(d.getMinutes())}`};
 function placesDatalist(list){
@@ -1349,8 +1365,43 @@ async function shareFile(name,data){ // store app: write the file, then open And
 function download(name,data,type){
  if(isNative)return shareFile(name,data).catch(e=>{if(!/cancel/i.test(e?.message||""))alert(e?.message||e)});
  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([data],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+/* A backup file may come from anywhere, so it is rebuilt field by field: ids, dates, numbers, known choices and real image data only.
+   Everything shown is escaped anyway; this also keeps ids (used in attributes), photo sources and settings (e.g. the currency) valid. */
+function cleanState(d){
+ if(!d||typeof d!=="object"||!d.settings||!Array.isArray(d.vehicles))throw new Error("format");
+ const ID=/^[\w-]{1,40}$/,DATE=/^\d{4}-\d{2}-\d{2}$/,TIME=/^\d{2}:\d{2}$/,IMG=/^data:image\/(jpeg|png|webp|gif);base64,[A-Za-z0-9+/=]+$/;
+ const ENUM={grade:GRADES,kind:Object.keys(GROUP),ct:CT,fuelType:Object.keys(I18N.en.fuelTypes)};
+ const NUMS=new Set(["odo","qty","price","cost","kwh","min","socFrom","socTo","year","tank","battery","refCons","refPrice"]),BOOL=new Set(["full","done"]);
+ const rec=o=>{
+  if(!o||typeof o!=="object"||Array.isArray(o))return null;
+  const r={};
+  for(const[k,v]of Object.entries(o)){
+   if(v==null||v==="")continue;
+   if(k==="id"||k==="vid"||k==="src"){if(typeof v==="string"&&ID.test(v))r[k]=v}
+   else if(k==="photo"){if(typeof v==="string"&&IMG.test(v))r[k]=v}
+   else if(ENUM[k])r[k]=ENUM[k].includes(v)?v:"other";
+   else if(NUMS.has(k)){const n=Number(v);if(isFinite(n))r[k]=n}
+   else if(BOOL.has(k))r[k]=!!v;
+   else if(k==="date"||k==="doneDate"||k==="until"){if(typeof v==="string"&&DATE.test(v))r[k]=v}
+   else if(k==="time"){if(typeof v==="string"&&TIME.test(v))r[k]=v}
+   else if(typeof v==="string"||typeof v==="number")r[k]=String(v).slice(0,2000);
+  }
+  if(!r.id)r.id=uid();
+  return r;
+ };
+ const out=defaults(),s=d.settings||{},set=out.settings;
+ if(LANGS[s.lang])set.lang=s.lang;if(CURRENCIES.includes(s.currency))set.currency=s.currency;if(UNITS[s.units])set.units=s.units;
+ if(["auto","light","dark"].includes(s.theme))set.theme=s.theme;if(["ocean","coffee","graphite","forest"].includes(s.palette))set.palette=s.palette;
+ if(ZOOMS.includes(+s.zoom))set.zoom=+s.zoom;if(s.notify)set.notify=true;
+ out.vehicles=d.vehicles.map(rec).filter(v=>v&&(v.name=v.name||"?"));
+ const vids=new Set(out.vehicles.map(v=>v.id));
+ for(const l of["fuel","charges","services","reminders"])out[l]=(Array.isArray(d[l])?d[l]:[]).map(rec).filter(x=>x&&vids.has(x.vid));
+ out.active=vids.has(d.active)?d.active:out.vehicles[0]?.id||null;
+ if(typeof d.lastBackup==="string"&&DATE.test(d.lastBackup))out.lastBackup=d.lastBackup;
+ return out;
+}
 async function importData(e){
- try{const d=JSON.parse(await e.target.files[0].text());if(!d.settings||!Array.isArray(d.vehicles))throw 0;S={...defaults(),...d};await save();alert(t("importOk"));render()}catch{alert(t("importErr"))}
+ try{S=cleanState(JSON.parse(await e.target.files[0].text()));await save();alert(t("importOk"));render()}catch{alert(t("importErr"))}
 }
 /* On phones the backup goes to the share sheet (Google Drive, e-mail…), elsewhere it is downloaded. */
 async function exportJson(){
@@ -1380,7 +1431,7 @@ function demoState(lang){
 }
 
 /* ---------- install & notifications ---------- */
-const APP_VERSION="v24"; // keep in sync with VERSION in sw.js
+const APP_VERSION="v25"; // keep in sync with VERSION in sw.js
 let installEvt=null;
 const isNative=!!window.Capacitor?.isNativePlatform?.(); // running as the Google Play / App Store app
 const standalone=()=>isNative||matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
@@ -1476,7 +1527,7 @@ $("#vehSel").onchange=e=>{S.active=e.target.value;save();render()};
 
 (async()=>{
  const qs=new URLSearchParams(location.search);
- if(!qs.has("demo"))try{S=await idb.get("state")}catch(e){console.error(e)}
+ if(!qs.has("demo"))try{S=await idb.get("state");if(S)await loadPhotos()}catch(e){console.error(e)}
  S=S?{...defaults(),...S}:defaults();
  await loadLang(qs.get("lang")||S.settings.lang);
  if(qs.has("demo")){S=demoState(qs.get("lang")||S.settings.lang);tab=qs.get("tab")||tab;if(qs.has("z"))S.settings.zoom=+qs.get("z");if(qs.has("theme"))S.settings.theme=qs.get("theme");if(qs.has("palette"))S.settings.palette=qs.get("palette")} // sample data for store screenshots; never saved
