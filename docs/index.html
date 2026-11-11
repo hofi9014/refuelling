@@ -411,7 +411,7 @@ select{max-width:100%}
 <script src="notify.js"></script>
 <script>
 const I18N={
-pl:{approxAvg:"szacunkowo (bez tankowań do pełna)",scanPump:"Odczytaj z dystrybutora",scanReading:"Odczytuję zdjęcie…",scanOk:"Odczytano kwotę, litry i cenę. Sprawdź je i wpisz stan licznika.",scanUnsure:"Nie wszystko udało się odczytać pewnie – sprawdź zaznaczone pola.",scanFail:"Nie udało się odczytać liczb. Zrób zdjęcie bliżej i bez odbić światła albo wpisz dane ręcznie.",bothFuels:"Oba paliwa razem",dualNote:"Spalanie każdego paliwa jest liczone na cały przejechany dystans (metoda „do pełna”, osobno dla każdego paliwa).",trip:"Koszt podróży",tripHint:"Wyznacz trasę na mapie. Koszt policzymy ze średniego spalania i ceny z ostatniego tankowania – obie wartości możesz zmienić.",tripFrom:"Skąd",tripTo:"Dokąd",myLocation:"Moja lokalizacja",roundTrip:"W obie strony",people:"Liczba osób",calcRoute:"Oblicz trasę",calculating:"Wyznaczam trasę…",tripDistance:"Dystans",driveTime:"Czas jazdy",fuelNeeded:"Paliwo na trasę",energyNeeded:"Energia na trasę",perPerson:"Na osobę",tripOffline:"Kalkulator podróży działa tylko z internetem.",tripNotFound:"Nie znaleziono miejsca: {q}",routeError:"Nie udało się wyznaczyć trasy. Spróbuj ponownie za chwilę.",addEvent:"Dodaj wydarzenie",palette:"Kolorystyka",palCoffee:"Kawa",palGraphite:"Grafit",palForest:"Las",palOcean:"Ocean",calendar:"Kalendarz",noRemDay:"Brak terminów w tym dniu.",prevMonth:"Poprzedni miesiąc",nextMonth:"Następny miesiąc",theme:"Motyw",themeAuto:"Automatyczny (jak w telefonie)",themeLight:"Jasny",themeDark:"Ciemny",searchingStations:"Szukam stacji…",avgAll:"z całego okresu",avgPerUnit:"ważona ilością",avgMonthNote:"z {n} mies.",avgTooShort:"potrzeba min. 4 tygodni danych",dashboard:"Pulpit",fuelTab:"Tankowania",chargeTab:"Ładowania",energyTab:"Paliwo i prąd",costs:"Koszty",reminders:"Przypomnienia",reports:"Raporty",settings:"Ustawienia",
+pl:{phevNote:"Benzyna i prąd są liczone na cały przejechany dystans – razem dają koszt jazdy na 100 km.",approxAvg:"szacunkowo (bez tankowań do pełna)",scanPump:"Odczytaj z dystrybutora",scanReading:"Odczytuję zdjęcie…",scanOk:"Odczytano kwotę, litry i cenę. Sprawdź je i wpisz stan licznika.",scanUnsure:"Nie wszystko udało się odczytać pewnie – sprawdź zaznaczone pola.",scanFail:"Nie udało się odczytać liczb. Zrób zdjęcie bliżej i bez odbić światła albo wpisz dane ręcznie.",bothFuels:"Oba paliwa razem",dualNote:"Spalanie każdego paliwa jest liczone na cały przejechany dystans (metoda „do pełna”, osobno dla każdego paliwa).",trip:"Koszt podróży",tripHint:"Wyznacz trasę na mapie. Koszt policzymy ze średniego spalania i ceny z ostatniego tankowania – obie wartości możesz zmienić.",tripFrom:"Skąd",tripTo:"Dokąd",myLocation:"Moja lokalizacja",roundTrip:"W obie strony",people:"Liczba osób",calcRoute:"Oblicz trasę",calculating:"Wyznaczam trasę…",tripDistance:"Dystans",driveTime:"Czas jazdy",fuelNeeded:"Paliwo na trasę",energyNeeded:"Energia na trasę",perPerson:"Na osobę",tripOffline:"Kalkulator podróży działa tylko z internetem.",tripNotFound:"Nie znaleziono miejsca: {q}",routeError:"Nie udało się wyznaczyć trasy. Spróbuj ponownie za chwilę.",addEvent:"Dodaj wydarzenie",palette:"Kolorystyka",palCoffee:"Kawa",palGraphite:"Grafit",palForest:"Las",palOcean:"Ocean",calendar:"Kalendarz",noRemDay:"Brak terminów w tym dniu.",prevMonth:"Poprzedni miesiąc",nextMonth:"Następny miesiąc",theme:"Motyw",themeAuto:"Automatyczny (jak w telefonie)",themeLight:"Jasny",themeDark:"Ciemny",searchingStations:"Szukam stacji…",avgAll:"z całego okresu",avgPerUnit:"ważona ilością",avgMonthNote:"z {n} mies.",avgTooShort:"potrzeba min. 4 tygodni danych",dashboard:"Pulpit",fuelTab:"Tankowania",chargeTab:"Ładowania",energyTab:"Paliwo i prąd",costs:"Koszty",reminders:"Przypomnienia",reports:"Raporty",settings:"Ustawienia",
 addFuel:"Dodaj tankowanie",editFuel:"Edytuj tankowanie",addCharge:"Dodaj ładowanie",editCharge:"Edytuj ładowanie",addCost:"Dodaj koszt",editCost:"Edytuj koszt",addReminder:"Zaplanuj serwis",editReminder:"Edytuj planowany serwis",addVehicle:"Dodaj samochód",editVehicle:"Edytuj samochód",
 vehicles:"Samochody",name:"Nazwa (np. Skoda Octavia)",plate:"Nr rejestracyjny",year:"Rok produkcji",vin:"VIN",tankCap:"Pojemność baku",battery:"Pojemność baterii (kWh)",batteryShort:"Bateria",carPhoto:"Zdjęcie samochodu",fuelType:"Napęd",
 refCons:"Spalanie porównywalnego auta spalinowego",refPrice:"Cena paliwa do porównania",refHint:"Na tej podstawie aplikacja policzy, ile oszczędzasz, jeżdżąc na prądzie.",
@@ -446,7 +446,7 @@ fuelTypes:{petrol:"Benzyna",diesel:"Diesel",lpg:"LPG + benzyna",hybrid:"Hybryda 
 ct:{home:"Dom",work:"Praca",ac:"Publiczna AC",dc:"Szybka DC"},
 kinds:{service:"Serwis",repair:"Naprawa",tyres:"Opony",inspection:"Przegląd techniczny",insurance:"Ubezpieczenie",tax:"Podatki i opłaty",leasing:"Leasing / rata",parking:"Parking",tolls:"Autostrady",wash:"Myjnia",fines:"Mandaty",accessories:"Akcesoria",other:"Inne"},
 grp:{fuel:"Paliwo",charge:"Ładowanie",svc:"Serwis i naprawy",fix:"Ubezpieczenie, opłaty, leasing",oth:"Inne"}},
-en:{approxAvg:"estimate (no full-tank fill-ups)",scanPump:"Read from the pump",scanReading:"Reading the photo…",scanOk:"Amount, litres and price read. Check them and enter the odometer.",scanUnsure:"Not everything could be read for sure – check the highlighted fields.",scanFail:"Couldn't read the numbers. Take the photo closer and without glare, or enter the values by hand.",bothFuels:"Both fuels together",dualNote:"Each fuel's consumption is measured over the whole distance driven (full-to-full, separately for each fuel).",trip:"Trip cost",tripHint:"Plan the route on the map. The cost uses your average consumption and the price from your last fill-up – you can change both.",tripFrom:"From",tripTo:"To",myLocation:"My location",roundTrip:"Round trip",people:"People",calcRoute:"Calculate route",calculating:"Finding the route…",tripDistance:"Distance",driveTime:"Driving time",fuelNeeded:"Fuel needed",energyNeeded:"Energy needed",perPerson:"Per person",tripOffline:"The trip calculator needs an internet connection.",tripNotFound:"Place not found: {q}",routeError:"Couldn't find a route. Try again in a moment.",addEvent:"Add event",palette:"Colours",palCoffee:"Coffee",palGraphite:"Graphite",palForest:"Forest",palOcean:"Ocean",calendar:"Calendar",noRemDay:"Nothing scheduled on this day.",prevMonth:"Previous month",nextMonth:"Next month",theme:"Theme",themeAuto:"Automatic (follow phone)",themeLight:"Light",themeDark:"Dark",searchingStations:"Searching for stations…",avgAll:"over all records",avgPerUnit:"weighted by amount",avgMonthNote:"over {n} months",avgTooShort:"needs at least 4 weeks of data",dashboard:"Dashboard",fuelTab:"Fill-ups",chargeTab:"Charging",energyTab:"Fuel & power",costs:"Costs",reminders:"Reminders",reports:"Reports",settings:"Settings",
+en:{phevNote:"Fuel and electricity are both measured over the whole distance driven – together they give the cost per 100 km.",approxAvg:"estimate (no full-tank fill-ups)",scanPump:"Read from the pump",scanReading:"Reading the photo…",scanOk:"Amount, litres and price read. Check them and enter the odometer.",scanUnsure:"Not everything could be read for sure – check the highlighted fields.",scanFail:"Couldn't read the numbers. Take the photo closer and without glare, or enter the values by hand.",bothFuels:"Both fuels together",dualNote:"Each fuel's consumption is measured over the whole distance driven (full-to-full, separately for each fuel).",trip:"Trip cost",tripHint:"Plan the route on the map. The cost uses your average consumption and the price from your last fill-up – you can change both.",tripFrom:"From",tripTo:"To",myLocation:"My location",roundTrip:"Round trip",people:"People",calcRoute:"Calculate route",calculating:"Finding the route…",tripDistance:"Distance",driveTime:"Driving time",fuelNeeded:"Fuel needed",energyNeeded:"Energy needed",perPerson:"Per person",tripOffline:"The trip calculator needs an internet connection.",tripNotFound:"Place not found: {q}",routeError:"Couldn't find a route. Try again in a moment.",addEvent:"Add event",palette:"Colours",palCoffee:"Coffee",palGraphite:"Graphite",palForest:"Forest",palOcean:"Ocean",calendar:"Calendar",noRemDay:"Nothing scheduled on this day.",prevMonth:"Previous month",nextMonth:"Next month",theme:"Theme",themeAuto:"Automatic (follow phone)",themeLight:"Light",themeDark:"Dark",searchingStations:"Searching for stations…",avgAll:"over all records",avgPerUnit:"weighted by amount",avgMonthNote:"over {n} months",avgTooShort:"needs at least 4 weeks of data",dashboard:"Dashboard",fuelTab:"Fill-ups",chargeTab:"Charging",energyTab:"Fuel & power",costs:"Costs",reminders:"Reminders",reports:"Reports",settings:"Settings",
 addFuel:"Add fill-up",editFuel:"Edit fill-up",addCharge:"Add charge",editCharge:"Edit charge",addCost:"Add cost",editCost:"Edit cost",addReminder:"Schedule service",editReminder:"Edit scheduled service",addVehicle:"Add car",editVehicle:"Edit car",
 vehicles:"Cars",name:"Name (e.g. Toyota Corolla)",plate:"Licence plate",year:"Year",vin:"VIN",tankCap:"Tank capacity",battery:"Battery capacity (kWh)",batteryShort:"Battery",carPhoto:"Car photo",fuelType:"Powertrain",
 refCons:"Comparable combustion car consumption",refPrice:"Fuel price for comparison",refHint:"Used to calculate how much you save by driving electric.",
@@ -795,14 +795,15 @@ async function geocode(q){
  return{lat:+hit.lat,lon:+hit.lon,name:hit.display_name.split(",").slice(0,2).join(",")};
 }
 function tripForm(){
- const V=veh(),u=U(),ev=!hasFuel(V),rows=ev?[{label:"",st:evStats()}]:fuelStats(V);
+ const V=veh(),u=U(),all=[...fuelStats(V).map(r=>({...r,ev:false})),...(hasCharge(V)?[{label:"",st:evStats(),ev:true}]:[])];
+ const rows=all.filter(r=>r.st.list.length).length?all.filter(r=>r.st.list.length):all.slice(0,1); // a plug-in without charges yet: petrol only
  const d=$("#dlg");if(d.open)d.close();d.className="trip";tripMap=null;tripHere=null;
  d.innerHTML=`<form id="frm"><h2>${ic("road")}${t("trip")}</h2><p class="muted" style="margin:0 0 12px;font-size:13.5px">${t("tripHint")}</p>
   <label class="field"><span>${t("tripFrom")}</span><input id="tr_from" autocomplete="off" required></label>
   <button type="button" class="small" id="tr_here" style="margin:6px 0 10px">${ic("pin")}${t("myLocation")}</button>
   <label class="field"><span>${t("tripTo")}</span><input id="tr_to" autocomplete="off" required></label>
   <label class="chk" style="margin:10px 0"><input type="checkbox" id="tr_back"> ${t("roundTrip")}</label>
-  ${rows.map(({label,st},i)=>`<div class="grid2" style="margin-top:${i?10:0}px"><label class="field"><span>${t(ev?"avgEcons":"avgCons")}${label?" · "+label:""} (${ev?u.ecu:u.cu})</span><input id="tr_cons${i}" type="number" step="any" inputmode="decimal" value="${st.avg?+st.avg.toFixed(2):""}" required></label>
+  ${rows.map(({label,st,ev},i)=>`<div class="grid2" style="margin-top:${i?10:0}px"><label class="field"><span>${t(ev?"avgEcons":"avgCons")}${label?" · "+label:""} (${ev?u.ecu:u.cu})</span><input id="tr_cons${i}" type="number" step="any" inputmode="decimal" value="${st.avg?+st.avg.toFixed(2):""}" required></label>
   <label class="field"><span>${t("pricePerUnit")} ${ev?"kWh":u.v}${label?" · "+label:""}</span><input id="tr_price${i}" type="number" step="any" inputmode="decimal" value="${st.list.at(-1)?.price??""}" required></label></div>`).join("")}
   <label class="field" style="margin-top:10px"><span>${t("people")}</span><input id="tr_people" type="number" min="1" step="1" inputmode="numeric" value="1"></label>
   <div id="tr_msg"></div><div id="tr_map" hidden></div><div id="tr_out"></div>
@@ -828,7 +829,7 @@ function tripForm(){
    msg("");
    $("#tr_out").innerHTML=`<p class="muted" style="margin:10px 0 4px">${esc(a.name)} → ${esc(b.name)}${k>1?` · ${t("roundTrip")}`:""}</p><div class="ros">
     ${ro(t("tripDistance"),num(dist,0),u.d)}${ro(t("driveTime"),`${Math.floor(mins/60)}:${pad(mins%60)}`,"h")}
-    ${rows.map(({label},i)=>ro(t(ev?"energyNeeded":"fuelNeeded")+(label?" · "+label:""),num(used[i],1),ev?"kWh":u.v)).join("")}${ro(t("trip"),money(cost))}
+    ${rows.map(({label,ev},i)=>ro(t(ev?"energyNeeded":"fuelNeeded")+(label?" · "+label:""),num(used[i],1),ev?"kWh":u.v)).join("")}${ro(t("trip"),money(cost))}
     ${people>1?ro(t("perPerson"),money(cost/people)):""}</div>`;
    await drawTripMap(route.geometry.coordinates.map(([x,y])=>[y,x]),a,b);
    $("#tr_map").scrollIntoView({block:"start",behavior:S.demo?"instant":"smooth"}); // on a phone the result is below the form
@@ -1145,8 +1146,10 @@ function viewDashboard(){
  return`${nag?`<div class="card warnbox row">${ic("download")}<span style="flex:1">${t("backupNag")}</span><button class="small" data-act="export">${t("backupNow")}</button></div>`:""}
  <section class="card hero">${V.photo?`<img src="${V.photo}" data-zoom alt="">`:`<div class="ph">${ic(V.fuelType==="ev"?"bolt":"car")}</div>`}<div class="main"><div class="n">${esc(V.name)}</div>${odoHtml(curOdo())}<span class="u">${u.d}</span><div class="meta">${[V.plate,V.year,t("fuelTypes")[V.fuelType]].filter(Boolean).map(esc).join(" · ")}</div></div><button class="small ghost icon" data-act="vehEdit" aria-label="${t("editVehicle")}">${ic("edit")}</button></section>
  ${fs.map(({label,st})=>energyCard(false,label?`${t("fuelCard")} · ${label}`:t("fuelCard"),!label&&st.list.at(-1)?.grade?gradeLabel(st.list.at(-1).grade):"",st,u.v,u.cu)).join("")}
- ${fs.length>1?`<section class="card"><div class="ch">${ic("coins")}<span>${t("bothFuels")}</span></div><div class="ros">${ro(`${t("costPer100")} ${u.d}`,money(fs.every(x=>x.st.costPer100!=null)?sum(fs,x=>x.st.costPer100):f.costPer100),"",t("avgAll"))}</div><p class="muted" style="margin:6px 0 0;font-size:13px">${t("dualNote")}</p></section>`:""}
  ${e?energyCard(true,t("charging"),"",e,"kWh",u.ecu):""}
+ ${(()=>{const parts=[...fs.map(x=>x.st),...(e&&f?[e]:[])];if(parts.length<2)return"";
+  const all=parts.every(p=>p.costPer100!=null)?sum(parts,p=>p.costPer100):e?null:f.costPer100;
+  return`<section class="card"><div class="ch">${ic("coins")}<span>${t(e?"energyTab":"bothFuels")}</span></div><div class="ros">${ro(`${t("costPer100")} ${u.d}`,money(all),"",t("avgAll"))}</div><p class="muted" style="margin:6px 0 0;font-size:13px">${t(e?"phevNote":"dualNote")}</p></section>`})()}
  <section class="card"><div class="ch">${ic("coins")}<span>${t("costs")}</span></div><div class="mtab"><span></span><b>${t("thisMonth")}</b><b>${t("prevMonth")}</b>
   <span style="--ic-a:var(--c-fuel)">${ic(energyIc)}${t("energyCosts")}</span><em data-l="${esc(t("thisMonth"))}">${money(mSum(mk,true))}</em><em class="dim" data-l="${esc(t("prevMonth"))}">${money(mSum(pm,true))}</em>
   <span style="--ic-a:var(--c-svc)">${ic("receipt")}${t("otherCost")}</span><em data-l="${esc(t("thisMonth"))}">${money(mSum(mk,false))}</em><em class="dim" data-l="${esc(t("prevMonth"))}">${money(mSum(pm,false))}</em></div></section>
@@ -1421,14 +1424,28 @@ async function exportJson(){
 }
 
 /* Sample car and history for store screenshots (?demo&lang=en&tab=fuel). */
-function demoState(lang){
+function demoState(lang,car){
  const pl=lang==="pl",d=n=>{const x=new Date();x.setDate(x.getDate()-n);return`${x.getFullYear()}-${pad(x.getMonth()+1)}-${pad(x.getDate())}`};
  const st=pl?["Bydgoszcz - Orlen","Toruń - Shell","Bydgoszcz - BP","Nakło - Circle K"]:["London - Shell","Reading - BP","London - Esso","Oxford - Texaco"];
  const fills=[[175,12400,41.2,6.89],[160,13010,39.8,6.95],[146,13640,40.6,6.79],[131,14270,39.1,6.72],[118,14890,40.3,6.84],[103,15520,41.0,6.69],[89,16140,39.4,6.61],[74,16770,40.8,6.55],[60,17390,39.9,6.62],[45,18020,40.2,6.49],[31,18650,39.6,6.45],[16,19280,40.4,6.39],[3,19905,39.8,6.35]];
+ const P=pl?1:.24,time=i=>`${pad(7+i%3)}:${pad((10+i*7)%60)}`,fill=(i,ago,odo,qty,price,grade)=>({id:"f"+i,vid:"d",date:d(ago),time:time(i),odo,qty,price,cost:+(qty*price).toFixed(2),full:true,grade,place:st[i%4]});
+ let fuel=fills.map(([ago,odo,qty,price],i)=>fill(i,ago,odo,qty,price,"pb95")),charges=[];
+ const vehicle={id:"d",name:pl?"Mój samochód":"My car",plate:pl?"WA 12345":"AB12 CDE",year:2023,fuelType:"hybrid",tank:44};
+ if(car==="lpg"){ // LPG every ~560 km, a little petrol now and then (starting the engine, empty gas tank)
+  Object.assign(vehicle,{name:pl?"Kombi na gaz":"LPG estate",fuelType:"lpg",tank:50});
+  fuel=[];for(let i=0;i<13;i++){const ago=175-i*14,odo=12400+i*560;fuel.push(fill(fuel.length,ago,odo,+(51+Math.sin(i*1.7)*2.4).toFixed(2),+((3.19-i*.012)*P).toFixed(2),"lpg"));
+   if(i%3===0)fuel.push(fill(fuel.length,ago,odo+4,+(8.1+Math.cos(i)*.6).toFixed(2),+((6.89-i*.04)*P).toFixed(2),"pb95"))}
+ }else if(car==="phev"||car==="ev"){ // charging every ~110 km (plug-in) or ~300 km (electric), petrol for the plug-in every ~650 km
+  const ev=car==="ev",bat=ev?64:13.8,step=ev?300:110;
+  Object.assign(vehicle,ev?{name:pl?"Auto elektryczne":"Electric car",fuelType:"ev",battery:bat,tank:null,refCons:7,refPrice:+(6.6*P).toFixed(2)}:{name:pl?"Hybryda plug-in":"Plug-in hybrid",fuelType:"phev",battery:bat,tank:43});
+  for(let i=0;i<14;i++){const odo=12400+i*step,dc=i%4===3,from=ev?18+(i*7)%15:10+(i*5)%12,to=dc?80:100,used=(to-from)/100*bat;
+   charges.push({id:"c"+i,vid:"d",date:d(175-i*13),time:time(i),odo,kwh:+(used*(dc?1.04:1.11)).toFixed(1),price:+((dc?2.69:.89)*P).toFixed(2),ct:dc?"dc":"home",socFrom:from,socTo:to,min:dc?28:ev?420:240,place:dc?(pl?"Toruń - Ionity":"Reading - Ionity"):(pl?"Dom":"Home")})}
+  fuel=ev?[]:[0,1,2,3,4,5,6].map(i=>fill(i,175-i*26,12450+i*220,+(9.4+Math.sin(i)*.8).toFixed(2),+((6.79-i*.05)*P).toFixed(2),"pb95"));
+ }
  return{demo:true,settings:{lang,currency:pl?"PLN":"EUR",units:"metric",zoom:1,notify:false},active:"d",lastBackup:d(1),
-  vehicles:[{id:"d",name:pl?"Mój samochód":"My car",plate:pl?"WA 12345":"AB12 CDE",year:2023,fuelType:"hybrid",tank:44}],
-  fuel:fills.map(([ago,odo,qty,price],i)=>({id:"f"+i,vid:"d",date:d(ago),time:`${pad(7+i%3)}:${pad((10+i*7)%60)}`,odo,qty,price,cost:+(qty*price).toFixed(2),full:true,grade:"pb95",place:st[i%4]})),
-  charges:[],
+  vehicles:[vehicle],
+  fuel,
+  charges,
   services:[{id:"s1",vid:"d",kind:"service",title:pl?"Przegląd okresowy, wymiana oleju":"Annual service, oil change",date:d(95),odo:15100,cost:pl?690:160,place:pl?"ASO Bydgoszcz":"Main dealer"},
    {id:"s2",vid:"d",kind:"tyres",title:pl?"Opony zimowe":"Winter tyres",date:d(20),odo:18800,cost:pl?180:45,place:pl?"Vulco":"Kwik Fit"},
    {id:"s3",vid:"d",kind:"insurance",title:pl?"OC/AC":"Car insurance",date:d(40),odo:null,cost:pl?2350:540,until:d(-325)},
@@ -1437,7 +1454,7 @@ function demoState(lang){
 }
 
 /* ---------- install & notifications ---------- */
-const APP_VERSION="v26"; // keep in sync with VERSION in sw.js
+const APP_VERSION="v27"; // keep in sync with VERSION in sw.js
 let installEvt=null;
 const isNative=!!window.Capacitor?.isNativePlatform?.(); // running as the Google Play / App Store app
 const standalone=()=>isNative||matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
@@ -1536,9 +1553,9 @@ $("#vehSel").onchange=e=>{S.active=e.target.value;save();render()};
  if(!qs.has("demo"))try{S=await idb.get("state");if(S)await loadPhotos()}catch(e){console.error(e)}
  S=S?{...defaults(),...S}:defaults();
  await loadLang(qs.get("lang")||S.settings.lang);
- if(qs.has("demo")){S=demoState(qs.get("lang")||S.settings.lang);tab=qs.get("tab")||tab;if(qs.has("z"))S.settings.zoom=+qs.get("z");if(qs.has("theme"))S.settings.theme=qs.get("theme");if(qs.has("palette"))S.settings.palette=qs.get("palette")} // sample data for store screenshots; never saved
+ if(qs.has("demo")){S=demoState(qs.get("lang")||S.settings.lang,qs.get("car"));tab=qs.get("tab")||tab;if(qs.has("z"))S.settings.zoom=+qs.get("z");if(qs.has("theme"))S.settings.theme=qs.get("theme");if(qs.has("palette"))S.settings.palette=qs.get("palette")} // sample data for store screenshots; never saved
  render();
- if(S.demo){if(qs.get("open")==="fuel")fuelForm();if(qs.get("open")==="fab")quickAdd();if(qs.get("open")==="trip"){tripForm();$("#tr_from").value=qs.get("from")||"Bydgoszcz";$("#tr_to").value=qs.get("to")||"Gdańsk";$("#frm").requestSubmit()}if(qs.get("at")==="trends")for(const el of [...$("#app").children]){if(el.nextElementSibling?.id==="carousel")break;el.hidden=true}}
+ if(S.demo){if(qs.get("open")==="fuel")fuelForm();if(qs.get("open")==="fab")quickAdd();if(qs.get("open")==="trip"){tripForm();$("#tr_from").value=qs.get("from")||"Bydgoszcz";$("#tr_to").value=qs.get("to")||"Gdańsk";$("#frm").requestSubmit()}if(qs.get("at")==="cards")$("#app .hero").hidden=true;if(qs.get("at")==="trends")for(const el of [...$("#app").children]){if(el.nextElementSibling?.id==="carousel")break;el.hidden=true}}
  if(!S.vehicles.length)vehicleForm();
  if("serviceWorker" in navigator&&location.protocol.startsWith("http")&&!isNative){ // the store app ships its files inside the app, so no service worker there
   const had=!!navigator.serviceWorker.controller;let reloaded=false;
