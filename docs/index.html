@@ -1454,7 +1454,7 @@ function demoState(lang,car){
 }
 
 /* ---------- install & notifications ---------- */
-const APP_VERSION="v27"; // keep in sync with VERSION in sw.js
+const APP_VERSION="v28"; // keep in sync with VERSION in sw.js
 let installEvt=null;
 const isNative=!!window.Capacitor?.isNativePlatform?.(); // running as the Google Play / App Store app
 const standalone=()=>isNative||matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
@@ -1553,7 +1553,7 @@ $("#vehSel").onchange=e=>{S.active=e.target.value;save();render()};
  if(!qs.has("demo"))try{S=await idb.get("state");if(S)await loadPhotos()}catch(e){console.error(e)}
  S=S?{...defaults(),...S}:defaults();
  await loadLang(qs.get("lang")||S.settings.lang);
- if(qs.has("demo")){S=demoState(qs.get("lang")||S.settings.lang,qs.get("car"));tab=qs.get("tab")||tab;if(qs.has("z"))S.settings.zoom=+qs.get("z");if(qs.has("theme"))S.settings.theme=qs.get("theme");if(qs.has("palette"))S.settings.palette=qs.get("palette")} // sample data for store screenshots; never saved
+ if(qs.has("demo")){S=demoState(qs.get("lang")||S.settings.lang,qs.get("car"));if(["dashboard","fuel","costs","reminders","reports","settings"].includes(qs.get("tab")))tab=qs.get("tab");if(qs.has("z"))S.settings.zoom=+qs.get("z");if(qs.has("theme"))S.settings.theme=qs.get("theme");if(qs.has("palette"))S.settings.palette=qs.get("palette")} // sample data for store screenshots; never saved
  render();
  if(S.demo){if(qs.get("open")==="fuel")fuelForm();if(qs.get("open")==="fab")quickAdd();if(qs.get("open")==="trip"){tripForm();$("#tr_from").value=qs.get("from")||"Bydgoszcz";$("#tr_to").value=qs.get("to")||"Gdańsk";$("#frm").requestSubmit()}if(qs.get("at")==="cards")$("#app .hero").hidden=true;if(qs.get("at")==="trends")for(const el of [...$("#app").children]){if(el.nextElementSibling?.id==="carousel")break;el.hidden=true}}
  if(!S.vehicles.length)vehicleForm();
