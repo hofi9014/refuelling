@@ -21,7 +21,7 @@ jobs:
       - name: Compare usage with the free plan
         env:
           SB_URL: https://mkmqeuievlorbfvtxgwp.supabase.co
-          SB_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          SB_KEY: ${{ secrets.SUPABASE_SECRET_KEY || secrets.SUPBASE_SECRET_KEY }}
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
           OWNER: ${{ github.repository_owner }}
