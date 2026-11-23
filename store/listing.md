@@ -44,6 +44,7 @@ Tankvia to prosty i czytelny dziennik Twojego samochodu. Zapisuj tankowania, spr
 📈 TRENDY I RAPORTY
 • Wykresy spalania, cen paliwa i miesięcznych wydatków
 • Koszt na 1 km i na 100 km, porównanie cen na stacjach
+• Gdzie tankować? – Twoje stacje od najtańszej, różnica na pełnym baku, historia cen i mapa
 • Raport historii pojazdu do PDF – przyda się przy sprzedaży auta
 
 👓 WYGODA
@@ -98,6 +99,7 @@ Tankvia is a simple, clear logbook for your car. Record fill-ups, see your real 
 📈 TRENDS AND REPORTS
 • Charts of consumption, fuel prices and monthly spending
 • Cost per km and per 100 km, fuel prices by station
+• Where to fill up? – your stations from the cheapest, the difference on a full tank, price history and a map
 • Vehicle history report as PDF – handy when selling your car
 
 👓 COMFORT
