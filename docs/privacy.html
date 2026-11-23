@@ -31,14 +31,18 @@ a{color:var(--accent)}
 
 <h2>Jakie dane przetwarza aplikacja</h2>
 <p>Aplikacja zapisuje wyłącznie dane, które wpiszesz samodzielnie: informacje o samochodzie (nazwa, numer rejestracyjny, VIN, zdjęcie), tankowania i ładowania, serwisy, naprawy i inne koszty, przypomnienia oraz zdjęcia paragonów i faktur.</p>
-<p><b>Wszystkie te dane są przechowywane tylko na Twoim urządzeniu.</b> Aplikacja nie ma kont użytkowników, nie wysyła Twoich danych na serwery dewelopera i nie udostępnia ich nikomu. Deweloper nie ma do nich dostępu.</p>
+<p><b>Wszystkie te dane są przechowywane tylko na Twoim urządzeniu.</b> Aplikacja nie ma kont użytkowników, nie wysyła Twoich danych na serwery dewelopera i nie udostępnia ich nikomu. Jedynym wyjątkiem są anonimowe ceny paliwa, opisane niżej, i to tylko wtedy, gdy się na to zgodzisz. Deweloper nie ma do nich dostępu.</p>
 
 <h2>Lokalizacja</h2>
 <p>Lokalizacja jest używana <b>tylko wtedy, gdy naciśniesz przycisk „Stacje w pobliżu”</b>. Twoja lokalizacja, zaokrąglona do około 100 m, jest wtedy jednorazowo wysyłana do publicznej usługi OpenStreetMap Nominatim (nominatim.openstreetmap.org, a gdy nie odpowiada: Overpass API, overpass-api.de), aby wyszukać stacje paliw lub ładowania w promieniu 3 km. Lokalizacja nie jest zapisywana w aplikacji ani przekazywana deweloperowi. Zasady usługi: <a href="https://wiki.openstreetmap.org/wiki/Privacy_Policy">OpenStreetMap – Privacy Policy</a>.</p>
 
 <h2>Kalkulator podróży</h2>
 <p>Gdy używasz kalkulatora kosztu podróży, wpisane miejsca startu i celu (albo Twoja lokalizacja, jeśli naciśniesz „Moja lokalizacja”) są wysyłane do usługi OpenStreetMap Nominatim (nominatim.openstreetmap.org), aby znaleźć te miejsca, a ich współrzędne do usługi wyznaczania tras OSRM (router.project-osrm.org). Mapa jest pobierana z serwerów OpenStreetMap (tile.openstreetmap.org), które widzą wyświetlany obszar. Te dane nie są zapisywane w aplikacji ani przekazywane deweloperowi.</p>
-<p>Gdy w „Gdzie tankować?” otworzysz mapę, nazwy stacji z Twoich tankowań, których położenia aplikacja jeszcze nie zna, są wysyłane do usługi Nominatim, aby pokazać je na mapie. Znalezione położenie stacji zapisuje się tylko na Twoim telefonie. Ceny i pozostałe dane tankowań nie opuszczają telefonu.</p>
+<p>Gdy w „Gdzie tankować?” otworzysz mapę, nazwy stacji z Twoich tankowań, których położenia aplikacja jeszcze nie zna, są wysyłane do usługi Nominatim, aby pokazać je na mapie. Znalezione położenie stacji zapisuje się tylko na Twoim telefonie. Pozostałe dane tankowań nie opuszczają telefonu.</p>
+
+<h2>Wspólne ceny paliwa (opcjonalne)</h2>
+<p>Jeśli się zgodzisz (aplikacja pyta raz, a zgodę możesz w każdej chwili wyłączyć w Ustawieniach: „Udostępniaj anonimowo ceny paliwa”), cena paliwa odczytana z <b>paragonu lub zdjęcia dystrybutora</b> jest wysyłana do wspólnej bazy cen. Wysyłane są wyłącznie: nazwa i położenie stacji, rodzaj paliwa, cena za litr, waluta, data tankowania i to, czy cenę odczytano z paragonu, czy z dystrybutora. <b>Nie są wysyłane żadne dane o Tobie, Twoim samochodzie ani identyfikator urządzenia</b>, a zapisane ceny nie są z Tobą w żaden sposób powiązane. Aby ustalić położenie stacji, jej nazwa może zostać wysłana do usługi Nominatim.</p>
+<p>Gdy otworzysz „Gdzie tankować?”, Twoja lokalizacja zaokrąglona do około 100 m jest wysyłana do bazy cen, aby pobrać ceny z okolicy (do 15 km). Nie jest ona zapisywana. Baza działa w usłudze Supabase (serwery w Unii Europejskiej, Frankfurt). Jak każdy serwer, Supabase widzi techniczne dane połączenia (np. adres IP) i przechowuje je krótko w dziennikach usługi – nie są one zapisywane razem z cenami. Zasady usługi: <a href="https://supabase.com/privacy">Supabase – Privacy Policy</a>. Ceny starsze niż 60 dni nie są już pokazywane.</p>
 
 <h2>Aparat i zdjęcia</h2>
 <p>Dostęp do aparatu lub galerii jest używany tylko wtedy, gdy sam dodajesz zdjęcie samochodu, paragonu lub faktury. Zdjęcia są zmniejszane i zapisywane wyłącznie na urządzeniu.</p>
@@ -53,7 +57,7 @@ a{color:var(--accent)}
 <p>Aplikacja nie zawiera reklam, narzędzi analitycznych ani mechanizmów śledzenia.</p>
 
 <h2>Twoje prawa</h2>
-<p>Masz pełną kontrolę nad danymi: możesz je w każdej chwili przeglądać, edytować, eksportować i usuwać w aplikacji. Odinstalowanie aplikacji usuwa wszystkie zapisane w niej dane. Ponieważ deweloper nie przechowuje Twoich danych, nie musi ich usuwać ani udostępniać na żądanie. Masz prawo wnieść skargę do Prezesa Urzędu Ochrony Danych Osobowych (uodo.gov.pl).</p>
+<p>Masz pełną kontrolę nad danymi: możesz je w każdej chwili przeglądać, edytować, eksportować i usuwać w aplikacji. Odinstalowanie aplikacji usuwa wszystkie zapisane w niej dane. Ponieważ deweloper nie przechowuje Twoich danych, nie musi ich usuwać ani udostępniać na żądanie. Udostępnione anonimowe ceny nie są powiązane z żadną osobą, więc nie da się wskazać, które pochodzą od Ciebie. Masz prawo wnieść skargę do Prezesa Urzędu Ochrony Danych Osobowych (uodo.gov.pl).</p>
 
 <h2>Dzieci</h2>
 <p>Aplikacja nie jest skierowana do dzieci poniżej 13. roku życia.</p>
@@ -69,14 +73,18 @@ a{color:var(--accent)}
 
 <h2>What data the app processes</h2>
 <p>The app stores only the data you enter yourself: car details (name, licence plate, VIN, photo), fill-ups and charging sessions, service, repairs and other costs, reminders, and photos of receipts and invoices.</p>
-<p><b>All of this data is stored only on your device.</b> The app has no user accounts, does not send your data to the developer's servers and does not share it with anyone. The developer has no access to it.</p>
+<p><b>All of this data is stored only on your device.</b> The app has no user accounts, does not send your data to the developer's servers and does not share it with anyone. The only exception is anonymous fuel prices, described below, and only if you agree. The developer has no access to it.</p>
 
 <h2>Location</h2>
 <p>Location is used <b>only when you tap the “Nearby stations” button</b>. Your location, rounded to about 100 m, is then sent once to the public OpenStreetMap Nominatim service (nominatim.openstreetmap.org or, if it doesn't respond, the Overpass API, overpass-api.de) to find fuel or charging stations within 3 km. Your location is not stored by the app or passed to the developer. Service policy: <a href="https://wiki.openstreetmap.org/wiki/Privacy_Policy">OpenStreetMap – Privacy Policy</a>.</p>
 
 <h2>Trip calculator</h2>
 <p>When you use the trip cost calculator, the start and destination you type (or your location, if you tap “My location”) are sent to the OpenStreetMap Nominatim service (nominatim.openstreetmap.org) to find those places, and their coordinates to the OSRM routing service (router.project-osrm.org). The map is loaded from OpenStreetMap servers (tile.openstreetmap.org), which see the area shown. This data is not stored by the app or passed to the developer.</p>
-<p>When you open the map in “Where to fill up?”, the names of stations from your fill-ups whose position the app doesn't know yet are sent to Nominatim to show them on the map. The positions found are saved only on your phone. Prices and other fill-up details never leave the phone.</p>
+<p>When you open the map in “Where to fill up?”, the names of stations from your fill-ups whose position the app doesn't know yet are sent to Nominatim to show them on the map. The positions found are saved only on your phone. Other fill-up details never leave the phone.</p>
+
+<h2>Shared fuel prices (optional)</h2>
+<p>If you agree (the app asks once, and you can turn it off at any time in Settings: “Share fuel prices anonymously”), a fuel price read from a <b>receipt or a pump photo</b> is sent to a shared price database. Only this is sent: the station's name and position, the fuel, the price per litre, the currency, the date of the fill-up and whether the price came from a receipt or a pump. <b>Nothing about you, your car or your device is sent</b>, and the stored prices are not linked to you in any way. To find the station's position, its name may be sent to Nominatim.</p>
+<p>When you open “Where to fill up?”, your location rounded to about 100 m is sent to the price database to fetch prices nearby (within 15 km). It is not stored. The database runs on Supabase (servers in the European Union, Frankfurt). Like any server, Supabase sees technical connection data (e.g. the IP address) and keeps it briefly in its service logs – it is not stored with the prices. Service policy: <a href="https://supabase.com/privacy">Supabase – Privacy Policy</a>. Prices older than 60 days are no longer shown.</p>
 
 <h2>Camera and photos</h2>
 <p>Camera or gallery access is used only when you add a photo of your car, a receipt or an invoice yourself. Photos are downscaled and stored only on your device.</p>
@@ -91,7 +99,7 @@ a{color:var(--accent)}
 <p>The app contains no ads, analytics or tracking.</p>
 
 <h2>Your rights</h2>
-<p>You are in full control of your data: you can view, edit, export and delete it in the app at any time. Uninstalling the app deletes all data stored in it. As the developer does not hold your data, there is nothing for the developer to delete or hand over on request. You have the right to lodge a complaint with a data protection authority.</p>
+<p>You are in full control of your data: you can view, edit, export and delete it in the app at any time. Uninstalling the app deletes all data stored in it. As the developer does not hold your data, there is nothing for the developer to delete or hand over on request. Shared anonymous prices are not linked to anyone, so it is not possible to tell which came from you. You have the right to lodge a complaint with a data protection authority.</p>
 
 <h2>Children</h2>
 <p>The app is not directed at children under 13.</p>

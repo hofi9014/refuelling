@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!-- only our own files and the OpenStreetMap services from the privacy policy; heic2any needs eval and blob workers -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; connect-src 'self' https://nominatim.openstreetmap.org https://overpass-api.de https://router.project-osrm.org; font-src 'self'; media-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; connect-src 'self' https://nominatim.openstreetmap.org https://overpass-api.de https://router.project-osrm.org https://mkmqeuievlorbfvtxgwp.supabase.co; font-src 'self'; media-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#14233A">
 <title>Tankvia</title>
@@ -414,7 +414,7 @@ select{max-width:100%}
 <script src="notify.js"></script>
 <script>
 const I18N={
-pl:{whereFuel:"Gdzie tankować?",whereHint:"Ceny z Twoich tankowań – najtańsza stacja na górze. Dotknij stacji, by zobaczyć historię cen.",perTank:"na pełnym baku",showMap:"Mapa i najbliższe",sortCheap:"Najtaniej",sortNear:"Najbliżej",noPrices:"Dodaj tankowania z nazwą stacji, a pojawią się tu ceny.",takePhoto:"Zrób zdjęcie",fromGallery:"Z galerii",scanReceipt:"Odczytaj z paragonu",receiptOk:"Odczytano dane z paragonu. Sprawdź je i wpisz stan licznika.",phevNote:"Benzyna i prąd są liczone na cały przejechany dystans – razem dają koszt jazdy na 100 km.",approxAvg:"szacunkowo (bez tankowań do pełna)",scanPump:"Odczytaj z dystrybutora",scanReading:"Odczytuję zdjęcie…",scanOk:"Odczytano kwotę, litry i cenę. Sprawdź je i wpisz stan licznika.",scanUnsure:"Nie wszystko udało się odczytać pewnie – sprawdź zaznaczone pola.",scanFail:"Nie udało się odczytać liczb. Zrób zdjęcie bliżej i bez odbić światła albo wpisz dane ręcznie.",bothFuels:"Oba paliwa razem",dualNote:"Spalanie każdego paliwa jest liczone na cały przejechany dystans (metoda „do pełna”, osobno dla każdego paliwa).",trip:"Koszt podróży",tripHint:"Wyznacz trasę na mapie. Koszt policzymy ze średniego spalania i ceny z ostatniego tankowania – obie wartości możesz zmienić.",tripFrom:"Skąd",tripTo:"Dokąd",myLocation:"Moja lokalizacja",roundTrip:"W obie strony",people:"Liczba osób",calcRoute:"Oblicz trasę",calculating:"Wyznaczam trasę…",tripDistance:"Dystans",driveTime:"Czas jazdy",fuelNeeded:"Paliwo na trasę",energyNeeded:"Energia na trasę",perPerson:"Na osobę",tripOffline:"Kalkulator podróży działa tylko z internetem.",tripNotFound:"Nie znaleziono miejsca: {q}",routeError:"Nie udało się wyznaczyć trasy. Spróbuj ponownie za chwilę.",addEvent:"Dodaj wydarzenie",palette:"Kolorystyka",palCoffee:"Kawa",palGraphite:"Grafit",palForest:"Las",palOcean:"Ocean",calendar:"Kalendarz",noRemDay:"Brak terminów w tym dniu.",prevMonth:"Poprzedni miesiąc",nextMonth:"Następny miesiąc",theme:"Motyw",themeAuto:"Automatyczny (jak w telefonie)",themeLight:"Jasny",themeDark:"Ciemny",searchingStations:"Szukam stacji…",avgAll:"z całego okresu",avgPerUnit:"ważona ilością",avgMonthNote:"z {n} mies.",avgTooShort:"potrzeba min. 4 tygodni danych",dashboard:"Pulpit",fuelTab:"Tankowania",chargeTab:"Ładowania",energyTab:"Paliwo i prąd",costs:"Koszty",reminders:"Przypomnienia",reports:"Raporty",settings:"Ustawienia",
+pl:{whereFuel:"Gdzie tankować?",whereHint:"Ceny z Twoich tankowań i od innych kierowców w okolicy – najtańsza stacja na górze. Dotknij stacji, by zobaczyć historię cen.",perTank:"na pełnym baku",showMap:"Mapa i najbliższe",sortCheap:"Najtaniej",sortNear:"Najbliżej",noPrices:"Dodaj tankowania z nazwą stacji, a pojawią się tu ceny.",takePhoto:"Zrób zdjęcie",fromGallery:"Z galerii",scanReceipt:"Odczytaj z paragonu",receiptOk:"Odczytano dane z paragonu. Sprawdź je i wpisz stan licznika.",phevNote:"Benzyna i prąd są liczone na cały przejechany dystans – razem dają koszt jazdy na 100 km.",approxAvg:"szacunkowo (bez tankowań do pełna)",scanPump:"Odczytaj z dystrybutora",scanReading:"Odczytuję zdjęcie…",scanOk:"Odczytano kwotę, litry i cenę. Sprawdź je i wpisz stan licznika.",scanUnsure:"Nie wszystko udało się odczytać pewnie – sprawdź zaznaczone pola.",scanFail:"Nie udało się odczytać liczb. Zrób zdjęcie bliżej i bez odbić światła albo wpisz dane ręcznie.",bothFuels:"Oba paliwa razem",dualNote:"Spalanie każdego paliwa jest liczone na cały przejechany dystans (metoda „do pełna”, osobno dla każdego paliwa).",trip:"Koszt podróży",tripHint:"Wyznacz trasę na mapie. Koszt policzymy ze średniego spalania i ceny z ostatniego tankowania – obie wartości możesz zmienić.",tripFrom:"Skąd",tripTo:"Dokąd",myLocation:"Moja lokalizacja",roundTrip:"W obie strony",people:"Liczba osób",calcRoute:"Oblicz trasę",calculating:"Wyznaczam trasę…",tripDistance:"Dystans",driveTime:"Czas jazdy",fuelNeeded:"Paliwo na trasę",energyNeeded:"Energia na trasę",perPerson:"Na osobę",tripOffline:"Kalkulator podróży działa tylko z internetem.",tripNotFound:"Nie znaleziono miejsca: {q}",routeError:"Nie udało się wyznaczyć trasy. Spróbuj ponownie za chwilę.",addEvent:"Dodaj wydarzenie",palette:"Kolorystyka",palCoffee:"Kawa",palGraphite:"Grafit",palForest:"Las",palOcean:"Ocean",calendar:"Kalendarz",noRemDay:"Brak terminów w tym dniu.",prevMonth:"Poprzedni miesiąc",nextMonth:"Następny miesiąc",theme:"Motyw",themeAuto:"Automatyczny (jak w telefonie)",themeLight:"Jasny",themeDark:"Ciemny",searchingStations:"Szukam stacji…",avgAll:"z całego okresu",avgPerUnit:"ważona ilością",avgMonthNote:"z {n} mies.",avgTooShort:"potrzeba min. 4 tygodni danych",dashboard:"Pulpit",fuelTab:"Tankowania",chargeTab:"Ładowania",energyTab:"Paliwo i prąd",costs:"Koszty",reminders:"Przypomnienia",reports:"Raporty",settings:"Ustawienia",
 addFuel:"Dodaj tankowanie",editFuel:"Edytuj tankowanie",addCharge:"Dodaj ładowanie",editCharge:"Edytuj ładowanie",addCost:"Dodaj koszt",editCost:"Edytuj koszt",addReminder:"Zaplanuj serwis",editReminder:"Edytuj planowany serwis",addVehicle:"Dodaj samochód",editVehicle:"Edytuj samochód",
 vehicles:"Samochody",name:"Nazwa (np. Skoda Octavia)",plate:"Nr rejestracyjny",year:"Rok produkcji",vin:"VIN",tankCap:"Pojemność baku",battery:"Pojemność baterii (kWh)",batteryShort:"Bateria",carPhoto:"Zdjęcie samochodu",fuelType:"Napęd",
 refCons:"Spalanie porównywalnego auta spalinowego",refPrice:"Cena paliwa do porównania",refHint:"Na tej podstawie aplikacja policzy, ile oszczędzasz, jeżdżąc na prądzie.",
@@ -430,7 +430,7 @@ overdue:"Po terminie",soon:"Wkrótce",upcoming:"Zaplanowane",completed:"Wykonane
 language:"Język",currency:"Waluta",units:"Jednostki",backup:"Kopia zapasowa",export:"Eksportuj dane (JSON)",exportCsv:"Eksportuj wszystko (CSV)",import:"Importuj dane",importOk:"Dane zaimportowane.",importErr:"Nieprawidłowy plik.",
 consChart:"Spalanie w czasie",econsChart:"Zużycie energii w czasie",needTwoFull:"Potrzebne są co najmniej dwa tankowania do pełna, aby obliczyć spalanie.",needTwoCharges:"Podaj poziom baterii przed i po ładowaniu, aby zobaczyć zużycie po każdym ładowaniu.",
 tankWarn:"Zatankowana ilość jest większa niż pojemność baku",odoWarn:"Stan licznika jest niższy niż w poprzednim wpisie",
-storageInfo:"Dane są zapisywane tylko na tym urządzeniu (w przeglądarce). Rób regularnie kopię zapasową.",edit:"Edytuj",remaining:"pozostało",ago:"temu",days:"dni",nextDue:"Najbliższe terminy",seeAll:"Zobacz wszystkie",partial:"częściowe",
+storageInfo:"Dane są zapisywane tylko na tym urządzeniu (w przeglądarce). Rób regularnie kopię zapasową.",edit:"Edytuj",remaining:"pozostało",ago:"temu",days:"dni",nextDue:"Najbliższe terminy",seeAll:"Zobacz wszystkie",shareAsk:"Czy anonimowo udostępniać ceny paliwa z odczytanych paragonów i dystrybutorów? Inni kierowcy zobaczą je w „Gdzie tankować?”. Wysyłana jest tylko stacja, paliwo, cena i data – bez żadnych danych o Tobie. Możesz to zmienić w Ustawieniach.",shareSetting:"Udostępniaj anonimowo ceny paliwa",shareHint:"Ceny z odczytanych paragonów i dystrybutorów trafiają do wspólnej bazy cen – tylko stacja, paliwo, cena i data, bez danych o Tobie.",fromDrivers:"od kierowców",pricesNearby:"Ceny w okolicy",partial:"częściowe",
 period:"Okres",p12m:"Ostatnie 12 miesięcy",pAll:"Cały okres",monthly:"Koszty miesięcznie",byCategory:"Koszty wg kategorii",stations:"Ceny paliwa na stacjach",chargingByType:"Ładowanie wg rodzaju",
 totalCost:"Łączny koszt",perMonth:"Średnio na miesiąc",perKm:"Koszt na 1",distance:"Przejechano",visits:"Tankowań",station:"Stacja",cheapest:"najtaniej",share:"Udział",
 saleReport:"Raport do sprzedaży auta (PDF)",saleReportHint:"Historia serwisowa auta gotowa do pokazania kupującemu. W oknie drukowania wybierz „Zapisz jako PDF”.",incCosts:"Pokaż koszty serwisów",incStats:"Dołącz statystyki spalania i zużycia",incPhotos:"Dołącz zdjęcia faktur",
@@ -449,7 +449,7 @@ fuelTypes:{petrol:"Benzyna",diesel:"Diesel",lpg:"LPG + benzyna",hybrid:"Hybryda 
 ct:{home:"Dom",work:"Praca",ac:"Publiczna AC",dc:"Szybka DC"},
 kinds:{service:"Serwis",repair:"Naprawa",tyres:"Opony",inspection:"Przegląd techniczny",insurance:"Ubezpieczenie",tax:"Podatki i opłaty",leasing:"Leasing / rata",parking:"Parking",tolls:"Autostrady",wash:"Myjnia",fines:"Mandaty",accessories:"Akcesoria",other:"Inne"},
 grp:{fuel:"Paliwo",charge:"Ładowanie",svc:"Serwis i naprawy",fix:"Ubezpieczenie, opłaty, leasing",oth:"Inne"}},
-en:{whereFuel:"Where to fill up?",whereHint:"Prices from your fill-ups – the cheapest station first. Tap a station to see its price history.",perTank:"on a full tank",showMap:"Map and nearest",sortCheap:"Cheapest",sortNear:"Nearest",noPrices:"Add fill-ups with the station name and their prices will show up here.",takePhoto:"Take photo",fromGallery:"From gallery",scanReceipt:"Read the receipt",receiptOk:"Receipt read. Check the values and enter the odometer.",phevNote:"Fuel and electricity are both measured over the whole distance driven – together they give the cost per 100 km.",approxAvg:"estimate (no full-tank fill-ups)",scanPump:"Read from the pump",scanReading:"Reading the photo…",scanOk:"Amount, litres and price read. Check them and enter the odometer.",scanUnsure:"Not everything could be read for sure – check the highlighted fields.",scanFail:"Couldn't read the numbers. Take the photo closer and without glare, or enter the values by hand.",bothFuels:"Both fuels together",dualNote:"Each fuel's consumption is measured over the whole distance driven (full-to-full, separately for each fuel).",trip:"Trip cost",tripHint:"Plan the route on the map. The cost uses your average consumption and the price from your last fill-up – you can change both.",tripFrom:"From",tripTo:"To",myLocation:"My location",roundTrip:"Round trip",people:"People",calcRoute:"Calculate route",calculating:"Finding the route…",tripDistance:"Distance",driveTime:"Driving time",fuelNeeded:"Fuel needed",energyNeeded:"Energy needed",perPerson:"Per person",tripOffline:"The trip calculator needs an internet connection.",tripNotFound:"Place not found: {q}",routeError:"Couldn't find a route. Try again in a moment.",addEvent:"Add event",palette:"Colours",palCoffee:"Coffee",palGraphite:"Graphite",palForest:"Forest",palOcean:"Ocean",calendar:"Calendar",noRemDay:"Nothing scheduled on this day.",prevMonth:"Previous month",nextMonth:"Next month",theme:"Theme",themeAuto:"Automatic (follow phone)",themeLight:"Light",themeDark:"Dark",searchingStations:"Searching for stations…",avgAll:"over all records",avgPerUnit:"weighted by amount",avgMonthNote:"over {n} months",avgTooShort:"needs at least 4 weeks of data",dashboard:"Dashboard",fuelTab:"Fill-ups",chargeTab:"Charging",energyTab:"Fuel & power",costs:"Costs",reminders:"Reminders",reports:"Reports",settings:"Settings",
+en:{whereFuel:"Where to fill up?",whereHint:"Prices from your fill-ups and other drivers nearby – the cheapest station first. Tap a station to see its price history.",perTank:"on a full tank",showMap:"Map and nearest",sortCheap:"Cheapest",sortNear:"Nearest",noPrices:"Add fill-ups with the station name and their prices will show up here.",takePhoto:"Take photo",fromGallery:"From gallery",scanReceipt:"Read the receipt",receiptOk:"Receipt read. Check the values and enter the odometer.",phevNote:"Fuel and electricity are both measured over the whole distance driven – together they give the cost per 100 km.",approxAvg:"estimate (no full-tank fill-ups)",scanPump:"Read from the pump",scanReading:"Reading the photo…",scanOk:"Amount, litres and price read. Check them and enter the odometer.",scanUnsure:"Not everything could be read for sure – check the highlighted fields.",scanFail:"Couldn't read the numbers. Take the photo closer and without glare, or enter the values by hand.",bothFuels:"Both fuels together",dualNote:"Each fuel's consumption is measured over the whole distance driven (full-to-full, separately for each fuel).",trip:"Trip cost",tripHint:"Plan the route on the map. The cost uses your average consumption and the price from your last fill-up – you can change both.",tripFrom:"From",tripTo:"To",myLocation:"My location",roundTrip:"Round trip",people:"People",calcRoute:"Calculate route",calculating:"Finding the route…",tripDistance:"Distance",driveTime:"Driving time",fuelNeeded:"Fuel needed",energyNeeded:"Energy needed",perPerson:"Per person",tripOffline:"The trip calculator needs an internet connection.",tripNotFound:"Place not found: {q}",routeError:"Couldn't find a route. Try again in a moment.",addEvent:"Add event",palette:"Colours",palCoffee:"Coffee",palGraphite:"Graphite",palForest:"Forest",palOcean:"Ocean",calendar:"Calendar",noRemDay:"Nothing scheduled on this day.",prevMonth:"Previous month",nextMonth:"Next month",theme:"Theme",themeAuto:"Automatic (follow phone)",themeLight:"Light",themeDark:"Dark",searchingStations:"Searching for stations…",avgAll:"over all records",avgPerUnit:"weighted by amount",avgMonthNote:"over {n} months",avgTooShort:"needs at least 4 weeks of data",dashboard:"Dashboard",fuelTab:"Fill-ups",chargeTab:"Charging",energyTab:"Fuel & power",costs:"Costs",reminders:"Reminders",reports:"Reports",settings:"Settings",
 addFuel:"Add fill-up",editFuel:"Edit fill-up",addCharge:"Add charge",editCharge:"Edit charge",addCost:"Add cost",editCost:"Edit cost",addReminder:"Schedule service",editReminder:"Edit scheduled service",addVehicle:"Add car",editVehicle:"Edit car",
 vehicles:"Cars",name:"Name (e.g. Toyota Corolla)",plate:"Licence plate",year:"Year",vin:"VIN",tankCap:"Tank capacity",battery:"Battery capacity (kWh)",batteryShort:"Battery",carPhoto:"Car photo",fuelType:"Powertrain",
 refCons:"Comparable combustion car consumption",refPrice:"Fuel price for comparison",refHint:"Used to calculate how much you save by driving electric.",
@@ -465,7 +465,7 @@ overdue:"Overdue",soon:"Soon",upcoming:"Scheduled",completed:"Completed",markDon
 language:"Language",currency:"Currency",units:"Units",backup:"Backup",export:"Export data (JSON)",exportCsv:"Export everything (CSV)",import:"Import data",importOk:"Data imported.",importErr:"Invalid file.",
 consChart:"Consumption over time",econsChart:"Energy use over time",needTwoFull:"At least two full-tank fill-ups are needed to calculate consumption.",needTwoCharges:"Enter battery level before and after charging to see energy use per charge.",
 tankWarn:"Amount filled is larger than the tank capacity",odoWarn:"Odometer is lower than in the previous entry",
-storageInfo:"Data is stored only on this device (in the browser). Back it up regularly.",edit:"Edit",remaining:"left",ago:"ago",days:"days",nextDue:"Coming up",seeAll:"See all",partial:"partial",
+storageInfo:"Data is stored only on this device (in the browser). Back it up regularly.",edit:"Edit",remaining:"left",ago:"ago",days:"days",nextDue:"Coming up",seeAll:"See all",shareAsk:"Share fuel prices from scanned receipts and pumps anonymously? Other drivers will see them in “Where to fill up?”. Only the station, fuel, price and date are sent – nothing about you. You can change this in Settings.",shareSetting:"Share fuel prices anonymously",shareHint:"Prices from scanned receipts and pumps go to a shared price database – only station, fuel, price and date, nothing about you.",fromDrivers:"from drivers",pricesNearby:"Prices nearby",partial:"partial",
 period:"Period",p12m:"Last 12 months",pAll:"All time",monthly:"Monthly costs",byCategory:"Costs by category",stations:"Fuel prices by station",chargingByType:"Charging by type",
 totalCost:"Total cost",perMonth:"Average per month",perKm:"Cost per 1",distance:"Distance driven",visits:"Fill-ups",station:"Station",cheapest:"cheapest",share:"Share",
 saleReport:"Vehicle history report (PDF)",saleReportHint:"Service history ready to show a buyer. In the print window choose “Save as PDF”.",incCosts:"Show service costs",incStats:"Include consumption statistics",incPhotos:"Attach invoice photos",
@@ -798,6 +798,49 @@ async function geocode(q){
  const[hit]=await r.json();if(!hit)throw new Error("notfound:"+q);
  return{lat:+hit.lat,lon:+hit.lon,name:hit.display_name.split(",").slice(0,2).join(",")};
 }
+/* Shared prices. With the user's consent, a price read from a receipt or a pump photo goes to a common database:
+   only the station (name and position), the fuel, the price per litre, the currency and the day – nothing about the person.
+   The database checks every price (dates, misread numbers far from what others paid). Prices from other drivers within
+   15 km show up in "Where to fill up?"; the phone's position is sent rounded to about 100 m and not stored. */
+const SB={url:"https://mkmqeuievlorbfvtxgwp.supabase.co",key:"sb_publishable_JmxNq9HlTPRZWufXdu0YQQ_UeoO42Ix"};
+const LITRES={us:3.78541,uk:4.54609},perLitre=p=>p/(LITRES[S.settings.units]||1),perUnit=p=>p*(LITRES[S.settings.units]||1);
+async function sbRpc(fn,args){
+ const r=await fetch(`${SB.url}/rest/v1/rpc/${fn}`,{method:"POST",headers:{apikey:SB.key,"Content-Type":"application/json"},body:JSON.stringify(args),signal:AbortSignal.timeout(10000)});
+ if(!r.ok)throw new Error("sb "+r.status);return r.json();
+}
+// a station's position only from a real fuel station on OpenStreetMap, never a town's centre
+async function geocodeFuel(q){
+ const r=await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=jsonv2&limit=5`,{signal:AbortSignal.timeout(8000)});
+ if(!r.ok)throw new Error("geo");
+ const hit=(await r.json()).find(h=>h.category==="amenity"&&h.type==="fuel");
+ return hit?{lat:+(+hit.lat).toFixed(5),lon:+(+hit.lon).toFixed(5)}:null;
+}
+let formScan=null,flushing=false,commRows=[],commAt=null;
+function queueShare(f){
+ if(S.demo||S.settings.share!=="on"||!f.scan||!f.place||!(+f.price)||!GRADES.includes(f.grade)||f.grade==="other")return;
+ S.outbox=(S.outbox||[]).filter(x=>x.id!==f.id).slice(-49);
+ S.outbox.push({id:f.id,place:f.place.trim().slice(0,200),grade:f.grade,price:+perLitre(+f.price).toFixed(3),currency:cur(),day:f.date,source:f.scan});
+}
+async function flushOutbox(){
+ if(flushing||S.demo||!S.outbox?.length||!navigator.onLine)return;
+ if(S.settings.share!=="on"){S.outbox=[];return save()}
+ flushing=true;
+ try{for(const x of[...S.outbox]){
+  try{
+   const k=placeKey(x.place);let pos=S.places?.[k];
+   if(!pos){pos=await geocodeFuel(x.place.replace(/\s+-\s+/g," "));if(pos){S.places=S.places||{};S.places[k]=pos}await new Promise(r=>setTimeout(r,1100))}
+   if(pos)await sbRpc("report_price",{p_lat:pos.lat,p_lon:pos.lon,p_name:x.place,p_grade:x.grade,p_price:x.price,p_currency:x.currency,p_day:x.day,p_source:x.source});
+   S.outbox=S.outbox.filter(y=>y!==x); // sent, refused by the checks, or the station can't be placed: done either way
+  }catch(e){console.warn(e);x.tries=(x.tries||0)+1;if(x.tries>=5)S.outbox=S.outbox.filter(y=>y!==x)} // offline or the server is down: try again later
+ }}finally{flushing=false;save()}
+}
+async function loadComm(){ // newest prices around from other drivers, kept for 10 minutes per area of ~1 km
+ if(!whereHere||S.demo||!navigator.onLine)return false;
+ const key=`${whereHere.lat.toFixed(2)},${whereHere.lon.toFixed(2)},${cur()}`;
+ if(commAt?.key===key&&Date.now()-commAt.t<600000)return false;
+ try{const rows=await sbRpc("nearby_prices",{p_lat:+whereHere.lat.toFixed(3),p_lon:+whereHere.lon.toFixed(3),p_km:15,p_currency:cur()});
+  commRows=Array.isArray(rows)?rows:[];commAt={key,t:Date.now()};return true}catch(e){console.warn(e);return false}
+}
 /* "Where to fill up?": the prices the user paid, station by station – built only from their own fill-ups on the phone.
    On request the map puts the stations on OpenStreetMap: a station picked from "Nearby" already knows its position (S.places),
    the others are looked up by name in Nominatim once and remembered. */
@@ -809,35 +852,45 @@ function stationPrices(grade){
   if(!f.place||!(+f.price))continue;const V=S.vehicles.find(v=>v.id===f.vid)||{};if((f.grade||defGrade(V))!==grade)continue;
   const k=placeKey(f.place);(by[k]||(by[k]={key:k,name:f.place.trim(),list:[]})).list.push(f);
  }
- return Object.values(by).map(s=>{
+ const dist=pos=>pos&&whereHere?geoDist(whereHere.lat,whereHere.lon,pos.lat,pos.lon):null;
+ const out=Object.values(by).map(s=>{
   s.list.sort((a,b)=>(b.date+(b.time||"")).localeCompare(a.date+(a.time||"")));
   const pos=S.places?.[s.key]||null;
-  return{...s,price:+s.list[0].price,date:s.list[0].date,prev:s.list[1]?+s.list[1].price:null,pos,dist:pos&&whereHere?geoDist(whereHere.lat,whereHere.lon,pos.lat,pos.lon):null};
- }).sort((a,b)=>whereSort==="near"&&a.dist!=null&&b.dist!=null?a.dist-b.dist:whereSort==="near"&&(a.dist!=null)!==(b.dist!=null)?(a.dist!=null?-1:1):a.price-b.price);
+  return{...s,price:+s.list[0].price,date:s.list[0].date,prev:s.list[1]?+s.list[1].price:null,pos,dist:dist(pos)};
+ });
+ // other drivers' prices: a newer one replaces the user's own at the same station (within 150 m)
+ if(cur()===commAt?.key.split(",")[2])for(const c of commRows){
+  if(c.grade!==grade||!(+c.price))continue;
+  const price=+perUnit(+c.price).toFixed(3),pos={lat:+c.lat,lon:+c.lon},m=out.find(s=>s.pos&&geoDist(s.pos.lat,s.pos.lon,pos.lat,pos.lon)<150);
+  if(m){if(c.day>m.date){m.prev=m.price;m.price=price;m.date=c.day;m.comm=+c.reports||1}}
+  else out.push({key:"c:"+c.station_key,name:String(c.station_name||""),list:[],price,date:c.day,prev:null,pos,dist:dist(pos),comm:+c.reports||1});
+ }
+ return out.sort((a,b)=>whereSort==="near"&&a.dist!=null&&b.dist!=null?a.dist-b.dist:whereSort==="near"&&(a.dist!=null)!==(b.dist!=null)?(a.dist!=null?-1:1):a.price-b.price);
 }
 function priceGrades(){ // fuels with known station prices, the current car's usual fuel first
  const V=veh(),cnt={};mine(S.fuel).forEach(f=>{const g=f.grade||defGrade(V);cnt[g]=(cnt[g]||0)+1});
  const own=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]);
- const all=[...new Set(S.fuel.filter(f=>f.place&&+f.price).map(f=>f.grade||defGrade(S.vehicles.find(v=>v.id===f.vid)||{})))];
+ const all=[...new Set([...S.fuel.filter(f=>f.place&&+f.price).map(f=>f.grade||defGrade(S.vehicles.find(v=>v.id===f.vid)||{})),...commRows.map(c=>c.grade)])];
  return[...own.filter(g=>all.includes(g)),...all.filter(g=>!own.includes(g))];
 }
 function whereCard(){
  const V=veh();if(!hasFuel(V))return"";
  const g=priceGrades()[0],st=g?stationPrices(g):[],c=st[0],u=U();
- return`<section class="card row trip-card"><span class="kic">${ic("pin")}</span><div style="flex:1;min-width:0"><b>${t("whereFuel")}</b><div class="muted" style="font-size:13px">${c?`${esc(c.name)} · ${money(c.price)}/${u.v} · ${esc(gradeLabel(g))}`:t("noPrices")}</div></div>${c?`<button class="primary small" data-act="where">${t("seeAll")}</button>`:""}</section>`;
+ return`<section class="card row trip-card"><span class="kic">${ic("pin")}</span><div style="flex:1;min-width:0"><b>${t("whereFuel")}</b><div class="muted" style="font-size:13px">${c?`${esc(c.name)} · ${money(c.price)}/${u.v} · ${esc(gradeLabel(g))}`:t("noPrices")}</div></div><button class="primary small" data-act="where">${t(c?"seeAll":"pricesNearby")}</button></section>`;
 }
 function whereForm(){
- const V=veh(),u=U(),grades=priceGrades();if(!grades.includes(whereGrade))whereGrade=grades[0];
+ const V=veh(),u=U();
  const d=$("#dlg");if(d.open)d.close();d.className="trip";whereOpen=null;
  const draw=()=>{
+  const grades=priceGrades();if(!grades.includes(whereGrade))whereGrade=grades[0]||defGrade(V);
   const st=stationPrices(whereGrade),cheap=st.reduce((m,s)=>Math.min(m,s.price),Infinity),tank=+V.tank||0;
   d.innerHTML=`<form id="frm"><h2>${ic("pin")}${t("whereFuel")}</h2><p class="muted" style="margin:0 0 10px;font-size:13.5px">${t("whereHint")}</p>
   ${grades.length>1?`<div class="chips">${grades.map(g=>`<button type="button" class="${g===whereGrade?"on":""}" data-g="${esc(g)}">${esc(gradeLabel(g))}</button>`).join("")}</div>`:""}
   <div class="chips"><button type="button" class="${whereSort==="cheap"?"on":""}" data-sort="cheap">${t("sortCheap")}</button><button type="button" class="${whereSort==="near"?"on":""}" data-sort="near">${ic("pin","sm")}${t("sortNear")}</button></div>
   <div id="wh_msg"></div><div class="list">${st.map(s=>{const diff=s.price-cheap;
-   return`<div class="item where-item" data-k="${esc(s.key)}"><div class="main"><div class="t">${esc(s.name)}</div><div class="s">${fdate(s.date)} · ${ago(s.date)}${s.dist!=null?` · ${s.dist<1000?Math.round(s.dist)+" m":num(s.dist/1000,1)+" km"}`:""}</div>
+   return`<div class="item where-item" data-k="${esc(s.key)}"><div class="main"><div class="t">${esc(s.name)}</div><div class="s">${fdate(s.date)} · ${ago(s.date)}${s.comm?` · <span class="badge">${t("fromDrivers")}${s.comm>1?` ×${s.comm}`:""}</span>`:""}${s.dist!=null?` · ${s.dist<1000?Math.round(s.dist)+" m":num(s.dist/1000,1)+" km"}`:""}</div>
     ${diff>0.0005&&tank?`<div class="s">+${money(diff*tank)} ${t("perTank")}</div>`:""}
-    ${whereOpen===s.key?`<div class="s" style="margin-top:6px">${s.list.slice(0,8).map(f=>`${fdate(f.date)}: <b>${money(+f.price)}</b>`).join("<br>")}</div>`:""}</div>
+    ${whereOpen===s.key&&s.list.length?`<div class="s" style="margin-top:6px">${s.list.slice(0,8).map(f=>`${fdate(f.date)}: <b>${money(+f.price)}</b>`).join("<br>")}</div>`:""}</div>
     <div class="r" style="text-align:right"><div class="rv" style="font-size:22px;justify-content:flex-end">${trendArrow(s.price,s.prev,true)}${money(s.price)}</div><div class="s">/${u.v}${diff<=0.0005?` · <span class="badge">${t("sortCheap")}</span>`:""}</div></div></div>`}).join("")||emptyBox("pin",t("noPrices"))}</div>
   <div id="tr_map" hidden></div>
   <div class="row" style="margin-top:12px"><button type="button" id="wh_map">${ic("pin")}${t("showMap")}</button><span class="sp"></span><button type="button" id="fcancel">${t("cancel")}</button></div></form>`;
@@ -848,7 +901,7 @@ function whereForm(){
   $("#wh_map").onclick=showMap;
  };
  const msg=h=>{const m=$("#wh_msg");if(m)m.innerHTML=h};
- const locate=async()=>{msg(`<p class="muted">${t("locating")}</p>`);try{const p=await getPosition();whereHere={lat:p.coords.latitude,lon:p.coords.longitude}}catch{msg(`<div class="warnbox">${t("gpsError")}</div>`)}};
+ const locate=async()=>{msg(`<p class="muted">${t("locating")}</p>`);try{const p=await getPosition();whereHere={lat:p.coords.latitude,lon:p.coords.longitude};await loadComm()}catch{msg(`<div class="warnbox">${t("gpsError")}</div>`)}};
  const showMap=async()=>{
   if(!navigator.onLine)return msg(`<div class="warnbox">${t("tripOffline")}</div>`);
   $("#wh_map").disabled=true;if(!whereHere)await locate();msg(`<p class="muted">${t("searchingStations")}</p>`);
@@ -863,6 +916,8 @@ function whereForm(){
   draw();await drawWhereMap();
  };
  draw();d.showModal();
+ // other drivers' prices around: needs the position (asked once per session) and the internet
+ if(navigator.onLine&&!S.demo)(async()=>{const had=commAt;if(!whereHere)await locate();else await loadComm();if(d.open&&$("#wh_map")&&(commAt!==had||whereHere))draw()})();
 }
 async function drawWhereMap(){
  const st=stationPrices(whereGrade).filter(s=>s.pos);if(!st.length&&!whereHere)return;
@@ -1085,6 +1140,7 @@ function bindPumpScan(V,prev){
    const hint={price:+prev?.price||null,tank:+V.tank||null},r=mode==="receipt"?readReceipt(lines||[],hint):readPump(lines||[],hint);
    // a receipt also knows when, where and which fuel
    if(r&&mode==="receipt"){if(r.date)$("#f_date").value=r.date;if(r.time)$("#f_time").value=r.time;if(r.grade&&GRADES.includes(r.grade))$("#f_grade").value=r.grade;if(r.place)$("#f_place").value=r.place}
+   formScan=r?.sure?mode:null;
    if(!r){box.innerHTML=`<div class="warnbox">${t("scanFail")}</div>`;return}
    for(const k of["qty","price","cost"]){const el=$("#f_"+k);el.value=r[k]??"";el.classList.toggle("unsure",!r.sure&&r[k]!=null)}
    // let the form check the tank size and recalculate a missing value; the price the pump showed stays as read
@@ -1099,7 +1155,7 @@ function bindPumpScan(V,prev){
  };
 }
 function fuelForm(f){
- const V=veh(),u=U(),prev=mine(S.fuel).filter(x=>x!==f).sort((a,b)=>b.odo-a.odo)[0];
+ formScan=null;const V=veh(),u=U(),prev=mine(S.fuel).filter(x=>x!==f).sort((a,b)=>b.odo-a.odo)[0];
  openForm(t(f?"editFuel":"addFuel"),[
   ...(isNative?[{type:"html",html:`<div class="grid2"><button type="button" class="primary" id="f_scan" style="justify-content:center">${ic("camera")}${t("scanPump")}</button><button type="button" class="primary" id="f_scanr" style="justify-content:center">${ic("receipt")}${t("scanReceipt")}</button></div><input type="file" id="f_scanfile" accept="image/*" capture="environment" hidden><div id="f_scanmsg"></div>`}]:[]),
   [{k:"date",label:t("date"),type:"date",req:true},{k:"time",label:t("time"),type:"time"}],
@@ -1113,7 +1169,10 @@ function fuelForm(f){
   {k:"photo",label:t("receipt"),type:"photo"},
   {k:"note",label:t("note"),type:"textarea"}
  ],f?{...f,cost:f.cost??(f.qty&&f.price?+(f.qty*f.price).toFixed(2):null)}:{date:today(),time:nowTime(),full:true,grade:prev?.grade||defGrade(V)},
- o=>{if(f)Object.assign(f,o);else S.fuel.push({id:uid(),vid:S.active,...o})},
+ o=>{let x=f;if(f)Object.assign(f,o);else S.fuel.push(x={id:uid(),vid:S.active,...o});
+  const scan=formScan;formScan=null;if(!scan)return;
+  x.scan=scan;if(!S.settings.share&&!S.demo)S.settings.share=confirm(t("shareAsk"))?"on":"off"; // asked once, changeable in Settings
+  queueShare(x);setTimeout(flushOutbox,800)},
  f&&(()=>{S.fuel=S.fuel.filter(x=>x!==f)}),
  ()=>{
   const upd=()=>{const q=parseNum($("#f_qty").value);
@@ -1447,7 +1506,8 @@ function viewSettings(){
  </div><label class="field" style="margin-top:12px"><span>${t("palette")}</span><select data-set="palette">${["Ocean","Coffee","Graphite","Forest"].map(v=>`<option value="${v.toLowerCase()}" ${(s.palette||"ocean")===v.toLowerCase()?"selected":""}>${t("pal"+v)}</option>`).join("")}</select></label>
  <label class="field" style="margin-top:12px"><span>${t("theme")}</span><select data-set="theme">${["Auto","Light","Dark"].map(v=>`<option value="${v.toLowerCase()}" ${(s.theme||"auto")===v.toLowerCase()?"selected":""}>${t("theme"+v)}</option>`).join("")}</select></label>
  <label class="field" style="margin-top:12px"><span>${t("textSize")}</span><select data-set="zoom">${ZOOMS.map(z=>`<option value="${z}" ${z==(s.zoom||1)?"selected":""}>${Math.round(z*100)}%${z==1?` (${t("normal")})`:""}</option>`).join("")}</select><small>${t("textSizeHint")}</small></label>
- <label class="field" style="margin-top:12px"><span>${t("units")}</span><select data-set="units">${Object.entries(UNITS).map(([k,v])=>`<option value="${k}" ${k===s.units?"selected":""}>${v.label} · ${v.ecu}</option>`).join("")}</select></label></div>
+ <label class="field" style="margin-top:12px"><span>${t("units")}</span><select data-set="units">${Object.entries(UNITS).map(([k,v])=>`<option value="${k}" ${k===s.units?"selected":""}>${v.label} · ${v.ecu}</option>`).join("")}</select></label>
+ <div class="field" style="margin-top:12px"><label class="chk"><input type="checkbox" data-set="share" ${s.share==="on"?"checked":""}> ${t("shareSetting")}</label><small>${t("shareHint")}</small></div></div>
  <h3>${ic("car")}${t("vehicles")}</h3><div class="card list">${S.vehicles.map(v=>`<div class="item">${v.photo?`<img class="thumb" src="${v.photo}" alt="">`:tile(v.fuelType==="ev"?"bolt":"car","var(--accent)")}<div class="main"><div class="t">${esc(v.name)} ${v.id===S.active?`<span class="badge">${ic("check","sm")}</span>`:""}</div><div class="s">${[v.plate,t("fuelTypes")[v.fuelType]].filter(Boolean).map(esc).join(" · ")}</div></div><button class="small ghost" data-act="vehEditId" data-id="${v.id}">${ic("edit")}${t("edit")}</button></div>`).join("")}
   <div class="item"><button data-act="vehAdd">${ic("plus")}${t("addVehicle")}</button></div></div>
  <h3>${ic("phone")}${t("app")}<span style="text-transform:none;letter-spacing:0;font-weight:500">${APP_VERSION} · <a href="https://hofi9014.github.io/refuelling/privacy.html#${S.settings.lang==="pl"?"pl":"en"}" target="_blank" rel="noopener" style="color:var(--ink)">${t("privacy")}</a></span></h3><div class="card">
@@ -1537,6 +1597,7 @@ function cleanState(d){
    else if(BOOL.has(k))r[k]=!!v;
    else if(k==="date"||k==="doneDate"||k==="until"){if(typeof v==="string"&&DATE.test(v))r[k]=v}
    else if(k==="time"){if(typeof v==="string"&&TIME.test(v))r[k]=v}
+   else if(k==="scan"){if(v==="receipt"||v==="pump")r[k]=v}
    else if(typeof v==="string"||typeof v==="number")r[k]=String(v).slice(0,2000);
   }
   if(!r.id)r.id=uid();
@@ -1545,7 +1606,7 @@ function cleanState(d){
  const out=defaults(),s=d.settings||{},set=out.settings;
  if(LANGS[s.lang])set.lang=s.lang;if(CURRENCIES.includes(s.currency))set.currency=s.currency;if(UNITS[s.units])set.units=s.units;
  if(["auto","light","dark"].includes(s.theme))set.theme=s.theme;if(["ocean","coffee","graphite","forest"].includes(s.palette))set.palette=s.palette;
- if(ZOOMS.includes(+s.zoom))set.zoom=+s.zoom;if(s.notify)set.notify=true;
+ if(ZOOMS.includes(+s.zoom))set.zoom=+s.zoom;if(s.notify)set.notify=true;if(s.share==="on"||s.share==="off")set.share=s.share;
  out.vehicles=d.vehicles.map(rec).filter(v=>v&&(v.name=v.name||"?"));
  const vids=new Set(out.vehicles.map(v=>v.id));
  for(const l of["fuel","charges","services","reminders"])out[l]=(Array.isArray(d[l])?d[l]:[]).map(rec).filter(x=>x&&vids.has(x.vid));
@@ -1599,7 +1660,7 @@ function demoState(lang,car){
 }
 
 /* ---------- install & notifications ---------- */
-const APP_VERSION="v30"; // keep in sync with VERSION in sw.js
+const APP_VERSION="v31"; // keep in sync with VERSION in sw.js
 let installEvt=null;
 const isNative=!!window.Capacitor?.isNativePlatform?.(); // running as the Google Play / App Store app
 if(isNative)Cap("App")?.addListener("backButton",()=>{
@@ -1693,7 +1754,7 @@ document.addEventListener("click",e=>{
  A[b.dataset.act]?.();
 });
 document.addEventListener("change",e=>{
- const k=e.target.dataset?.set;if(k){S.settings[k]=e.target.value;save();if(k==="lang")loadLang(e.target.value).then(render);else render()}
+ const k=e.target.dataset?.set;if(k){S.settings[k]=e.target.type==="checkbox"?(e.target.checked?"on":"off"):e.target.value;save();if(k==="share")flushOutbox();if(k==="lang")loadLang(e.target.value).then(render);else render()}
  if(e.target.id==="periodSel"){period=e.target.value;render()}
 });
 $("#vehSel").onchange=e=>{S.active=e.target.value;save();render()};
@@ -1718,6 +1779,7 @@ $("#vehSel").onchange=e=>{S.active=e.target.value;save();render()};
   navigator.serviceWorker.addEventListener("controllerchange",()=>{if(had&&!reloaded&&!$("#dlg").open){reloaded=true;location.reload()}});
  }
  if(isNative)runNotifications().catch(console.warn);
+ if(!S.demo){setTimeout(flushOutbox,3000);addEventListener("online",()=>flushOutbox())}
  navigator.storage?.persist?.(); // ask the browser not to evict the data when space runs low
 })();
 </script>

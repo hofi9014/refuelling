@@ -1,0 +1,56 @@
+# Daily check of the shared price database against Supabase's free plan.
+# Opens an issue labelled "krytyczne" (GitHub notifies the owner by e-mail and in the GitHub app) when
+#  - the database or the monthly download estimate passes 70% of the free plan, or
+#  - the database doesn't answer (e.g. the free project was paused).
+# Needs the repository secret SUPABASE_SECRET_KEY (Settings → Secrets and variables → Actions).
+name: Supabase usage check
+
+on:
+  schedule:
+    - cron: "0 6 * * *"   # every day at 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Compare usage with the free plan
+        env:
+          SB_URL: https://mkmqeuievlorbfvtxgwp.supabase.co
+          SB_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          alert() {
+            title="$1"; body="$2"
+            if [ -z "$(gh issue list -R "$REPO" --state open --label krytyczne --search "in:title \"$title\"" --json number --jq '.[0].number')" ]; then
+              gh label create krytyczne -R "$REPO" --color B60205 --description "Wymaga Twojej reakcji" 2>/dev/null || true
+              gh issue create -R "$REPO" --title "$title" --label krytyczne --body "@$OWNER $body"
+            fi
+          }
+          if [ -z "$SB_KEY" ]; then
+            alert "KRYTYCZNE: brak klucza do sprawdzania bazy cen" "Dodaj sekret SUPABASE_SECRET_KEY w Settings → Secrets and variables → Actions."
+            exit 0
+          fi
+          resp=$(curl -s -m 30 -w '\n%{http_code}' -X POST "$SB_URL/rest/v1/rpc/usage_stats" \
+                 -H "apikey: $SB_KEY" -H "Content-Type: application/json" -d '{}' || true)
+          code=$(printf '%s' "$resp" | tail -n1); json=$(printf '%s' "$resp" | sed '$d')
+          echo "HTTP $code: $json"
+          if [ "$code" != "200" ]; then
+            alert "KRYTYCZNE: baza cen Tankvia nie odpowiada" "Supabase odpowiedział kodem $code. Darmowy projekt mógł zostać wstrzymany po tygodniu bez ruchu – wejdź na supabase.com, otwórz projekt tankvia i kliknij Restore. Odpowiedź: \`$json\`"
+            exit 0
+          fi
+          db=$(echo "$json" | jq '.db_bytes'); reads=$(echo "$json" | jq '.reads_30d'); rows=$(echo "$json" | jq '.rows_out_30d')
+          # free plan: 500 MB database, 5 GB downloaded a month; estimate ~250 B per price row and ~700 B of overhead per request
+          db_pct=$(( db * 100 / 524288000 ))
+          egress=$(( rows * 250 + reads * 700 ))
+          eg_pct=$(( egress * 100 / 5368709120 ))
+          echo "database: ${db_pct}% of 500 MB, downloads (30 days): ${eg_pct}% of 5 GB"
+          if [ "$db_pct" -ge 70 ] || [ "$eg_pct" -ge 70 ]; then
+            alert "KRYTYCZNE: Tankvia zbliża się do limitu darmowego planu Supabase" "Baza: ${db_pct}% z 500 MB, pobrane dane w 30 dni: ~${eg_pct}% z 5 GB. Czas na subskrypcję w aplikacji i plan Pro w Supabase (ok. 25 USD/mies.)."
+          fi
