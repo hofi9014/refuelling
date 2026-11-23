@@ -93,7 +93,8 @@ nav .lbl{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowra
 nav .badge{position:absolute;top:-6px;right:-12px}
 /* magnifier 130%+: stack what sits side by side, so nothing runs off the screen */
 .zoom-l .hero{grid-template-columns:1fr}
-.zoom-l .hero>img,.zoom-l .hero>.ph{width:100%;aspect-ratio:16/9;max-height:160px}
+.zoom-l .hero>img,.zoom-l .hero>.ph{width:100%;aspect-ratio:16/9;max-height:130px}
+.zoom-l .hero>img{object-fit:contain;background:var(--surface-2)}
 .zoom-l .hero>button{position:absolute;top:10px;right:10px;background:var(--surface)}
 .zoom-l .odo b{width:16px;font-size:18px}
 .zoom-l .grid2,.zoom-l .ros{grid-template-columns:1fr}
@@ -411,7 +412,7 @@ select{max-width:100%}
 <script src="notify.js"></script>
 <script>
 const I18N={
-pl:{phevNote:"Benzyna i prąd są liczone na cały przejechany dystans – razem dają koszt jazdy na 100 km.",approxAvg:"szacunkowo (bez tankowań do pełna)",scanPump:"Odczytaj z dystrybutora",scanReading:"Odczytuję zdjęcie…",scanOk:"Odczytano kwotę, litry i cenę. Sprawdź je i wpisz stan licznika.",scanUnsure:"Nie wszystko udało się odczytać pewnie – sprawdź zaznaczone pola.",scanFail:"Nie udało się odczytać liczb. Zrób zdjęcie bliżej i bez odbić światła albo wpisz dane ręcznie.",bothFuels:"Oba paliwa razem",dualNote:"Spalanie każdego paliwa jest liczone na cały przejechany dystans (metoda „do pełna”, osobno dla każdego paliwa).",trip:"Koszt podróży",tripHint:"Wyznacz trasę na mapie. Koszt policzymy ze średniego spalania i ceny z ostatniego tankowania – obie wartości możesz zmienić.",tripFrom:"Skąd",tripTo:"Dokąd",myLocation:"Moja lokalizacja",roundTrip:"W obie strony",people:"Liczba osób",calcRoute:"Oblicz trasę",calculating:"Wyznaczam trasę…",tripDistance:"Dystans",driveTime:"Czas jazdy",fuelNeeded:"Paliwo na trasę",energyNeeded:"Energia na trasę",perPerson:"Na osobę",tripOffline:"Kalkulator podróży działa tylko z internetem.",tripNotFound:"Nie znaleziono miejsca: {q}",routeError:"Nie udało się wyznaczyć trasy. Spróbuj ponownie za chwilę.",addEvent:"Dodaj wydarzenie",palette:"Kolorystyka",palCoffee:"Kawa",palGraphite:"Grafit",palForest:"Las",palOcean:"Ocean",calendar:"Kalendarz",noRemDay:"Brak terminów w tym dniu.",prevMonth:"Poprzedni miesiąc",nextMonth:"Następny miesiąc",theme:"Motyw",themeAuto:"Automatyczny (jak w telefonie)",themeLight:"Jasny",themeDark:"Ciemny",searchingStations:"Szukam stacji…",avgAll:"z całego okresu",avgPerUnit:"ważona ilością",avgMonthNote:"z {n} mies.",avgTooShort:"potrzeba min. 4 tygodni danych",dashboard:"Pulpit",fuelTab:"Tankowania",chargeTab:"Ładowania",energyTab:"Paliwo i prąd",costs:"Koszty",reminders:"Przypomnienia",reports:"Raporty",settings:"Ustawienia",
+pl:{takePhoto:"Zrób zdjęcie",fromGallery:"Z galerii",scanReceipt:"Odczytaj z paragonu",receiptOk:"Odczytano dane z paragonu. Sprawdź je i wpisz stan licznika.",phevNote:"Benzyna i prąd są liczone na cały przejechany dystans – razem dają koszt jazdy na 100 km.",approxAvg:"szacunkowo (bez tankowań do pełna)",scanPump:"Odczytaj z dystrybutora",scanReading:"Odczytuję zdjęcie…",scanOk:"Odczytano kwotę, litry i cenę. Sprawdź je i wpisz stan licznika.",scanUnsure:"Nie wszystko udało się odczytać pewnie – sprawdź zaznaczone pola.",scanFail:"Nie udało się odczytać liczb. Zrób zdjęcie bliżej i bez odbić światła albo wpisz dane ręcznie.",bothFuels:"Oba paliwa razem",dualNote:"Spalanie każdego paliwa jest liczone na cały przejechany dystans (metoda „do pełna”, osobno dla każdego paliwa).",trip:"Koszt podróży",tripHint:"Wyznacz trasę na mapie. Koszt policzymy ze średniego spalania i ceny z ostatniego tankowania – obie wartości możesz zmienić.",tripFrom:"Skąd",tripTo:"Dokąd",myLocation:"Moja lokalizacja",roundTrip:"W obie strony",people:"Liczba osób",calcRoute:"Oblicz trasę",calculating:"Wyznaczam trasę…",tripDistance:"Dystans",driveTime:"Czas jazdy",fuelNeeded:"Paliwo na trasę",energyNeeded:"Energia na trasę",perPerson:"Na osobę",tripOffline:"Kalkulator podróży działa tylko z internetem.",tripNotFound:"Nie znaleziono miejsca: {q}",routeError:"Nie udało się wyznaczyć trasy. Spróbuj ponownie za chwilę.",addEvent:"Dodaj wydarzenie",palette:"Kolorystyka",palCoffee:"Kawa",palGraphite:"Grafit",palForest:"Las",palOcean:"Ocean",calendar:"Kalendarz",noRemDay:"Brak terminów w tym dniu.",prevMonth:"Poprzedni miesiąc",nextMonth:"Następny miesiąc",theme:"Motyw",themeAuto:"Automatyczny (jak w telefonie)",themeLight:"Jasny",themeDark:"Ciemny",searchingStations:"Szukam stacji…",avgAll:"z całego okresu",avgPerUnit:"ważona ilością",avgMonthNote:"z {n} mies.",avgTooShort:"potrzeba min. 4 tygodni danych",dashboard:"Pulpit",fuelTab:"Tankowania",chargeTab:"Ładowania",energyTab:"Paliwo i prąd",costs:"Koszty",reminders:"Przypomnienia",reports:"Raporty",settings:"Ustawienia",
 addFuel:"Dodaj tankowanie",editFuel:"Edytuj tankowanie",addCharge:"Dodaj ładowanie",editCharge:"Edytuj ładowanie",addCost:"Dodaj koszt",editCost:"Edytuj koszt",addReminder:"Zaplanuj serwis",editReminder:"Edytuj planowany serwis",addVehicle:"Dodaj samochód",editVehicle:"Edytuj samochód",
 vehicles:"Samochody",name:"Nazwa (np. Skoda Octavia)",plate:"Nr rejestracyjny",year:"Rok produkcji",vin:"VIN",tankCap:"Pojemność baku",battery:"Pojemność baterii (kWh)",batteryShort:"Bateria",carPhoto:"Zdjęcie samochodu",fuelType:"Napęd",
 refCons:"Spalanie porównywalnego auta spalinowego",refPrice:"Cena paliwa do porównania",refHint:"Na tej podstawie aplikacja policzy, ile oszczędzasz, jeżdżąc na prądzie.",
@@ -446,7 +447,7 @@ fuelTypes:{petrol:"Benzyna",diesel:"Diesel",lpg:"LPG + benzyna",hybrid:"Hybryda 
 ct:{home:"Dom",work:"Praca",ac:"Publiczna AC",dc:"Szybka DC"},
 kinds:{service:"Serwis",repair:"Naprawa",tyres:"Opony",inspection:"Przegląd techniczny",insurance:"Ubezpieczenie",tax:"Podatki i opłaty",leasing:"Leasing / rata",parking:"Parking",tolls:"Autostrady",wash:"Myjnia",fines:"Mandaty",accessories:"Akcesoria",other:"Inne"},
 grp:{fuel:"Paliwo",charge:"Ładowanie",svc:"Serwis i naprawy",fix:"Ubezpieczenie, opłaty, leasing",oth:"Inne"}},
-en:{phevNote:"Fuel and electricity are both measured over the whole distance driven – together they give the cost per 100 km.",approxAvg:"estimate (no full-tank fill-ups)",scanPump:"Read from the pump",scanReading:"Reading the photo…",scanOk:"Amount, litres and price read. Check them and enter the odometer.",scanUnsure:"Not everything could be read for sure – check the highlighted fields.",scanFail:"Couldn't read the numbers. Take the photo closer and without glare, or enter the values by hand.",bothFuels:"Both fuels together",dualNote:"Each fuel's consumption is measured over the whole distance driven (full-to-full, separately for each fuel).",trip:"Trip cost",tripHint:"Plan the route on the map. The cost uses your average consumption and the price from your last fill-up – you can change both.",tripFrom:"From",tripTo:"To",myLocation:"My location",roundTrip:"Round trip",people:"People",calcRoute:"Calculate route",calculating:"Finding the route…",tripDistance:"Distance",driveTime:"Driving time",fuelNeeded:"Fuel needed",energyNeeded:"Energy needed",perPerson:"Per person",tripOffline:"The trip calculator needs an internet connection.",tripNotFound:"Place not found: {q}",routeError:"Couldn't find a route. Try again in a moment.",addEvent:"Add event",palette:"Colours",palCoffee:"Coffee",palGraphite:"Graphite",palForest:"Forest",palOcean:"Ocean",calendar:"Calendar",noRemDay:"Nothing scheduled on this day.",prevMonth:"Previous month",nextMonth:"Next month",theme:"Theme",themeAuto:"Automatic (follow phone)",themeLight:"Light",themeDark:"Dark",searchingStations:"Searching for stations…",avgAll:"over all records",avgPerUnit:"weighted by amount",avgMonthNote:"over {n} months",avgTooShort:"needs at least 4 weeks of data",dashboard:"Dashboard",fuelTab:"Fill-ups",chargeTab:"Charging",energyTab:"Fuel & power",costs:"Costs",reminders:"Reminders",reports:"Reports",settings:"Settings",
+en:{takePhoto:"Take photo",fromGallery:"From gallery",scanReceipt:"Read the receipt",receiptOk:"Receipt read. Check the values and enter the odometer.",phevNote:"Fuel and electricity are both measured over the whole distance driven – together they give the cost per 100 km.",approxAvg:"estimate (no full-tank fill-ups)",scanPump:"Read from the pump",scanReading:"Reading the photo…",scanOk:"Amount, litres and price read. Check them and enter the odometer.",scanUnsure:"Not everything could be read for sure – check the highlighted fields.",scanFail:"Couldn't read the numbers. Take the photo closer and without glare, or enter the values by hand.",bothFuels:"Both fuels together",dualNote:"Each fuel's consumption is measured over the whole distance driven (full-to-full, separately for each fuel).",trip:"Trip cost",tripHint:"Plan the route on the map. The cost uses your average consumption and the price from your last fill-up – you can change both.",tripFrom:"From",tripTo:"To",myLocation:"My location",roundTrip:"Round trip",people:"People",calcRoute:"Calculate route",calculating:"Finding the route…",tripDistance:"Distance",driveTime:"Driving time",fuelNeeded:"Fuel needed",energyNeeded:"Energy needed",perPerson:"Per person",tripOffline:"The trip calculator needs an internet connection.",tripNotFound:"Place not found: {q}",routeError:"Couldn't find a route. Try again in a moment.",addEvent:"Add event",palette:"Colours",palCoffee:"Coffee",palGraphite:"Graphite",palForest:"Forest",palOcean:"Ocean",calendar:"Calendar",noRemDay:"Nothing scheduled on this day.",prevMonth:"Previous month",nextMonth:"Next month",theme:"Theme",themeAuto:"Automatic (follow phone)",themeLight:"Light",themeDark:"Dark",searchingStations:"Searching for stations…",avgAll:"over all records",avgPerUnit:"weighted by amount",avgMonthNote:"over {n} months",avgTooShort:"needs at least 4 weeks of data",dashboard:"Dashboard",fuelTab:"Fill-ups",chargeTab:"Charging",energyTab:"Fuel & power",costs:"Costs",reminders:"Reminders",reports:"Reports",settings:"Settings",
 addFuel:"Add fill-up",editFuel:"Edit fill-up",addCharge:"Add charge",editCharge:"Edit charge",addCost:"Add cost",editCost:"Edit cost",addReminder:"Schedule service",editReminder:"Edit scheduled service",addVehicle:"Add car",editVehicle:"Edit car",
 vehicles:"Cars",name:"Name (e.g. Toyota Corolla)",plate:"Licence plate",year:"Year",vin:"VIN",tankCap:"Tank capacity",battery:"Battery capacity (kWh)",batteryShort:"Battery",carPhoto:"Car photo",fuelType:"Powertrain",
 refCons:"Comparable combustion car consumption",refPrice:"Fuel price for comparison",refHint:"Used to calculate how much you save by driving electric.",
@@ -691,7 +692,7 @@ const allCosts=()=>[
 function fieldHtml(f,v){
  const id="f_"+f.k;
  if(f.type==="checkbox")return`<div class="field"><label class="chk"><input type="checkbox" id="${id}" ${v?"checked":""}> ${esc(f.label)}</label>${f.hint?`<small>${esc(f.hint)}</small>`:""}</div>`;
- if(f.type==="photo")return`<div class="field"><span>${esc(f.label)}</span><div class="photo" id="${id}_pv">${v?`<img src="${v}">`:""}</div><div class="row"><label class="btn">${ic("camera")}${t("choosePhoto")}<input type="file" accept="image/*" id="${id}" hidden></label><button type="button" class="ghost" id="${id}_rm" ${v?"":"hidden"}>${t("remove")}</button></div></div>`;
+ if(f.type==="photo")return`<div class="field"><span>${esc(f.label)}</span><div class="photo" id="${id}_pv">${v?`<img src="${v}">`:""}</div><div class="row"><label class="btn">${ic("camera")}${t("takePhoto")}<input type="file" accept="image/*" capture="environment" id="${id}_cam" hidden></label><label class="btn">${ic("upload")}${t("fromGallery")}<input type="file" accept="image/*" id="${id}" hidden></label><button type="button" class="ghost" id="${id}_rm" ${v?"":"hidden"}>${t("remove")}</button></div></div>`;
  if(f.type==="select")return`<label class="field"><span>${esc(f.label)}</span><select id="${id}">${f.options.map(([val,lab])=>`<option value="${esc(val)}" ${val==v?"selected":""}>${esc(lab)}</option>`).join("")}</select></label>`;
  if(f.type==="textarea")return`<label class="field"><span>${esc(f.label)}</span><textarea id="${id}">${esc(v)}</textarea></label>`;
  if(f.type==="html")return f.html;
@@ -706,13 +707,14 @@ function openForm(title,fields,vals,onSave,onDelete,onOpen){
  flat.filter(f=>f.type==="photo").forEach(f=>{
   photos[f.k]=vals[f.k]||null;
   const inp=$("#f_"+f.k),pv=$("#f_"+f.k+"_pv"),rm=$("#f_"+f.k+"_rm");
-  inp.onchange=async()=>{
-   const file=inp.files[0];if(!file)return;
+  const cam=$("#f_"+f.k+"_cam"),pick=async src=>{
+   const file=src.files[0];if(!file)return;
    const sub=$("#frm .primary");sub.disabled=true;pv.innerHTML=`<p class="muted">⏳ ${t("photoLoading")}</p>`;
    try{photos[f.k]=await compress(file);pv.innerHTML=`<img src="${photos[f.k]}">`;rm.hidden=false}
    catch(e){console.error(e);pv.innerHTML=photos[f.k]?`<img src="${photos[f.k]}">`:"";alert(`${t(e.message==="heic-lib"?"photoOffline":/hei[cf]/i.test(file.type+file.name)?"photoHeic":"photoError")}\n\n[${file.type||"?"}, ${num(file.size/1048576,1)} MB, ${e.message||e}]`)}
-   finally{sub.disabled=false;inp.value=""}
+   finally{sub.disabled=false;src.value=""}
   };
+  inp.onchange=()=>pick(inp);if(cam)cam.onchange=()=>pick(cam);
   rm.onclick=()=>{photos[f.k]=null;pv.innerHTML="";rm.hidden=true;inp.value=""};
  });
  $("#fcancel").onclick=()=>d.close();
@@ -930,24 +932,80 @@ function readPump(lines,hint={}){
  const out={cost:pick("cost"),qty:pick("qty"),price:pick("price"),sure:false};
  return out.cost!=null||out.qty!=null||out.price!=null?out:null;
 }
+/* Fuel receipt reader: from the text lines of a receipt photo it takes the date and time, the station, the fuel and the
+   "litres x price = amount" line. The amount must agree with litres × price, just like on the pump display. */
+function readReceipt(lines,hint={}){
+ const txt=lines.map(l=>l.text||"");
+ const out={date:null,time:null,qty:null,price:null,cost:null,grade:null,place:null,sure:false};
+ const all=txt.join("\n");
+ // date and time (2026-11-20, 20.11.2026, 20-11-26 …) – the first plausible one
+ let m=all.match(/\b(20\d\d)[-./](0[1-9]|1[0-2])[-./](0[1-9]|[12]\d|3[01])\b/);
+ if(m)out.date=`${m[1]}-${m[2]}-${m[3]}`;
+ else if((m=all.match(/\b(0[1-9]|[12]\d|3[01])[-./](0[1-9]|1[0-2])[-./](20\d\d|\d\d)\b/)))out.date=`${m[3].length===2?"20"+m[3]:m[3]}-${m[2]}-${m[1]}`;
+ m=all.match(/\b([01]\d|2[0-3]):([0-5]\d)(?::[0-5]\d)?\b/);if(m)out.time=`${m[1]}:${m[2]}`;
+ // the fuel line: "39,81 x 6,39 254,37", "39,81 L * 6,39 = 254,37", "Ilość 39,81 Cena 6,39" …
+ const N=/(\d{1,4}[.,]\d{2,3})/;
+ const num=s=>parseFloat(s.replace(",","."));
+ const GRADE=[[/lpg|autogaz|\bgaz\b|propan/i,"lpg"],[/\bcng\b/i,"cng"],[/\be85\b/i,"e85"],
+  [/(verva|ultimate|v-?power|miles\s*plus|excellium|premium|ekstra)[^\n]*(\bon\b|diesel)|(\bon\b|diesel)[^\n]*(verva|ultimate|v-?power|plus|premium)/i,"onp"],
+  [/\bon\b|diesel|olej\s*nap/i,"on"],[/98|super\s*plus|v-?power\s*(racing)?(?!\s*diesel)/i,"pb98"],[/\bpb\s*95|\b95\b|benzyna|petrol|unleaded|e10|e5\b|super\b/i,"pb95"]];
+ let best=null;
+ txt.forEach((l,i)=>{
+  const s=l.replace(/\s+/g," ");
+  const x=s.match(new RegExp(N.source+"\\s*(?:l|ltr|litr\\w*|szt)?\\.?\\s*[x×\\*]\\s*"+N.source+"(?:\\s*(?:pln|zł|zl|eur|€)?\\s*(?:=|\\s)\\s*"+N.source+")?","i"));
+  if(!x)return;
+  let a=num(x[1]),b=num(x[2]),c=x[3]?num(x[3]):null;
+  // litres or price first? the amount, the tank size and the last price paid decide; most receipts put litres first
+  const score=(q,p)=>(hint.price?(Math.abs(p/hint.price-1)<.35?3:0):0)+(hint.tank&&q>hint.tank*1.3?-3:0)+(p<q?1:0)+(c!=null&&Math.abs(q*p-c)<=p*.0051+.0051?2:0);
+  const [q,p]=score(a,b)>=score(b,a)?[a,b]:[b,a];
+  const near=[txt[i-1],l,txt[i+1]].filter(Boolean).join(" ");
+  const g=GRADE.find(([r])=>r.test(near))?.[1]||null;
+  const cand={q,p,c,g,i,ok:c!=null&&Math.abs(q*p-c)<=p*.0051+.0051};
+  if(!best||cand.ok&&!best.ok||(!!cand.g&&!best.g&&cand.ok===best.ok))best=cand;
+ });
+ // the total: "SUMA PLN 254,37", "DO ZAPŁATY 254,37", "TOTAL 68,45"
+ const totals=[];txt.forEach((l,i)=>{if(/suma|razem|do\s*zap|nale[żz]no|total|gesamt|betrag|summe/i.test(l)&&!/ptu|vat|tax|mwst|opodatk/i.test(l)){const m=(l+" "+(txt[i+1]||"")).match(N);if(m)totals.push(num(m[1]))}});
+ if(best){
+  out.qty=+best.q.toFixed(2);out.price=+best.p.toFixed(3);out.grade=best.g;
+  const c=best.c??totals.find(v=>Math.abs(v-best.q*best.p)<=best.p*.0051+.0051)??null;
+  out.cost=c!=null?+c.toFixed(2):null;
+  out.sure=out.cost!=null&&Math.abs(out.qty*out.price-out.cost)<=out.price*.0051+.0051;
+ }else if(typeof readPump==="function"){ // no "x" line: litres, price and amount may stand on their own lines with labels
+  const r=readPump(lines,hint);if(r){out.qty=r.qty;out.price=r.price;out.cost=r.cost??totals[0]??null;out.sure=r.sure}
+  out.grade=GRADE.find(([r])=>r.test(all))?.[1]||null;
+ }
+ // the station: brand + street + town from the receipt header (the lines above the tax number)
+ const BRANDS=["Orlen","BP","Shell","Circle K","Moya","Amic","Lotos","Avia","TotalEnergies","Statoil","Tesco","Esso","Aral","OMV","Jet","MOL","Huzar","Auchan","Carrefour","Intermarche","Leclerc"];
+ const headEnd=Math.max(1,txt.findIndex(l=>/nip|vat\s*(id|no)|ust-?id|paragon|receipt|rechnung|fiskal/i.test(l)));
+ const head=txt.slice(0,headEnd===-1?6:headEnd+1).join("\n");
+ const brand=BRANDS.find(b=>new RegExp("\\b"+b.replace(" ","\\s*")+"\\b","i").test(head)); // the header only: "TOTAL" further down is the amount, not the brand
+ const town=head.match(/\b\d{2}-\d{3}\s+([A-ZĄĆĘŁŃÓŚŹŻ][A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ-]+(?:\s[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż-]+)?)/)?.[1];
+ const street=head.match(/\b(?:ul\.?|al\.?|aleja|ulica)\s*([^\n,0-9]+?\d+[a-zA-Z]?)\b/i)?.[1]?.trim();
+ const where=[town&&town.toLowerCase().replace(/(^|[\s-])\p{L}/gu,s=>s.toUpperCase()),street].filter(Boolean).join(", ");
+ if(brand||where)out.place=[where,brand].filter(Boolean).join(" - ");
+ return out.qty!=null||out.cost!=null||out.date?out:null;
+}
 /* Photo of the pump → amount, litres and price in the form (store app only: the text reader runs natively, on the phone). */
 function bindPumpScan(V,prev){
  if(!isNative||!Cap("TextReader"))return;
- const file=$("#f_scanfile"),box=$("#f_scanmsg");
- $("#f_scan").onclick=()=>file.click();
+ const file=$("#f_scanfile"),box=$("#f_scanmsg");let mode="pump";
+ $("#f_scan").onclick=()=>{mode="pump";file.click()};
+ $("#f_scanr").onclick=()=>{mode="receipt";file.click()};
  for(const k of["qty","price","cost"])$("#f_"+k).addEventListener("input",e=>{if(e.isTrusted)e.target.classList.remove("unsure")}); // checked by hand
  file.onchange=async()=>{
   const ph=file.files[0];if(!ph)return;
   box.innerHTML=`<p class="muted" style="margin:6px 0 0">${t("scanReading")}</p>`;
   try{
    const img=await compress(ph,2000,.92),{lines}=await Cap("TextReader").read({image:img.split(",")[1]});
-   const r=readPump(lines||[],{price:+prev?.price||null,tank:+V.tank||null});
+   const hint={price:+prev?.price||null,tank:+V.tank||null},r=mode==="receipt"?readReceipt(lines||[],hint):readPump(lines||[],hint);
+   // a receipt also knows when, where and which fuel
+   if(r&&mode==="receipt"){if(r.date)$("#f_date").value=r.date;if(r.time)$("#f_time").value=r.time;if(r.grade&&GRADES.includes(r.grade))$("#f_grade").value=r.grade;if(r.place)$("#f_place").value=r.place}
    if(!r){box.innerHTML=`<div class="warnbox">${t("scanFail")}</div>`;return}
    for(const k of["qty","price","cost"]){const el=$("#f_"+k);el.value=r[k]??"";el.classList.toggle("unsure",!r.sure&&r[k]!=null)}
    // let the form check the tank size and recalculate a missing value; the price the pump showed stays as read
    for(const k of["qty","cost"])if(r[k]!=null)$("#f_"+k).dispatchEvent(new Event("input"));
    if(r.price!=null&&r.qty!=null&&r.cost!=null)$("#f_price").value=r.price;else if(r.price!=null)$("#f_price").dispatchEvent(new Event("input"));
-   box.innerHTML=r.sure?`<p class="good-t" style="margin:6px 0 0">${ic("check","sm")} ${t("scanOk")}</p>`:`<div class="warnbox">${t("scanUnsure")}</div>`;
+   box.innerHTML=r.sure?`<p class="good-t" style="margin:6px 0 0">${ic("check","sm")} ${t(mode==="receipt"?"receiptOk":"scanOk")}</p>`:`<div class="warnbox">${t("scanUnsure")}</div>`;
    // keep the photo as the fill-up's receipt photo, unless one is already there
    const inp=$("#f_photo");if(inp&&!$("#f_photo_pv img")){const dt=new DataTransfer();dt.items.add(ph);inp.files=dt.files;inp.dispatchEvent(new Event("change"))}
    $("#f_odo").focus();
@@ -958,7 +1016,7 @@ function bindPumpScan(V,prev){
 function fuelForm(f){
  const V=veh(),u=U(),prev=mine(S.fuel).filter(x=>x!==f).sort((a,b)=>b.odo-a.odo)[0];
  openForm(t(f?"editFuel":"addFuel"),[
-  ...(isNative?[{type:"html",html:`<button type="button" class="primary" id="f_scan" style="width:100%;justify-content:center">${ic("camera")}${t("scanPump")}</button><input type="file" id="f_scanfile" accept="image/*" capture="environment" hidden><div id="f_scanmsg"></div>`}]:[]),
+  ...(isNative?[{type:"html",html:`<div class="grid2"><button type="button" class="primary" id="f_scan" style="justify-content:center">${ic("camera")}${t("scanPump")}</button><button type="button" class="primary" id="f_scanr" style="justify-content:center">${ic("receipt")}${t("scanReceipt")}</button></div><input type="file" id="f_scanfile" accept="image/*" capture="environment" hidden><div id="f_scanmsg"></div>`}]:[]),
   [{k:"date",label:t("date"),type:"date",req:true},{k:"time",label:t("time"),type:"time"}],
   {k:"odo",label:`${t("odometer")} (${u.d})`,type:"number",req:true,hint:prev?`${t("lastValue")}: ${num(prev.odo,0)} ${u.d}`:""},
   [{k:"qty",label:`${t("quantity")} (${u.v})`,type:"number",req:true,hint:V.tank?`${t("tankCap")}: ${num(+V.tank,0)} ${u.v}`:""},{k:"grade",label:t("grade"),type:"select",options:GRADES.map(g=>[g,gradeLabel(g)])}],
@@ -1454,9 +1512,14 @@ function demoState(lang,car){
 }
 
 /* ---------- install & notifications ---------- */
-const APP_VERSION="v28"; // keep in sync with VERSION in sw.js
+const APP_VERSION="v29"; // keep in sync with VERSION in sw.js
 let installEvt=null;
 const isNative=!!window.Capacitor?.isNativePlatform?.(); // running as the Google Play / App Store app
+if(isNative)Cap("App")?.addListener("backButton",()=>{
+ const d=document.querySelector("dialog[open]");if(d){d.close();return}
+ if(tab!=="dashboard"){tab="dashboard";render();scrollTo(0,0);return}
+ Cap("App").exitApp();
+});
 const standalone=()=>isNative||matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
 const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
 addEventListener("beforeinstallprompt",e=>{e.preventDefault();installEvt=e;if(tab==="settings")render()});

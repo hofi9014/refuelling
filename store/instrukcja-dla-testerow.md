@@ -26,6 +26,7 @@ KROK 3 – Zainstaluj aplikację
 
 KROK 4 – Używaj przez 14 dni
 • Otwórz Tankvię, dodaj swój samochód i kilka prawdziwych wpisów (tankowanie, serwis, termin).
+  Przy tankowaniu wypróbuj „Odczytaj z dystrybutora” albo „Odczytaj z paragonu” – dane wpiszą się same.
 • Zajrzyj do aplikacji kilka razy w ciągu 14 dni.
 • NIE odinstalowuj aplikacji, NIE wychodź z grupy ani z testu przez 14 dni – inaczej test się nie zaliczy.
 • Uwagi, błędy i pomysły wysyłaj na: hofi9014@gmail.com (zrzut ekranu bardzo pomaga).

@@ -29,7 +29,8 @@ STEP 4 – Start using Tankvia
 3. Tap the round "+" button to add a fill-up, a charge or a cost.
    • Fill-up: enter the odometer and any two of litres / price / total – the third is calculated.
      Tick "Full tank" when you fill up completely – that gives the exact consumption.
-     Tip: "Read from the pump" fills in the amount, litres and price from a photo of the pump display.
+     Tip: "Read from the pump" fills in the amount, litres and price from a photo of the pump display,
+     and "Read the receipt" also takes the date, station and fuel from a photo of the receipt.
    • Charge (electric / plug-in cars): kWh, price, charger type and battery % before and after.
    • Cost: service, tyres, insurance, parking and more. "Valid until" (e.g. insurance end) adds a reminder automatically.
 4. Reminders tab: a calendar of dates such as the next inspection or oil change. Tap a day or "+" to add one.
