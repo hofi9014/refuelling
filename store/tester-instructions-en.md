@@ -24,7 +24,7 @@ STEP 3 – Install the app
    If the Play Store says the app isn't available, wait a few minutes (sometimes a few hours) and try again.
 
 STEP 4 – Start using Tankvia
-1. Open the app and tap "Add vehicle": name, fuel type (petrol, diesel, LPG + petrol, hybrid, plug-in hybrid or electric), tank size.
+1. Open the app and tap "Add car": name, fuel type (petrol, diesel, LPG + petrol, hybrid, plug-in hybrid or electric), tank size.
 2. The app follows your phone's language (22 languages). You can change the language, currency and units (km or miles) in Settings.
 3. Tap the round "+" button to add a fill-up, a charge or a cost.
    • Fill-up: enter the odometer and any two of litres / price / total – the third is calculated.
